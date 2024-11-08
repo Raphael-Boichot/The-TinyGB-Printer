@@ -1,26 +1,37 @@
 /*********************************
  * GAMEBOY LINK CABLE DEFINITIONS
  *********************************/
-// Note: Serial Clock Pin must be attached to an interrupt pin of the ESP (Pins 1 and 4 are not used. Pin 6 must be connect to the GND)
+// Note: Serial Clock Pin must be attached to an interrupt pin
 //  ___________
 // |  6  4  2  |
-//  \_5__3__1_/   (at cable)
+//  \_5__3__1_/   (at cable, Game Boy Side)
 //
-#define ESP_MOSI_PIN 23
-#define ESP_MISO_PIN 19
-#define ESP_CLK_PIN 18
-//#define INVERT_SERIAL_PINS //Invert pin 2 and 3 order, since the pin 2 goes o 3 in the other side of the cable, and 3 goes to 2. This is useful if you are using a breakout board for the link cable
+#define PICO_CLK 2
+#define PICO_SOUT 3
+#define PICO_SIN 4
 
 /*****************************
  * SD CARD MODULE DEFINITIONS 
  *****************************/
-//Define the SD Card Module Pins
-#define SD_CS   15
-#define SD_SCK  14
-#define SD_MOSI 13
-#define SD_MISO 26
+//    SD card attached to SPI bus as follows on RP2040:
+//   ************ SPI0 ************
+//   ** MISO (AKA RX) - pin 0, 4, or 16
+//   ** MOSI (AKA TX) - pin 3, 7, or 19
+//   ** CS            - pin 1, 5, or 17
+//   ** SCK           - pin 2, 6, or 18
+//   ************ SPI1 ************
+//   ** MISO (AKA RX) - pin  8 or 12
+//   ** MOSI (AKA TX) - pin 11 or 15
+//   ** CS            - pin  9 or 13
+//   ** SCK           - pin 10 or 14
+
+#define SD_CS   9
+#define SD_SCK  10
+#define SD_MOSI 11
+#define SD_MISO 8
 
 /************************************
- * PUSH BUTTON AND IMAGE DEFINITIONS 
+ * PUSH BUTTON AND LED DEFINITIONS 
  ************************************/
-#define BTN_PUSH 34             // Define a PushButton to use to Force a new file/Generate the images.
+#define BTN_PUSH 12             //Define a PushButton to use to Force a new file in idle mode
+#define LED_WS2812 16           //Pi pico waveshare zero RGB LED PIN
