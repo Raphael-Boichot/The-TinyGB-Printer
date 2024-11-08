@@ -6,9 +6,9 @@
 // |  6  4  2  |
 //  \_5__3__1_/   (at cable, Game Boy Side)
 //
-#define PICO_CLK 2
-#define PICO_SOUT 3
-#define PICO_SIN 4
+#define GBP_SC_PIN 2
+#define GBP_SI_PIN 3
+#define GBP_SO_PIN 4
 
 /*****************************
  * SD CARD MODULE DEFINITIONS 
@@ -34,4 +34,4 @@
  * PUSH BUTTON AND LED DEFINITIONS 
  ************************************/
 #define BTN_PUSH 12             //Define a PushButton to use to Force a new file in idle mode
-#define LED_WS2812 16           //Pi pico waveshare zero RGB LED PIN
+#define LED_WS2812 16           //Pi pico waveshare zero RGB LED PIN, onboard LED

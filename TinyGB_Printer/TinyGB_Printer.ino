@@ -13,19 +13,7 @@
 #include "SD.h"
 #define FSYS SD
 
-#define numVersion "Ver. 1.6.13"
-
-/*******************************************************************************
- * Invert the SO and SI pins if necessary 
-*******************************************************************************/
-#ifdef INVERT_SERIAL_PINS
-#define GBP_SO_PIN ESP_MOSI_PIN
-#define GBP_SI_PIN ESP_MISO_PIN
-#else
-#define GBP_SO_PIN ESP_MISO_PIN
-#define GBP_SI_PIN ESP_MOSI_PIN
-#endif
-#define GBP_SC_PIN ESP_CLK_PIN
+#define numVersion "TinyGB_Printer 0.1"
 
 /*******************************************************************************
 *******************************************************************************/
@@ -164,10 +152,10 @@ void setup(void) {
 
       /* Pins from gameboy link cable */
       pinMode(GBP_SC_PIN, INPUT);
-      pinMode(GBP_SI_PIN, INPUT);
-      pinMode(GBP_SO_PIN, OUTPUT);
+      pinMode(GBP_SO_PIN, INPUT);
+      pinMode(GBP_SI_PIN, OUTPUT);
       /* Default link serial out pin state */
-      digitalWrite(GBP_SO_PIN, LOW);
+      digitalWrite(GBP_SI_PIN, LOW);
 
       /* Setup */
       gpb_serial_io_init(sizeof(gbp_serialIO_raw_buffer), gbp_serialIO_raw_buffer);

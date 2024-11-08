@@ -3,7 +3,7 @@
 *******************************************************************************/
 bool fs_setup() {
   //pinMode(SD_CS, OUTPUT);
-  FSYS.begin(SD_CS); //SCK,MISO,MOSI,SS //HSPI1
+  FSYS.begin(SD_CS); //SCK,MISO,MOSI,SS 
 
   if (!FSYS.begin(SD_CS)) {
     Serial.println("SD Card Mount Failed");
