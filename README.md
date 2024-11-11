@@ -7,5 +7,10 @@ For the moment it is just the [NeoGB printer](https://github.com/zenaro147/NeoGB
 - Starting from the NeoGB Printer code and removed/commented all ESP32/Wifi/LED/png specific command until it compiles for the rp2040 core. Removed all unneccessary dependencies. Pins not allocated, still the same as ESP32.
 - Starting now from the mofosyne code to compare. I think it will be simplier to rebuild from it stealing chunks of the NeoGB Printer.
 
+## How do I want it to work ?
+- boot without pressing pushbutton: margin mode (green LED), an image is closed automatically when a margin is detected;
+- boot while pressing pushbutton: idle mode (blue LED), an image is closed only when you press the pushbutton. Pressing the pushbutton is like tearing paper;
+- red led at boot: the device has general SD failure or no SD card, it can only work with the USB port, but works nevertheless (ot not, have to see).
+
 ## Showcase
 ![](Tiny_GB_Printer.jpg)
