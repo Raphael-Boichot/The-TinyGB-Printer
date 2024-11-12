@@ -45,6 +45,8 @@ WebUSB WebUSBSerial(1, "herrzatacke.github.io/gb-printer-web/#/webusb");
 #include <Adafruit_NeoPixel.h>
 #include <SPI.h>  //for SD
 #include <SD.h>   //for SD
+#include "pico/stdlib.h"
+#include "hardware/gpio.h"
 /////////////////////////////////////
 
 #if GBP_OUTPUT_RAW_PACKETS
@@ -79,24 +81,6 @@ WebUSB WebUSBSerial(1, "herrzatacke.github.io/gb-printer-web/#/webusb");
 #define BTN_PUSH          12      // Define a PushButton to use to Force a new file in idle mode ///BOICHOT
 #define LED_WS2812        16      // Pi pico waveshare zero RGB LED PIN, onboard LED ///BOICHOT
 // clang-format on
-
-///////////////////////////////////////////BOICHOT
-/*****************************
- * SD CARD MODULE DEFINITIONS 
- *****************************/
-//    SD card attached to SPI bus as follows on RP2040:
-//   ************ SPI0 ************
-//   ** MISO (AKA RX) - pin 0, 4, or 16
-//   ** MOSI (AKA TX) - pin 3, 7, or 19
-//   ** CS            - pin 1, 5, or 17
-//   ** SCK           - pin 2, 6, or 18
-//   ************ SPI1 ************
-//   ** MISO (AKA RX) - pin  8 or 12
-//   ** MOSI (AKA TX) - pin 11 or 15
-//   ** CS            - pin  9 or 13
-//   ** SCK           - pin 10 or 14
-///////////////////////////////////////////
-
 
 ///////////////////////////////////////////BOICHOT
 #define NUMPIXELS 1  // Popular NeoPixel ring size
@@ -177,29 +161,42 @@ void serialClock_ISR(void)
   Main Setup and Loop
 *******************************************************************************/
 
-void setup(void) {
+void setup() {
   // Config Serial
   // Has to be fast or it will not transfer the image fast enough to the computer
   Serial.begin(115200);
 
-  ////////////////////////////////////////////////////////BOICHOT
+   ////////////////////////////////////////////////////////BOICHOT
   bool margin = 1;
   if (digitalRead(BTN_PUSH)) {
     WS2812_Color = pixels.Color(0, 0, intensity);  //RGB triplet
     margin = 0;                                    //idle mode with tear paper
   }
 
-  // Ensure the SPI pinout the SD card is connected to / is configured properly
-  // SPI.setRX(SD_MISO);
-  // SPI.setTX(SD_MOSI);
-  // SPI.setSCK(SD_SCK);
-  if (SD.begin(SD_CS)) {
+/*****************************
+ * SD CARD MODULE DEFINITIONS 
+ *****************************/
+//    SD card attached to SPI bus as follows on RP2040:
+//   ************ SPI0 ************
+//   ** MISO (AKA RX) - pin 0, 4, or 16
+//   ** MOSI (AKA TX) - pin 3, 7, or 19
+//   ** CS            - pin 1, 5, or 17
+//   ** SCK           - pin 2, 6, or 18
+//   ************ SPI1 ************
+//   ** MISO (AKA RX) - pin  8 or 12
+//   ** MOSI (AKA TX) - pin 11 or 15
+//   ** CS            - pin  9 or 13
+//   ** SCK           - pin 10 or 14
+
+ // Ensure the SPI pinout the SD card is connected to / is configured properly
+  SPI1.setRX(SD_MISO);
+  SPI1.setTX(SD_MOSI);
+  SPI1.setSCK(SD_SCK);
+  if (SD.begin(SD_CS, SPI1)) {
     SDcard_READY = 1;
-    Serial.println(F("// SD card ready !"));
   } else {
     SDcard_READY = 0;
     WS2812_Color = pixels.Color(intensity, 0, 0);  //RGB triplet
-    Serial.println(F("// SD card not detected !"));
   }
 
   for (int i = 0; i < 20; i++) {  // For each pixel..
@@ -266,6 +263,11 @@ void setup(void) {
   Serial.flush();
 }  // setup()
 
+void setup1()
+{
+  // Nothing here
+}
+
 void loop() {
   static uint16_t sioWaterline = 0;
 
@@ -320,6 +322,12 @@ void loop() {
     }
   };
 }  // loop()
+
+void loop1()//core 1 
+{
+  //nothing here
+}
+
 
 /******************************************************************************/
 
