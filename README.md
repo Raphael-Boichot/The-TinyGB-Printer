@@ -6,6 +6,7 @@ For the moment it is just the [NeoGB printer](https://github.com/zenaro147/NeoGB
 - a PCB with all individual functions working was done (works natively with the [Arduino emulator](https://github.com/mofosyne/arduino-gameboy-printer-emulator), access to LED and SD card OK).
 - Starting from the NeoGB Printer code and removed/commented all ESP32/Wifi/LED/png specific command until it compiles for the rp2040 core. Removed all unneccessary dependencies. Pins not allocated, still the same as ESP32.
 - Starting now from the mofosyne code to compare. I think it will be simplier to rebuild from it stealing chunks of the NeoGB Printer.
+- Support for the WS2812 internal LED in mofosyne code added.
 
 ## How do I want it to work ?
 - boot without pressing pushbutton: margin mode (green LED), an image is closed automatically when a margin is detected;
