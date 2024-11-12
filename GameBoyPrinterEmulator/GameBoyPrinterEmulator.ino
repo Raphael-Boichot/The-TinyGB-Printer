@@ -99,6 +99,8 @@ WebUSB WebUSBSerial(1, "herrzatacke.github.io/gb-printer-web/#/webusb");
 ///////////////////////////////////////////BOICHOT
 #define NUMPIXELS 1  // Popular NeoPixel ring size
 Adafruit_NeoPixel pixels(NUMPIXELS, LED_WS2812, NEO_RGB);
+uint8_t intensity = 10;
+uint32_t WS2812_Color = pixels.Color(0, intensity, 0);  //RGB triplet
 ///////////////////////////////////////////
 
 /*******************************************************************************
@@ -178,20 +180,22 @@ void setup(void) {
   Serial.begin(115200);
 
   ////////////////////////////////////////////////////////BOICHOT
-  uint32_t WS2812_Color = pixels.Color(0, 50, 0);  //RGB triplet
+
   bool margin = 1;
   if (digitalRead(BTN_PUSH)) {
-    WS2812_Color = pixels.Color(0, 0, 50);  //RGB triplet
-    margin = 0;                             //idle mode with tear paper
+    WS2812_Color = pixels.Color(0, 0, intensity);  //RGB triplet
+    margin = 0;                                    //idle mode with tear paper
   }
-  pixels.setPixelColor(0, WS2812_Color);
-  pixels.show();  // Send the updated pixel colors to the hardware.
-  delay(2000);
-  pixels.clear();  // Set all pixel colors to 'off'
+  for (int i = 0; i < 20; i++) {  // For each pixel..
+    LED_WS2812_state(WS2812_Color, 1);
+    delay(25);
+    LED_WS2812_state(WS2812_Color, 0);
+    delay(25);
+  }
   ////////////////////////////////////////////////////////
 
   // Wait for Serial to be ready
-  while (!Serial) { ; }  //no need for autonomous design with the RP2040
+  // while (!Serial) { ; }  //no need for autonomous design with the RP2040
 
   Connect_to_printer();  //makes an attempt to switch in printer mode
 
@@ -206,6 +210,7 @@ void setup(void) {
   /* LED Indicator */
   //pinMode(LED_STATUS_PIN, OUTPUT);
   //digitalWrite(LED_STATUS_PIN, LOW);
+  LED_WS2812_state(WS2812_Color, 0);
 
   /* Setup */
   gpb_serial_io_init(sizeof(gbp_serialIO_raw_buffer), gbp_serialIO_raw_buffer);
@@ -241,7 +246,6 @@ void setup(void) {
   Serial.println(F("// This is free software, and you are welcome to redistribute it"));
   Serial.println(F("// under certain conditions. Refer to LICENSE file for detail."));
   Serial.println(F("// ---"));
-
   Serial.flush();
 }  // setup()
 
@@ -270,9 +274,7 @@ void loop() {
       Serial.println("B)");
       Serial.flush();
       //digitalWrite(LED_STATUS_PIN, LOW);
-      ////////////////////////////////////////////////////////BOICHOT
-      pixels.clear();  // Set all pixel colors to 'off'
-      ////////////////////////////////////////////////////////
+      LED_WS2812_state(WS2812_Color, 0);
 
 #ifdef GBP_FEATURE_PARSE_PACKET_MODE
       gbp_pkt_reset(&gbp_pktState);
@@ -311,9 +313,7 @@ inline void gbp_parse_packet_loop(void) {
     if (gbp_pkt_processByte(&gbp_pktState, (const uint8_t)gbp_serial_io_dataBuff_getByte(), gbp_pktbuff, &gbp_pktbuffSize, sizeof(gbp_pktbuff))) {
       if (gbp_pktState.received == GBP_REC_GOT_PACKET) {
         //digitalWrite(LED_STATUS_PIN, HIGH);
-        ////////////////////////////////////////////////BOICHOT
-        pixels.show();  // Send the updated pixel colors to the hardware.
-                        ///////////////////////////////////////////////////////
+        LED_WS2812_state(WS2812_Color, 1);
         Serial.print((char)'{');
         Serial.print("\"command\":\"");
         Serial.print(gbpCommand_toStr(gbp_pktState.command));
@@ -434,9 +434,7 @@ inline void gbp_packet_capture_loop() {
         Serial.println(gbpCommand_toStr(gbp_serial_io_dataBuff_getByte_Peek(2)));
 #endif
         //digitalWrite(LED_STATUS_PIN, HIGH);
-        ////////////////////////////////////////////////BOICHOT
-        pixels.show();  // Send the updated pixel colors to the hardware.
-                        ///////////////////////////////////////////////////////
+        LED_WS2812_state(WS2812_Color, 1);
       }
       // Print Hex Byte
       data_8bit = gbp_serial_io_dataBuff_getByte();
@@ -445,9 +443,7 @@ inline void gbp_packet_capture_loop() {
       // Splitting packets for convenience
       if ((pktByteIndex > 5) && (pktByteIndex >= (9 + pktDataLength))) {
         //digitalWrite(LED_STATUS_PIN, LOW);
-        ////////////////////////////////////////////////////////BOICHOT
-        pixels.clear();  // Set all pixel colors to 'off'
-                         ////////////////////////////////////////////////////////
+        LED_WS2812_state(WS2812_Color, 0);
         Serial.println("");
         pktByteIndex = 0;
         pktTotalCount++;
@@ -468,6 +464,7 @@ void Connect_to_printer() {
   pinMode(GBP_SO_PIN, INPUT_PULLUP);
   pinMode(GBP_SI_PIN, OUTPUT);
   //pinMode(LED_STATUS_PIN, OUTPUT);
+  LED_WS2812_state(WS2812_Color, OUTPUT);
   const char INIT[] = { 0x88, 0x33, 0x01, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00 };  //INIT command
   uint8_t junk, status;
   for (uint8_t i = 0; i < 10; i++) {
@@ -491,9 +488,7 @@ void Connect_to_printer() {
       Serial.read();
     }
     //digitalWrite(LED_STATUS_PIN, HIGH);  //LED ON = PRINTER INTERFACE mode
-    ////////////////////////////////////////////////BOICHOT
-    pixels.show();  // Send the updated pixel colors to the hardware.
-    ///////////////////////////////////////////////////////
+    LED_WS2812_state(WS2812_Color, 1);
 
     while (true) {
       if (Serial.available() > 0) {
@@ -507,21 +502,15 @@ void Connect_to_printer() {
 #if GAME_BOY_PRINTER_MODE      //Printer mode
 char printing(char byte_sent)  // this function prints bytes to the serial
 {
+  uint32_t WS2812_Color = pixels.Color(intensity, intensity, intensity);  //RGB triplet
   bool bit_sent, bit_read;
   char byte_read;
   for (int i = 0; i <= 7; i++) {
     bit_sent = bitRead(byte_sent, 7 - i);
     digitalWrite(GBP_SC_PIN, LOW);
     digitalWrite(GBP_SI_PIN, bit_sent);  //GBP_SI_PIN is SOUT for the printer
-    if (bit_sent) {
-      ////////////////////////////////////////////////BOICHOT
-      pixels.show();  // Send the updated pixel colors to the hardware.
-                      ///////////////////////////////////////////////////////
-    } else {
-      pixels.clear();  // Set all pixel colors to 'off'
-    }
     //digitalWrite(LED_STATUS_PIN, bit_sent);
-
+    LED_WS2812_state(WS2812_Color, bit_sent);
     delayMicroseconds(30);  //double speed mode
     digitalWrite(GBP_SC_PIN, HIGH);
     bit_read = (digitalRead(GBP_SO_PIN));  //GBP_SO_PIN is SIN for the printer
@@ -534,3 +523,13 @@ char printing(char byte_sent)  // this function prints bytes to the serial
   return byte_read;
 }
 #endif
+
+void LED_WS2812_state(uint32_t WS2812_Color, bool state) {
+  if (state) {
+    pixels.setPixelColor(0, WS2812_Color);
+    pixels.show();   // Send the updated pixel colors to the hardware.
+  } else {           //flop
+    pixels.clear();  // Set all pixel colors to 'off'
+    pixels.show();   // Send the updated pixel colors to the hardware.
+  }
+}
