@@ -41,8 +41,10 @@ WebUSB WebUSBSerial(1, "herrzatacke.github.io/gb-printer-web/#/webusb");
 #include "gameboy_printer_protocol.h"
 #include "gbp_serial_io.h"
 
-/////////////////////////////////////
+/////////////////////////////////////BOICHOT
 #include <Adafruit_NeoPixel.h>
+#include <SPI.h>  //for SD
+#include <SD.h>   //for SD
 /////////////////////////////////////
 
 #if GBP_OUTPUT_RAW_PACKETS
@@ -101,6 +103,7 @@ WebUSB WebUSBSerial(1, "herrzatacke.github.io/gb-printer-web/#/webusb");
 Adafruit_NeoPixel pixels(NUMPIXELS, LED_WS2812, NEO_RGB);
 uint8_t intensity = 10;
 uint32_t WS2812_Color = pixels.Color(0, intensity, 0);  //RGB triplet
+bool SDcard_READY;
 ///////////////////////////////////////////
 
 /*******************************************************************************
@@ -180,18 +183,32 @@ void setup(void) {
   Serial.begin(115200);
 
   ////////////////////////////////////////////////////////BOICHOT
-
   bool margin = 1;
   if (digitalRead(BTN_PUSH)) {
     WS2812_Color = pixels.Color(0, 0, intensity);  //RGB triplet
     margin = 0;                                    //idle mode with tear paper
   }
+
+  // Ensure the SPI pinout the SD card is connected to / is configured properly
+  // SPI.setRX(SD_MISO);
+  // SPI.setTX(SD_MOSI);
+  // SPI.setSCK(SD_SCK);
+  if (SD.begin(SD_CS)) {
+    SDcard_READY = 1;
+    Serial.println(F("// SD card ready !"));
+  } else {
+    SDcard_READY = 0;
+    WS2812_Color = pixels.Color(intensity, 0, 0);  //RGB triplet
+    Serial.println(F("// SD card not detected !"));
+  }
+
   for (int i = 0; i < 20; i++) {  // For each pixel..
     LED_WS2812_state(WS2812_Color, 1);
     delay(25);
     LED_WS2812_state(WS2812_Color, 0);
     delay(25);
   }
+
   ////////////////////////////////////////////////////////
 
   // Wait for Serial to be ready
