@@ -325,7 +325,7 @@ void loop() {
 
 void loop1()//core 1 
 {
-  //nothing here
+  //BMP and SD stuff will be here
 }
 
 
