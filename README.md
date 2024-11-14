@@ -1,5 +1,7 @@
 # The TinyGB Printer /// A WORK IN PROGRESS
 
+The tiniest possible Game Boy printer emulator storing images on SD card made with easily available parts and easy to assemble. Basically a simplified NeoGB printer. 100% compatibility with all known GB/GBC games, homebrews included.
+
 ## Libraries
 - [RP2040 core for Arduino IDE](https://github.com/earlephilhower/arduino-pico)
 - [Adafruit Neopixel for Arduino IDE](https://github.com/adafruit/Adafruit_NeoPixel)
