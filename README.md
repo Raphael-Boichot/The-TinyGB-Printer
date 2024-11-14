@@ -15,6 +15,7 @@
 - boot without pressing pushbutton: margin mode (green LED), an image is closed automatically when an after margin is detected;
 - boot while pressing pushbutton: idle mode (blue LED), an image is closed only when you press the pushbutton. Pressing the pushbutton is like tearing paper;
 - red led at boot: the device has general SD failure or no SD card, it can only work with the USB port, but works nevertheless (ot not, have to see).
+- it must run on one single or two AA NiMH batteris because lithium is evil.
 
 ## Showcase
 ![](Tiny_GB_Printer.jpg)
