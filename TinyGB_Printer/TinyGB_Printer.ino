@@ -32,9 +32,9 @@ WebUSB WebUSBSerial(1, "herrzatacke.github.io/gb-printer-web/#/webusb");
 #define Serial WebUSBSerial
 #endif
 
-#define GAME_BOY_PRINTER_MODE true        // to use with https://github.com/Mraulio/GBCamera-Android-Manager and https://github.com/Raphael-Boichot/PC-to-Game-Boy-Printer-interface
-#define GBP_OUTPUT_RAW_PACKETS true       // by default, packets are parsed. if enabled, output will change to raw data packets for parsing and decompressing later
-#define GBP_USE_PARSE_DECOMPRESSOR false  // embedded decompressor can be enabled for use with parse mode but it requires fast hardware (SAMD21, SAMD51, ESP8266, ESP32)
+#define GAME_BOY_PRINTER_MODE true       // to use with https://github.com/Mraulio/GBCamera-Android-Manager and https://github.com/Raphael-Boichot/PC-to-Game-Boy-Printer-interface
+#define GBP_OUTPUT_RAW_PACKETS false     // by default, packets are parsed. if enabled, output will change to raw data packets for parsing and decompressing later
+#define GBP_USE_PARSE_DECOMPRESSOR true  // embedded decompressor can be enabled for use with parse mode but it requires fast hardware (SAMD21, SAMD51, ESP8266, ESP32)
 
 #include <stdint.h>  // uint8_t
 #include <stddef.h>  // size_t
@@ -88,6 +88,7 @@ Adafruit_NeoPixel pixels(NUMPIXELS, LED_WS2812, NEO_RGB);
 uint8_t intensity = 10;
 uint32_t WS2812_Color = pixels.Color(0, intensity, 0);  //RGB triplet
 bool SDcard_READY;
+bool DATA_flag = 0;
 ///////////////////////////////////////////
 
 /*******************************************************************************
@@ -166,29 +167,29 @@ void setup() {
   // Has to be fast or it will not transfer the image fast enough to the computer
   Serial.begin(115200);
 
-   ////////////////////////////////////////////////////////BOICHOT
+  ////////////////////////////////////////////////////////BOICHOT
   bool margin = 1;
   if (digitalRead(BTN_PUSH)) {
     WS2812_Color = pixels.Color(0, 0, intensity);  //RGB triplet
     margin = 0;                                    //idle mode with tear paper
   }
 
-/*****************************
+  /*****************************
  * SD CARD MODULE DEFINITIONS 
  *****************************/
-//    SD card attached to SPI bus as follows on RP2040:
-//   ************ SPI0 ************
-//   ** MISO (AKA RX) - pin 0, 4, or 16
-//   ** MOSI (AKA TX) - pin 3, 7, or 19
-//   ** CS            - pin 1, 5, or 17
-//   ** SCK           - pin 2, 6, or 18
-//   ************ SPI1 ************
-//   ** MISO (AKA RX) - pin  8 or 12
-//   ** MOSI (AKA TX) - pin 11 or 15
-//   ** CS            - pin  9 or 13
-//   ** SCK           - pin 10 or 14
+  //    SD card attached to SPI bus as follows on RP2040:
+  //   ************ SPI0 ************
+  //   ** MISO (AKA RX) - pin 0, 4, or 16
+  //   ** MOSI (AKA TX) - pin 3, 7, or 19
+  //   ** CS            - pin 1, 5, or 17
+  //   ** SCK           - pin 2, 6, or 18
+  //   ************ SPI1 ************
+  //   ** MISO (AKA RX) - pin  8 or 12
+  //   ** MOSI (AKA TX) - pin 11 or 15
+  //   ** CS            - pin  9 or 13
+  //   ** SCK           - pin 10 or 14
 
- // Ensure the SPI pinout the SD card is connected to / is configured properly
+  // Ensure the SPI pinout the SD card is connected to / is configured properly
   SPI1.setRX(SD_MISO);
   SPI1.setTX(SD_MOSI);
   SPI1.setSCK(SD_SCK);
@@ -263,8 +264,7 @@ void setup() {
   Serial.flush();
 }  // setup()
 
-void setup1()
-{
+void setup1() {
   // Nothing here
 }
 
@@ -323,9 +323,13 @@ void loop() {
   };
 }  // loop()
 
-void loop1()//core 1 
+void loop1()  //core 1
 {
   //BMP and SD stuff will be here
+  if (DATA_flag == 1) {
+    DATA_flag = 0;
+    Serial.println("Data packet detected by core 1");
+  }
 }
 
 
@@ -387,6 +391,12 @@ inline void gbp_parse_packet_loop(void) {
 #endif
           Serial.print(", \"more\":");
           Serial.print((gbp_pktState.dataLength != 0) ? '1' : '0');
+          ////////////////////////////////////////////////////////////////////////BOICHOT
+          DATA_flag = 0;
+          if (gbpCommand_toStr(gbp_pktState.command) == "DATA") {
+            DATA_flag = 1;
+          }
+          ///////////////////////////////////////////////////////////////////////
         }
         Serial.println((char)'}');
         Serial.flush();
