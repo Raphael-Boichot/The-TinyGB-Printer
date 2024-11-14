@@ -12,7 +12,7 @@
 - Support for the SD card in mofosyne code added.
 
 ## How do I want it to work ?
-- boot without pressing pushbutton: margin mode (green LED), an image is closed automatically when a margin is detected;
+- boot without pressing pushbutton: margin mode (green LED), an image is closed automatically when an after margin is detected;
 - boot while pressing pushbutton: idle mode (blue LED), an image is closed only when you press the pushbutton. Pressing the pushbutton is like tearing paper;
 - red led at boot: the device has general SD failure or no SD card, it can only work with the USB port, but works nevertheless (ot not, have to see).
 
