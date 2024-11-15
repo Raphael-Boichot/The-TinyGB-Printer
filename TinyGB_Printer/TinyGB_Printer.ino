@@ -45,6 +45,7 @@ WebUSB WebUSBSerial(1, "herrzatacke.github.io/gb-printer-web/#/webusb");
 #include <Adafruit_NeoPixel.h>
 #include <SPI.h>  //for SD
 #include <SD.h>   //for SD
+#include "config.h"
 // #include "pico/stdlib.h"
 // #include "hardware/gpio.h"
 /////////////////////////////////////
@@ -68,22 +69,12 @@ WebUSB WebUSBSerial(1, "herrzatacke.github.io/gb-printer-web/#/webusb");
 // |  6  4  2  |
 //  \_5__3__1_/   (at cable)
 //
-
-// clang-format off
 //                  | Arduino Pin | Gameboy Link Pin  |
-#define GBP_SC_PIN        2       // Pin 5            : Serial Clock (Interrupt)
-#define GBP_SI_PIN        3       // Pin 3            : Serial INPUT
-#define GBP_SO_PIN        4       // Pin 2            : Serial OUTPUT
-#define SD_MISO           8       // SD card SPI1
-#define SD_CS             9       // SD card SPI1
-#define SD_SCK            10      // SD card SPI1
-#define SD_MOSI           11      // SD card SPI1
-#define BTN_PUSH          12      // Define a PushButton to use to Force a new file in idle mode ///BOICHOT
-#define LED_WS2812        16      // Pi pico waveshare zero RGB LED PIN, onboard LED ///BOICHOT
-// clang-format on
+#define GBP_SC_PIN 2  // Pin 5            : Serial Clock (Interrupt)
+#define GBP_SI_PIN 3  // Pin 3            : Serial INPUT
+#define GBP_SO_PIN 4  // Pin 2            : Serial OUTPUT
 
 ///////////////////////////////////////////BOICHOT
-#define NUMPIXELS 1  // Popular NeoPixel ring size
 Adafruit_NeoPixel pixels(NUMPIXELS, LED_WS2812, NEO_RGB);
 uint8_t intensity = 10;
 uint32_t WS2812_Color = pixels.Color(0, intensity, 0);  //RGB triplet
@@ -174,21 +165,7 @@ void setup() {
     margin = 0;                                    //idle mode with tear paper
   }
 
-  /*****************************
- * SD CARD MODULE DEFINITIONS 
- *****************************/
-  //    SD card attached to SPI bus as follows on RP2040:
-  //   ************ SPI0 ************
-  //   ** MISO (AKA RX) - pin 0, 4, or 16
-  //   ** MOSI (AKA TX) - pin 3, 7, or 19
-  //   ** CS            - pin 1, 5, or 17
-  //   ** SCK           - pin 2, 6, or 18
-  //   ************ SPI1 ************
-  //   ** MISO (AKA RX) - pin  8 or 12
-  //   ** MOSI (AKA TX) - pin 11 or 15
-  //   ** CS            - pin  9 or 13
-  //   ** SCK           - pin 10 or 14
-
+  ////////////////////////////////////////////////////////BOICHOT
   // Ensure the SPI pinout the SD card is connected to / is configured properly
   SPI1.setRX(SD_MISO);
   SPI1.setTX(SD_MOSI);
@@ -206,7 +183,6 @@ void setup() {
     LED_WS2812_state(WS2812_Color, 0);
     delay(25);
   }
-
   ////////////////////////////////////////////////////////
 
   // Wait for Serial to be ready

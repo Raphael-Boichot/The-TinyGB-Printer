@@ -50,8 +50,7 @@
 
 /******************************************************************************/
 
-typedef enum
-{
+typedef enum {
   GBP_SIO_MODE_RESET,
   GBP_SIO_MODE_8BITS,
   GBP_SIO_MODE_16BITS_BIG_ENDIAN,
@@ -76,8 +75,7 @@ static struct
 /******************************************************************************/
 /******************************************************************************/
 
-typedef enum gbp_pktIO_parse_state_t
-{
+typedef enum gbp_pktIO_parse_state_t {
   // Indicates the stage of the parsing processing (syncword is not parsed)
   // [PREAMBLE][HEADER][DATA][CHECKSUM][DUMMY]
   // [GBP_SYNC_WORD][GBP_COMMAND][DATA][CRC][GBP_STATUS]
@@ -128,29 +126,27 @@ static struct
  * Serial IO
 *******************************************************************************/
 
-static bool gpb_sio_next(const gpb_sio_mode_t mode, const uint16_t txdata)
-{
+static bool gpb_sio_next(const gpb_sio_mode_t mode, const uint16_t txdata) {
   gpb_sio.rx_buff = 0;
-  gpb_sio.mode    = mode;
-  switch (mode)
-  {
+  gpb_sio.mode = mode;
+  switch (mode) {
     case GBP_SIO_MODE_RESET:
-      gpb_sio.bitMaskMap        = 0;
+      gpb_sio.bitMaskMap = 0;
       gpb_sio.SINOutputPinState = false;
-      gpb_sio.tx_buff           = 0xFFFF;
-      gpb_sio.syncronised       = false;
+      gpb_sio.tx_buff = 0xFFFF;
+      gpb_sio.syncronised = false;
       break;
     case GBP_SIO_MODE_8BITS:
       gpb_sio.bitMaskMap = (uint16_t)1 << (8 - 1);
-      gpb_sio.tx_buff    = txdata;
+      gpb_sio.tx_buff = txdata;
       break;
     case GBP_SIO_MODE_16BITS_BIG_ENDIAN:
       gpb_sio.bitMaskMap = (uint16_t)1 << (16 - 1);
-      gpb_sio.tx_buff    = txdata;
+      gpb_sio.tx_buff = txdata;
       break;
     case GBP_SIO_MODE_16BITS_LITTLE_ENDIAN:
       gpb_sio.bitMaskMap = (uint16_t)1 << (16 - 1);
-      gpb_sio.tx_buff    = 0;
+      gpb_sio.tx_buff = 0;
       gpb_sio.tx_buff |= ((txdata >> 8) & 0x00FF);
       gpb_sio.tx_buff |= ((txdata << 8) & 0xFF00);
       break;
@@ -158,11 +154,9 @@ static bool gpb_sio_next(const gpb_sio_mode_t mode, const uint16_t txdata)
   return true;
 }
 
-static uint16_t gpb_sio_getWord()
-{
+static uint16_t gpb_sio_getWord() {
   uint16_t temp = 0;
-  switch (gpb_sio.mode)
-  {
+  switch (gpb_sio.mode) {
     case GBP_SIO_MODE_RESET:
       break;
     case GBP_SIO_MODE_8BITS:
@@ -179,10 +173,8 @@ static uint16_t gpb_sio_getWord()
   return temp;
 }
 
-static uint8_t gpb_sio_getByte(const int bytePos)
-{
-  switch (bytePos)
-  {
+static uint8_t gpb_sio_getByte(const int bytePos) {
+  switch (bytePos) {
     case 0: return ((gpb_sio.rx_buff >> 0) & 0xFF);
     case 1: return ((gpb_sio.rx_buff >> 8) & 0xFF);
     default: return 0;
@@ -192,8 +184,7 @@ static uint8_t gpb_sio_getByte(const int bytePos)
 
 /******************************************************************************/
 
-bool gbp_serial_io_timeout_handler(uint32_t elapsed_ms)
-{
+bool gbp_serial_io_timeout_handler(uint32_t elapsed_ms) {
 #if 0  // This redundancy causes an infinite loop in (Tsuri Seensei 2) GH-57
   if (gpb_pktIO.breakPacketReceived)
   {
@@ -201,11 +192,9 @@ bool gbp_serial_io_timeout_handler(uint32_t elapsed_ms)
     return true;
   }
 #endif
-  if (gpb_pktIO.timeout_ms > 0)
-  {
+  if (gpb_pktIO.timeout_ms > 0) {
     gpb_pktIO.timeout_ms = (gpb_pktIO.timeout_ms > elapsed_ms) ? (gpb_pktIO.timeout_ms - elapsed_ms) : 0;
-    if (gpb_pktIO.timeout_ms == 0)
-    {
+    if (gpb_pktIO.timeout_ms == 0) {
       gpb_serial_io_reset();
       return true;
     }
@@ -213,13 +202,11 @@ bool gbp_serial_io_timeout_handler(uint32_t elapsed_ms)
   return false;
 }
 
-size_t gbp_serial_io_dataBuff_getByteCount(void)
-{
+size_t gbp_serial_io_dataBuff_getByteCount(void) {
   return gpb_cbuff_Count(&gpb_pktIO.dataBuffer);
 }
 
-uint8_t gbp_serial_io_dataBuff_getByte(void)
-{
+uint8_t gbp_serial_io_dataBuff_getByte(void) {
   uint8_t b = 0;
 
   if (!gpb_cbuff_Dequeue(&gpb_pktIO.dataBuffer, &b))
@@ -231,38 +218,33 @@ uint8_t gbp_serial_io_dataBuff_getByte(void)
   return b;
 }
 
-uint8_t gbp_serial_io_dataBuff_getByte_Peek(uint32_t offset)
-{
+uint8_t gbp_serial_io_dataBuff_getByte_Peek(uint32_t offset) {
   uint8_t b = 0;
   gpb_cbuff_Dequeue_Peek(&gpb_pktIO.dataBuffer, &b, offset);
   return b;
 }
 
-uint16_t gbp_serial_io_dataBuff_waterline(bool resetWaterline)
-{
+uint16_t gbp_serial_io_dataBuff_waterline(bool resetWaterline) {
   uint16_t retval = gpb_pktIO.dataBufferWaterline;
-  if (resetWaterline)
-  {
+  if (resetWaterline) {
     gpb_pktIO.dataBufferWaterline = 0;
   }
   return retval;
 }
 
-uint16_t gbp_serial_io_dataBuff_max(void)
-{
+uint16_t gbp_serial_io_dataBuff_max(void) {
   return gpb_cbuff_Capacity(&gpb_pktIO.dataBuffer);
 }
 
 
 /******************************************************************************/
 
-bool gpb_serial_io_reset(void)
-{
-  gpb_sio.syncronised       = false;
-  gpb_sio.rx_buff           = 0;
-  gpb_sio.tx_buff           = 0;
+bool gpb_serial_io_reset(void) {
+  gpb_sio.syncronised = false;
+  gpb_sio.rx_buff = 0;
+  gpb_sio.tx_buff = 0;
   gpb_sio.SINOutputPinState = false;
-  gpb_sio.bitMaskMap        = 0;
+  gpb_sio.bitMaskMap = 0;
 
   // Clear all device status bits
   gpb_status_bit_update_low_battery(gpb_pktIO.statusBuffer, false);
@@ -285,11 +267,10 @@ bool gpb_serial_io_reset(void)
   return true;
 }
 
-bool gpb_serial_io_init(size_t buffSize, uint8_t *buffPtr)
-{
+bool gpb_serial_io_init(size_t buffSize, uint8_t *buffPtr) {
   // reset status data
-  gpb_pktIO.statusBuffer        = 0x0000;
-  gpb_pktIO.statusBuffer        = GBP_DEVICE_ID << 8;
+  gpb_pktIO.statusBuffer = 0x0000;
+  gpb_pktIO.statusBuffer = GBP_DEVICE_ID << 8;
   gpb_pktIO.busyPacketCountdown = 0;
 
   // print data buffer
@@ -321,8 +302,7 @@ bool gpb_serial_io_OnChange_ISR(const bool GBP_SCLK, const bool GBP_SOUT)
   // * GBP_SOUT : Master Output Slave Input (This device is slave)
 
   // Scan for preamble
-  if (!gpb_sio.syncronised)
-  {
+  if (!gpb_sio.syncronised) {
 #ifndef GBP_FEATURE_USING_RISING_CLOCK_ONLY_ISR
     // Expecting rising edge
     if (!GBP_SCLK)
@@ -333,8 +313,7 @@ bool gpb_serial_io_OnChange_ISR(const bool GBP_SCLK, const bool GBP_SOUT)
     gpb_sio.preamble |= GBP_SOUT ? 1 : 0;
 
     // Sync Not Found? Keep scanning
-    if ((gpb_sio.preamble & 0xFFFF) != GBP_SYNC_WORD)
-    {
+    if ((gpb_sio.preamble & 0xFFFF) != GBP_SYNC_WORD) {
       gpb_sio.preamble <<= 1;
       return false;
     }
@@ -342,16 +321,15 @@ bool gpb_serial_io_OnChange_ISR(const bool GBP_SCLK, const bool GBP_SOUT)
     // Preamble Found... Currently at rising edge
     // Start reading the packet header
     gpb_pktIO.packetState = GBP_PKT10_PARSE_HEADER_COMMAND_AND_COMPRESSION;
-    gpb_sio.preamble      = 0;
-    gpb_sio.syncronised   = true;
+    gpb_sio.preamble = 0;
+    gpb_sio.syncronised = true;
     gpb_sio_next(GBP_SIO_MODE_16BITS_BIG_ENDIAN, 0);
     return false;
   }
 
   /* Psudo SPI Engine */
   // Basically I have one bit acting as a mask moving across a word sized buffer
-  if (gpb_sio.bitMaskMap > 0)
-  {
+  if (gpb_sio.bitMaskMap > 0) {
     // Serial Transaction Is Active
 #ifdef GBP_FEATURE_USING_RISING_CLOCK_ONLY_ISR
     // Rising Edge Clock (Rx Bit)
@@ -362,17 +340,14 @@ bool gpb_serial_io_OnChange_ISR(const bool GBP_SCLK, const bool GBP_SOUT)
     if (gpb_sio.bitMaskMap > 0)
       return gpb_sio.SINOutputPinState;
 #else
-    if (GBP_SCLK)
-    {
+    if (GBP_SCLK) {
       // Rising Edge Clock (Rx Bit)
       gpb_sio.rx_buff |= GBP_SOUT ? (gpb_sio.bitMaskMap & 0xFFFF) : 0;  ///< Clocking bits on rising edge
       gpb_sio.bitMaskMap >>= 1;                                         ///< One tx/rx bit cycle complete, next bit now
 
       if (gpb_sio.bitMaskMap > 0)
         return gpb_sio.SINOutputPinState;
-    }
-    else
-    {
+    } else {
       // Falling Edge Clock (Tx Bit)
       gpb_sio.SINOutputPinState = (gpb_sio.bitMaskMap & gpb_sio.tx_buff) > 0;
       return gpb_sio.SINOutputPinState;
@@ -383,31 +358,26 @@ bool gpb_serial_io_OnChange_ISR(const bool GBP_SCLK, const bool GBP_SOUT)
   /****************************************************************************/
 
   /* There is uncaptured sync bytes so add it in */
-  if (gpb_pktIO.packetState == GBP_PKT10_PARSE_HEADER_COMMAND_AND_COMPRESSION)
-  {
+  if (gpb_pktIO.packetState == GBP_PKT10_PARSE_HEADER_COMMAND_AND_COMPRESSION) {
     gpb_cbuff_EnqueueTemp(&gpb_pktIO.dataBuffer, GBP_SYNC_WORD_0);
     gpb_cbuff_EnqueueTemp(&gpb_pktIO.dataBuffer, GBP_SYNC_WORD_1);
   }
 
   /* Byte captured so send it downstream to packet processor */
-  switch (gpb_sio.mode)
-  {
+  switch (gpb_sio.mode) {
     case GBP_SIO_MODE_8BITS:
       gpb_cbuff_EnqueueTemp(&gpb_pktIO.dataBuffer, (uint8_t)((gpb_sio.rx_buff >> 0) & 0xFF));
       break;
     case GBP_SIO_MODE_16BITS_BIG_ENDIAN:
     case GBP_SIO_MODE_16BITS_LITTLE_ENDIAN:
-      if (gpb_pktIO.packetState == GBP_PKT10_PARSE_DUMMY)
-      {
+      if (gpb_pktIO.packetState == GBP_PKT10_PARSE_DUMMY) {
         // Virtual Printer --> Gameboy
         // Dev Notes: This is for dumping status byte. This is only done during
         //            the dummy buffer byte phase so might as well use these
         //            bytes for documenting response of the status byte
         gpb_cbuff_EnqueueTemp(&gpb_pktIO.dataBuffer, (uint8_t)((gpb_sio.tx_buff >> 8) & 0xFF));
         gpb_cbuff_EnqueueTemp(&gpb_pktIO.dataBuffer, (uint8_t)((gpb_sio.tx_buff >> 0) & 0xFF));
-      }
-      else
-      {
+      } else {
         // Gameboy --> Virtual Printer
         gpb_cbuff_EnqueueTemp(&gpb_pktIO.dataBuffer, (uint8_t)((gpb_sio.rx_buff >> 8) & 0xFF));
         gpb_cbuff_EnqueueTemp(&gpb_pktIO.dataBuffer, (uint8_t)((gpb_sio.rx_buff >> 0) & 0xFF));
@@ -419,8 +389,7 @@ bool gpb_serial_io_OnChange_ISR(const bool GBP_SCLK, const bool GBP_SOUT)
 
   // Track upper usage of buffer
   uint16_t waterline = gpb_cbuff_Count(&gpb_pktIO.dataBuffer);
-  if (waterline > gpb_pktIO.dataBufferWaterline)
-  {
+  if (waterline > gpb_pktIO.dataBufferWaterline) {
     gpb_pktIO.dataBufferWaterline = waterline;
   }
 
@@ -429,13 +398,12 @@ bool gpb_serial_io_OnChange_ISR(const bool GBP_SCLK, const bool GBP_SOUT)
 
   /****************************************************************************/
   /* Packet State */
-  switch (gpb_pktIO.packetState)
-  {
+  switch (gpb_pktIO.packetState) {
     case GBP_PKT10_PARSE_HEADER_COMMAND_AND_COMPRESSION:
       {
         // Parse
-        gpb_pktIO.command      = gpb_sio_getByte(1);
-        gpb_pktIO.compression  = gpb_sio_getByte(0);
+        gpb_pktIO.command = gpb_sio_getByte(1);
+        gpb_pktIO.compression = gpb_sio_getByte(0);
         gpb_pktIO.checksumCalc = 0;
         // Next Header Segment
         gpb_pktIO.packetState = GBP_PKT10_PARSE_HEADER_DATA_LENGTH;
@@ -450,16 +418,12 @@ bool gpb_serial_io_OnChange_ISR(const bool GBP_SCLK, const bool GBP_SOUT)
         // Dev Note: For robustness, we know only data and print have data payload
         // Prep data parsing
         gpb_pktIO.data_i = 0;
-        switch (gpb_pktIO.command)
-        {
+        switch (gpb_pktIO.command) {
           case GBP_COMMAND_DATA:
-            if (gpb_pktIO.data_length != 0)
-            {
+            if (gpb_pktIO.data_length != 0) {
               gpb_pktIO.packetState = GBP_PKT10_PARSE_DATA_PAYLOAD;
               gpb_sio_next(GBP_SIO_MODE_8BITS, 0);
-            }
-            else
-            {
+            } else {
               gpb_pktIO.packetState = GBP_PKT10_PARSE_CHECKSUM;
               gpb_sio_next(GBP_SIO_MODE_16BITS_LITTLE_ENDIAN, 0);
             }
@@ -479,8 +443,7 @@ bool gpb_serial_io_OnChange_ISR(const bool GBP_SCLK, const bool GBP_SOUT)
       break;
     case GBP_PKT10_PARSE_DATA_PAYLOAD:
       {
-        switch (gpb_pktIO.command)
-        {
+        switch (gpb_pktIO.command) {
           case GBP_COMMAND_DATA:
             // Dev Note: Previous naive approach was to capture byte here
             // e.g. gpb_cbuff_EnqueueTemp(&gpb_pktIO.dataBuffer, (uint8_t)(gpb_sio.rx_buff & 0xFF));
@@ -500,13 +463,10 @@ bool gpb_serial_io_OnChange_ISR(const bool GBP_SCLK, const bool GBP_SOUT)
         gpb_pktIO.data_i++;
 
         // Escape and move to next stage
-        if (gpb_pktIO.data_i >= gpb_pktIO.data_length)
-        {
+        if (gpb_pktIO.data_i >= gpb_pktIO.data_length) {
           gpb_pktIO.packetState = GBP_PKT10_PARSE_CHECKSUM;
           gpb_sio_next(GBP_SIO_MODE_16BITS_LITTLE_ENDIAN, 0);
-        }
-        else
-        {
+        } else {
           gpb_pktIO.packetState = GBP_PKT10_PARSE_DATA_PAYLOAD;
           gpb_sio_next(GBP_SIO_MODE_8BITS, 0);
         }
@@ -526,8 +486,7 @@ bool gpb_serial_io_OnChange_ISR(const bool GBP_SCLK, const bool GBP_SOUT)
 #ifdef FEATURE_CHECKSUM_SUPPORTED
         // Dev Note: Was used to confirm that packetizer was working
         // This will cause the printer to retry sending this packet
-        if (gpb_pktIO.checksum != gpb_pktIO.checksumCalc)
-        {
+        if (gpb_pktIO.checksum != gpb_pktIO.checksumCalc) {
           gpb_status_bit_update_checksum_error(gpb_pktIO.statusBuffer, true);
         }
 #endif  // FEATURE_CHECKSUM_SUPPORTED
@@ -535,8 +494,7 @@ bool gpb_serial_io_OnChange_ISR(const bool GBP_SCLK, const bool GBP_SOUT)
 #ifdef TEST_CHECKSUM_FORCE_FAIL
         // WIP investigation of checksum based flow control
         static int checksumFailToggle = 0;
-        if (checksumFailToggle > 2)
-        {
+        if (checksumFailToggle > 2) {
           checksumFailToggle = 0;
           gpb_status_bit_update_checksum_error(gpb_pktIO.statusBuffer, true);
         }
@@ -547,26 +505,22 @@ bool gpb_serial_io_OnChange_ISR(const bool GBP_SCLK, const bool GBP_SOUT)
         // WIP investigation of buffer full behaviour in the interest of
         // adding flow control
         static int fakeFullToggle = 0;
-        if (fakeFullToggle > 5)
-        {
+        if (fakeFullToggle > 5) {
           fakeFullToggle = 0;
           gpb_status_bit_update_print_buffer_full(gpb_pktIO.statusBuffer, true);
-        }
-        else
-        {
+        } else {
           gpb_status_bit_update_print_buffer_full(gpb_pktIO.statusBuffer, false);
         }
         fakeFullToggle++;
 #endif  // TEST_PRETEND_BUFFER_FULL
 
         // Update status data : Device Status
-        switch (gpb_pktIO.command)
-        {
+        switch (gpb_pktIO.command) {
           // INIT --> DATA --> ENDDATA --> PRINT
           case GBP_COMMAND_INIT:
-            gpb_pktIO.dataPacketCountdown    = 6;
+            gpb_pktIO.dataPacketCountdown = 6;
             gpb_pktIO.untransPacketCountdown = 0;
-            gpb_pktIO.busyPacketCountdown    = 0;
+            gpb_pktIO.busyPacketCountdown = 0;
             gpb_status_bit_update_print_buffer_full(gpb_pktIO.statusBuffer, false);
             gpb_status_bit_update_printer_busy(gpb_pktIO.statusBuffer, false);
             break;
@@ -587,24 +541,18 @@ bool gpb_serial_io_OnChange_ISR(const bool GBP_SCLK, const bool GBP_SOUT)
             gpb_status_bit_update_checksum_error(gpb_pktIO.statusBuffer, false);
             break;
           case GBP_COMMAND_INQUIRY:
-            if (gpb_pktIO.untransPacketCountdown > 0)
-            {
+            if (gpb_pktIO.untransPacketCountdown > 0) {
               gpb_pktIO.untransPacketCountdown--;
-              if (gpb_pktIO.untransPacketCountdown == 0)
-              {
+              if (gpb_pktIO.untransPacketCountdown == 0) {
                 gpb_status_bit_update_unprocessed_data(gpb_pktIO.statusBuffer, false);
-                if (gpb_pktIO.busyPacketCountdown > 0)
-                {
+                if (gpb_pktIO.busyPacketCountdown > 0) {
                   gpb_status_bit_update_printer_busy(gpb_pktIO.statusBuffer, true);
                   gpb_status_bit_update_print_buffer_full(gpb_pktIO.statusBuffer, true);
                 }
               }
-            }
-            else if (gpb_pktIO.busyPacketCountdown > 0)
-            {
+            } else if (gpb_pktIO.busyPacketCountdown > 0) {
               gpb_pktIO.busyPacketCountdown--;
-              if (gpb_pktIO.busyPacketCountdown == 0)
-              {
+              if (gpb_pktIO.busyPacketCountdown == 0) {
                 gpb_status_bit_update_printer_busy(gpb_pktIO.statusBuffer, false);
               }
             }
@@ -621,26 +569,22 @@ bool gpb_serial_io_OnChange_ISR(const bool GBP_SCLK, const bool GBP_SOUT)
     case GBP_PKT10_PARSE_DUMMY:
       {
         // Update status data : Device Status
-        switch (gpb_pktIO.command)
-        {
+        switch (gpb_pktIO.command) {
           // INIT --> DATA --> ENDDATA --> PRINT
           case GBP_COMMAND_INIT:
             break;
           case GBP_COMMAND_PRINT:
             break;
           case GBP_COMMAND_DATA:
-            if (gpb_pktIO.dataPacketCountdown > 0)
-            {
+            if (gpb_pktIO.dataPacketCountdown > 0) {
               gpb_pktIO.dataPacketCountdown--;
-              if (gpb_pktIO.dataPacketCountdown == 0)
-              {
+              if (gpb_pktIO.dataPacketCountdown == 0) {
                 gpb_status_bit_update_unprocessed_data(gpb_pktIO.statusBuffer, false);
               }
             }
             gpb_status_bit_update_print_buffer_full(gpb_pktIO.statusBuffer, false);
             gpb_status_bit_update_unprocessed_data(gpb_pktIO.statusBuffer, false);
-            if (gpb_pktIO.data_length == 0)
-            {
+            if (gpb_pktIO.data_length == 0) {
               gpb_status_bit_update_unprocessed_data(gpb_pktIO.statusBuffer, false);
               gpb_status_bit_update_print_buffer_full(gpb_pktIO.statusBuffer, true);
             }
@@ -649,8 +593,7 @@ bool gpb_serial_io_OnChange_ISR(const bool GBP_SCLK, const bool GBP_SOUT)
             break;
           case GBP_COMMAND_INQUIRY:
             gpb_status_bit_update_unprocessed_data(gpb_pktIO.statusBuffer, false);
-            if ((gpb_pktIO.untransPacketCountdown == 0) && (gpb_pktIO.busyPacketCountdown == 0))
-            {
+            if ((gpb_pktIO.untransPacketCountdown == 0) && (gpb_pktIO.busyPacketCountdown == 0)) {
               gpb_status_bit_update_print_buffer_full(gpb_pktIO.statusBuffer, false);
             }
             break;
@@ -658,8 +601,7 @@ bool gpb_serial_io_OnChange_ISR(const bool GBP_SCLK, const bool GBP_SOUT)
             break;
         }
 
-        switch (gpb_pktIO.command)
-        {
+        switch (gpb_pktIO.command) {
           case GBP_COMMAND_INIT:
             gpb_pktIO.initReceived = true;
             break;
@@ -684,13 +626,10 @@ bool gpb_serial_io_OnChange_ISR(const bool GBP_SCLK, const bool GBP_SOUT)
 
 #ifdef FEATURE_CHECKSUM_SUPPORTED
         // temp buff handling
-        if (gpb_status_bit_getbit_checksum_error(gpb_pktIO.statusBuffer))
-        {
+        if (gpb_status_bit_getbit_checksum_error(gpb_pktIO.statusBuffer)) {
           // On checksum error, throw away old data. GBP will resend
           gpb_cbuff_ResetTemp(&gpb_pktIO.dataBuffer);
-        }
-        else
-        {
+        } else {
           // Checksum ok, keep the new data
           gpb_cbuff_AcceptTemp(&gpb_pktIO.dataBuffer);
         }
