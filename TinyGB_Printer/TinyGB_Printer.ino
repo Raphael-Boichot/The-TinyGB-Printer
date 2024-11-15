@@ -76,10 +76,7 @@ WebUSB WebUSBSerial(1, "herrzatacke.github.io/gb-printer-web/#/webusb");
 
 ///////////////////////////////////////////BOICHOT
 Adafruit_NeoPixel pixels(NUMPIXELS, LED_WS2812, NEO_RGB);
-uint8_t intensity = 10;
 uint32_t WS2812_Color = pixels.Color(0, intensity, 0);  //RGB triplet
-bool SDcard_READY;
-bool DATA_flag = 0;
 ///////////////////////////////////////////
 
 /*******************************************************************************
@@ -158,37 +155,10 @@ void setup() {
   // Has to be fast or it will not transfer the image fast enough to the computer
   Serial.begin(115200);
 
-  ////////////////////////////////////////////////////////BOICHOT
-  bool margin = 1;
-  if (digitalRead(BTN_PUSH)) {
-    WS2812_Color = pixels.Color(0, 0, intensity);  //RGB triplet
-    margin = 0;                                    //idle mode with tear paper
-  }
-
-  ////////////////////////////////////////////////////////BOICHOT
-  // Ensure the SPI pinout the SD card is connected to / is configured properly
-  SPI1.setRX(SD_MISO);
-  SPI1.setTX(SD_MOSI);
-  SPI1.setSCK(SD_SCK);
-  if (SD.begin(SD_CS, SPI1)) {
-    SDcard_READY = 1;
-  } else {
-    SDcard_READY = 0;
-    WS2812_Color = pixels.Color(intensity, 0, 0);  //RGB triplet
-  }
-
-  for (int i = 0; i < 20; i++) {  // For each pixel..
-    LED_WS2812_state(WS2812_Color, 1);
-    delay(25);
-    LED_WS2812_state(WS2812_Color, 0);
-    delay(25);
-  }
-  ////////////////////////////////////////////////////////
-
   // Wait for Serial to be ready
-  // while (!Serial) { ; }  //no need for autonomous design with the RP2040
-
+  //while (!Serial) { ; }  //no need for autonomous design with the RP2040
   Connect_to_printer();  //makes an attempt to switch in printer mode
+  Tiny_printer_preparation(); //switches in Tiny Printer mode
 
   /* Pins from gameboy link cable */
   pinMode(GBP_SC_PIN, INPUT);
@@ -197,11 +167,6 @@ void setup() {
 
   /* Default link serial out pin state */
   digitalWrite(GBP_SI_PIN, LOW);
-
-  /* LED Indicator */
-  //pinMode(LED_STATUS_PIN, OUTPUT);
-  //digitalWrite(LED_STATUS_PIN, LOW);
-  LED_WS2812_state(WS2812_Color, 0);
 
   /* Setup */
   gpb_serial_io_init(sizeof(gbp_serialIO_raw_buffer), gbp_serialIO_raw_buffer);
@@ -241,10 +206,10 @@ void setup() {
 }  // setup()
 
 void setup1() {
-  // Nothing here
-}
+// nothing here
+} // setup1()
 
-void loop() {
+void loop()  {//core 0
   static uint16_t sioWaterline = 0;
 
 #ifdef GBP_FEATURE_PACKET_CAPTURE_MODE
@@ -268,7 +233,6 @@ void loop() {
       Serial.print(gbp_serial_io_dataBuff_max());
       Serial.println("B)");
       Serial.flush();
-      //digitalWrite(LED_STATUS_PIN, LOW);
       LED_WS2812_state(WS2812_Color, 0);
 
 #ifdef GBP_FEATURE_PARSE_PACKET_MODE
@@ -304,20 +268,18 @@ void loop1()  //core 1
   //BMP and SD stuff will be here
   if (DATA_flag == 1) {
     DATA_flag = 0;
+    Serial.println("");
     Serial.println("Data packet detected by core 1");
   }
-}
-
+} // loop1()
 
 /******************************************************************************/
-
 #ifdef GBP_FEATURE_PARSE_PACKET_MODE
 inline void gbp_parse_packet_loop(void) {
   const char nibbleToCharLUT[] = "0123456789ABCDEF";
   for (int i = 0; i < gbp_serial_io_dataBuff_getByteCount(); i++) {
     if (gbp_pkt_processByte(&gbp_pktState, (const uint8_t)gbp_serial_io_dataBuff_getByte(), gbp_pktbuff, &gbp_pktbuffSize, sizeof(gbp_pktbuff))) {
       if (gbp_pktState.received == GBP_REC_GOT_PACKET) {
-        //digitalWrite(LED_STATUS_PIN, HIGH);
         LED_WS2812_state(WS2812_Color, 1);
         Serial.print((char)'{');
         Serial.print("\"command\":\"");
@@ -444,7 +406,6 @@ inline void gbp_packet_capture_loop() {
         Serial.print(" : ");
         Serial.println(gbpCommand_toStr(gbp_serial_io_dataBuff_getByte_Peek(2)));
 #endif
-        //digitalWrite(LED_STATUS_PIN, HIGH);
         LED_WS2812_state(WS2812_Color, 1);
       }
       // Print Hex Byte
@@ -453,7 +414,6 @@ inline void gbp_packet_capture_loop() {
       Serial.print((char)nibbleToCharLUT[(data_8bit >> 0) & 0xF]);
       // Splitting packets for convenience
       if ((pktByteIndex > 5) && (pktByteIndex >= (9 + pktDataLength))) {
-        //digitalWrite(LED_STATUS_PIN, LOW);
         LED_WS2812_state(WS2812_Color, 0);
         Serial.println("");
         pktByteIndex = 0;
@@ -474,7 +434,6 @@ void Connect_to_printer() {
   pinMode(GBP_SC_PIN, OUTPUT);
   pinMode(GBP_SO_PIN, INPUT_PULLUP);
   pinMode(GBP_SI_PIN, OUTPUT);
-  //pinMode(LED_STATUS_PIN, OUTPUT);
   LED_WS2812_state(WS2812_Color, OUTPUT);
   const char INIT[] = { 0x88, 0x33, 0x01, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00 };  //INIT command
   uint8_t junk, status;
@@ -498,7 +457,6 @@ void Connect_to_printer() {
     while (Serial.available() > 0) {  //flush the buffer from any remaining data
       Serial.read();
     }
-    //digitalWrite(LED_STATUS_PIN, HIGH);  //LED ON = PRINTER INTERFACE mode
     LED_WS2812_state(WS2812_Color, 1);
 
     while (true) {
@@ -520,7 +478,6 @@ char printing(char byte_sent)  // this function prints bytes to the serial
     bit_sent = bitRead(byte_sent, 7 - i);
     digitalWrite(GBP_SC_PIN, LOW);
     digitalWrite(GBP_SI_PIN, bit_sent);  //GBP_SI_PIN is SOUT for the printer
-    //digitalWrite(LED_STATUS_PIN, bit_sent);
     LED_WS2812_state(WS2812_Color, bit_sent);
     delayMicroseconds(30);  //double speed mode
     digitalWrite(GBP_SC_PIN, HIGH);
@@ -543,4 +500,40 @@ void LED_WS2812_state(uint32_t WS2812_Color, bool state) {
     pixels.clear();  // Set all pixel colors to 'off'
     pixels.show();   // Send the updated pixel colors to the hardware.
   }
+}
+
+void Tiny_printer_preparation()
+{
+  ////////////////////////////////////////////////////////BOICHOT
+Serial.begin(115200);
+delay(1000);
+  if (digitalRead(BTN_PUSH)) {
+    WS2812_Color = pixels.Color(0, 0, intensity);  //RGB triplet
+    TEAR_mode = 1;                                 //idle mode with tear paper
+    Serial.println("// Tear mode, push button to close an image (tear paper)");
+  }else{
+    Serial.println("// Margin mode, images will be closed automatically");
+  }
+  // Ensure the SPI pinout the SD card is connected to / is configured properly
+  SPI1.setRX(SD_MISO);
+  SPI1.setTX(SD_MOSI);
+  SPI1.setSCK(SD_SCK);
+  if (SD.begin(SD_CS, SPI1)) { //SD.begin(SD_CS) for SPI0, SPI.setRX, etc. because...
+    SDcard_READY = 1;
+    Serial.println("// SD card detected");
+  } else {
+    SDcard_READY = 0;
+    WS2812_Color = pixels.Color(intensity, 0, 0);  //RGB triplet
+    Serial.println("// SD card not detected, images will not be stored");
+  }
+  for (int i = 0; i < 20; i++) {  // For each pixel..
+    LED_WS2812_state(WS2812_Color, 1);
+    delay(25);
+    LED_WS2812_state(WS2812_Color, 0);
+    delay(25);
+  }
+  ID_file_creator("/tiny.sys");          //create a file on SD card that stores a unique file ID from 1 to 2^32 - 1 (in fact 1 to 99999)
+  Next_ID = get_next_ID("/tiny.sys");    //get the file number on SD card
+  Next_dir = get_next_dir("/tiny.sys");  //get the folder/session number on SD card
+  ////////////////////////////////////////////////////////
 }

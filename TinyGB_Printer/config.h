@@ -20,54 +20,55 @@
 #define SD_MOSI 11     // SD card SPI1
 #define BTN_PUSH 12    // Define a PushButton to use to Force a new file in idle mode ///BOICHOT
 #define LED_WS2812 16  // Pi pico waveshare zero RGB LED PIN, onboard LED ///BOICHOT
-#define NUMPIXELS 1    // Popular NeoPixel ring size
+#define NUMPIXELS 1    // NeoPixel ring size (just internal LED here)
 
-unsigned int Next_ID, Next_dir;  //for directories and filenames
-char printer_memory_slots[9];          //slots of Game Boy Printer memory occupied by packets         
-char printer_memory_packets[9][640];    //Game Boy Printer memory, each line is a data packet
-char image_level[144][160];      //native GB pixels in 0,1,2,3, real color unknown before print command
-char image_color[144][160];      //color RGB image for BMP, real color known from palette
+unsigned int Next_ID, Next_dir;                               //for directories and filenames
+char printer_memory_slots[9];                                 //slots of Game Boy Printer memory occupied by packets
+char printer_memory_packets[9][640];                          //Game Boy Printer memory, each line is a data packet
+char image_level[144][160];                                   //native GB pixels in 0,1,2,3, real color unknown before print command
+char image_color[144][160];                                   //color RGB image for BMP, real color known from palette
 unsigned char image_palette[4] = { 0x00, 0x55, 0xAA, 0xFF };  //colors as they will appear in the bmp file and display after dithering
-
+uint8_t intensity = 15;                                       //WS2812 intensity 255 is a death ray, 10 to 15 is normal
+bool SDcard_READY = 0;
+bool DATA_flag = 0;
+bool PRINT_flag = 0;
+bool BORDER_flag =0;
+bool TEAR_mode = 0;
 //////////////////////////////////////////////SD stuff///////////////////////////////////////////////////////////////////////////////////////////
 void ID_file_creator(const char* path) {  //from fresh SD, device needs a "secret" binary storage file
 //this file may never be erased and is accessed frequently as it counts all images recorded with a unique ID
-#ifdef USE_SD
   uint8_t buf[8] = { 0, 0, 0, 0, 0, 0, 0, 0 };
   if (!SD.exists(path)) {
     File Datafile = SD.open(path, FILE_WRITE);
     //start from a fresh install on SD
     Datafile.write(buf, 8);
     Datafile.close();
+    Serial.println("// Creating a new configuration file");
+  } else {
+  Serial.println("// Configuration file yet existing");
   }
-#endif
 }
 
 unsigned long get_next_ID(const char* path) {  //get the next file #
-#ifdef USE_SD
   uint8_t buf[4];
   File Datafile = SD.open(path);
   Datafile.read(buf, 4);
   Next_ID = ((buf[0] << 24) | (buf[1] << 16) | (buf[2] << 8) | (buf[3]));
   Datafile.close();
-#endif
   return Next_ID;
 }
 
 unsigned long get_next_dir(const char* path) {  //get the next directory #
-#ifdef USE_SD
   uint8_t buf[4];
   File Datafile = SD.open(path);
   Datafile.read(buf, 4);  //dumps the 4 first bytes
   Datafile.read(buf, 4);
   Next_dir = ((buf[0] << 24) | (buf[1] << 16) | (buf[2] << 8) | (buf[3]));
   Datafile.close();
-#endif
   return Next_dir;
 }
 
 void store_next_ID(const char* path, unsigned long Next_ID, unsigned long Next_dir) {  //store current file # and directory #
-#ifdef USE_SD
   uint8_t buf[4];
   File Datafile = SD.open(path, FILE_WRITE);
   Datafile.seek(0);
@@ -82,7 +83,6 @@ void store_next_ID(const char* path, unsigned long Next_ID, unsigned long Next_d
   buf[0] = Next_dir >> 24;
   Datafile.write(buf, 4);
   Datafile.close();
-#endif
 }
 //////////////////////////////////////////////SD stuff///////////////////////////////////////////////////////////////////////////////////////////
 
