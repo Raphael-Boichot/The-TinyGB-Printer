@@ -12,6 +12,7 @@ The tiniest possible Game Boy printer emulator storing images on SD card made wi
 - Starting now from the mofosyne code. I think it will be simplier to rebuild from it while stealing chunks of the NeoGB Printer when necessary.
 - Support for the WS2812 internal LED in mofosyne code added.
 - Support for the SD card in mofosyne code added.
+- Main functions for making BMPs and keep track of file ID added.
 
 ## How do I want it to work ?
 - boot without pressing pushbutton: margin mode (green LED), an image is closed automatically when an after margin is detected;
