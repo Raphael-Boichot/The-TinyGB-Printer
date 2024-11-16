@@ -13,6 +13,7 @@ The tiniest possible Game Boy printer emulator storing images on SD card made wi
 - Support for the WS2812 internal LED in mofosyne code added.
 - Support for the SD card in mofosyne code added.
 - Main functions for making BMPs and keep track of file ID added.
+- Core 1 now ready to memcopy data from core 0.
 
 ## How do I want it to work ?
 - boot without pressing pushbutton: margin mode (green LED), an image is closed automatically when an after margin is detected;
