@@ -213,6 +213,31 @@ void loop() {  //core 0
 
 void loop1()  //core 1
 {
+  if (PRINT_flag == 1) {
+    PRINT_flag = 0;
+    //preparing palette;
+    image_palette[3] = bitRead(inner_palette, 0) + 2 * bitRead(inner_palette, 1);
+    image_palette[2] = bitRead(inner_palette, 2) + 2 * bitRead(inner_palette, 3);
+    image_palette[1] = bitRead(inner_palette, 4) + 2 * bitRead(inner_palette, 5);
+    image_palette[0] = bitRead(inner_palette, 6) + 2 * bitRead(inner_palette, 7);
+    if (inner_palette>0){//the printer asks to feed paper, end of file
+      CLOSE_flag=1;
+    }
+    //now the big loop
+
+    Serial.println("");
+    Serial.println("Core 1 is ready to convert tiles to BMP");
+    sprintf(storage_file_name, "/%05d/%07d.bmp", Next_dir, Next_ID);
+    Serial.println(storage_file_name);
+    Serial.print(inner_palette, HEX);
+    Serial.print("/");
+    Serial.print(image_palette[0], HEX);
+    Serial.print(image_palette[1], HEX);
+    Serial.print(image_palette[2], HEX);
+    Serial.println(image_palette[3], HEX);
+    Serial.println(inner_lower_margin, HEX);
+    Serial.println("");
+  }
   //BMP and SD stuff will be here
 }  // loop1()
 
@@ -261,10 +286,16 @@ inline void gbp_parse_packet_loop(void) {
           Serial.print(gbp_pkt_printInstruction_print_density(gbp_pktbuff));
 
           ////////////////////////////////////////////////////////////////////////BOICHOT
+          DATA_packet_to_print = DATA_packet_counter;  //counter for packets transmitted to be transmitted to core 1
+          memcpy(printer_memory_buffer_core_1, printer_memory_buffer_core_0, 640 * DATA_packet_to_print);
+          inner_palette = gbp_pkt_printInstruction_palette_value(gbp_pktbuff);
+          inner_lower_margin = gbp_pkt_printInstruction_num_of_linefeed_after_print(gbp_pktbuff);
+          PRINT_flag = 1;           //triggers stuff on core 1, from now core 1 have plenty of time to convert image
           DATA_bytes_counter = 0;   //counter for data bytes
           DATA_packet_counter = 0;  //counter for packets transmitted
           Serial.println("");
-          Serial.println("All packets resetted");
+          Serial.println("PRINT command received");
+          Serial.println("All packets resetted, core 1 deals with next steps");
           ///////////////////////////////////////////////////////////////////////
         }
         if (gbp_pktState.command == GBP_COMMAND_DATA) {
@@ -452,5 +483,7 @@ void Tiny_printer_preparation() {
   ID_file_creator("/tiny.sys");          //create a file on SD card that stores a unique file ID from 1 to 2^32 - 1 (in fact 1 to 99999)
   Next_ID = get_next_ID("/tiny.sys");    //get the file number on SD card
   Next_dir = get_next_dir("/tiny.sys");  //get the folder/session number on SD card
+  Next_dir++;
+  store_next_ID("/tiny.sys", Next_ID, Next_dir);
   ////////////////////////////////////////////////////////
 }

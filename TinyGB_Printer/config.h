@@ -22,19 +22,22 @@
 #define LED_WS2812 16  // Pi pico waveshare zero RGB LED PIN, onboard LED ///BOICHOT
 #define NUMPIXELS 1    // NeoPixel ring size (just internal LED here)
 
-unsigned int Next_ID, Next_dir;                               //for directories and filenames
-char printer_memory_buffer_core_0[9 * 640];                   //Game Boy printer buffer of 9*640 bytes (maximum possible), core 0
-char printer_memory_buffer_core_1[9 * 640];                   //Game Boy printer buffer of 9*640 bytes (maximum possible), core 1
-char image_level[144][160];                                   //native GB pixels in 0,1,2,3, real color unknown before print command (maximum possible), core 1
-char image_color[144][160];                                   //color RGB image for BMP, real color known from palette (maximum possible), core 1
-unsigned char image_palette[4] = { 0x00, 0x55, 0xAA, 0xFF };  //colors as they will appear in the bmp file and display after dithering
-unsigned int DATA_bytes_counter = 0;                          //counter for data bytes
-unsigned int DATA_packet_counter = 0;                         //counter for packets transmitted
-uint8_t intensity = 150;                                      //WS2812 intensity 255 is a death ray, 10 to 15 is normal
+unsigned int Next_ID, Next_dir;                             //for directories and filenames
+unsigned char printer_memory_buffer_core_0[9 * 640];        //Game Boy printer buffer of 9*640 bytes (maximum possible), core 0
+unsigned char printer_memory_buffer_core_1[9 * 640];        //Game Boy printer buffer of 9*640 bytes (maximum possible), core 1
+unsigned char image_color[144*160];                        //color RGB image for BMP, real color known from palette (maximum possible), core 1
+char storage_file_name[64];                                 //character string to store images
+unsigned char inner_palette;                                //inner palette to use for core 1
+unsigned char inner_lower_margin;                           //inner margin to use for core 1
+unsigned char BMP_palette[4] = { 0x00, 0x55, 0xAA, 0xFF };  //colors as they will appear in the bmp file and display after dithering
+unsigned char image_palette[4] = { 0, 0, 0, 0 };            //2 bpp colors refering to BMP_palette[4]
+unsigned int DATA_bytes_counter = 0;                        //counter for data bytes
+unsigned char DATA_packet_counter = 0;                      //counter for packets transmitted
+unsigned char DATA_packet_to_print = 0;                     //counter for packets transmitted for core 1
+uint8_t intensity = 150;                                    //WS2812 intensity 255 is a death ray, 10 to 15 is normal
 bool SDcard_READY = 0;
-bool DATA_flag = 0;
 bool PRINT_flag = 0;
-bool BORDER_flag = 0;
+bool CLOSE_flag = 0;
 bool TEAR_mode = 0;
 //////////////////////////////////////////////SD stuff///////////////////////////////////////////////////////////////////////////////////////////
 void ID_file_creator(const char* path) {  //from fresh SD, device needs a "secret" binary storage file
