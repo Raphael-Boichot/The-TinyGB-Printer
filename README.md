@@ -25,6 +25,9 @@ The tiniest possible Game Boy printer emulator storing images on SD card made wi
 ![](Tiny_GB_Printer.jpg)
 
 ## List of compatible game (homebrews non included)
+
+In *Italics* game working fine in automatic mode, in **bold** games requiring the pushbutton to tear paper, or tear mode.
+
 - *1942 (never released in Japan)*
 - *Alice in Wonderland (never released in Japan)*
 - *Animal Breeder 3 (あにまるぶりーだー3)*
@@ -54,7 +57,7 @@ The tiniest possible Game Boy printer emulator storing images on SD card made wi
 - *Doraemon no Game Boy de Asobouyo Deluxe 10 (ドラえもんのGBであそぼうよ デラックス10)*
 - *Doraemon no Quiz Boy (ドラえもんのクイズボーイ)*
 - *Dungeon Savior (ダンジョンセイバー)*
-- *E.T.: Digital Companion (never released in Japan)*
+- **E.T.: Digital Companion (never released in Japan)**
 - *Fairy Kitty no Kaiun Jiten: Yousei no Kuni no Uranai Shugyou (フェアリーキティの開運辞典 妖精の国の占い修行)*
 - *Fisher-Price Rescue Heroes: Fire Frenzy (never released in Japan)*
 - *Game Boy Camera or Pocket Camera (ポケットカメラ)*
@@ -64,7 +67,7 @@ The tiniest possible Game Boy printer emulator storing images on SD card made wi
 - *Hamster Paradise 2 (ハムスターパラダイス2)*
 - *Harvest Moon 2 (牧場物語GB2)*
 - *Hello Kitty no Beads Koubou (ハローキティのビーズ工房)*
-- *Hello Kitty no Magical Museum (ハローキティのマジカルミュージアム)*
+- **Hello Kitty no Magical Museum (ハローキティのマジカルミュージアム)**
 - *Hello Kitty Pocket Camera (ハローキティのポケットカメラ, unreleased, rom GBDHKAJ0.2)*
 - *Jinsei Game Tomodachi takusan Tsukurou Yo! (人生ゲーム 友達たくさんつくろうよ!)*
 - *Kakurenbo Battle Monster Tactics (モンスタータクティクス)*
@@ -81,8 +84,8 @@ The tiniest possible Game Boy printer emulator storing images on SD card made wi
 - *Logical (never released in Japan)*
 - *Love Hina Pocket (ラブ ひな)*
 - *Magical Drop (never released in Japan)*
-- *Mary-Kate and Ashley Pocket Planner (never released in Japan)*
-- *McDonald's Monogatari : Honobono Tenchou Ikusei Game (マクドナルド物語)*
+- **Mary-Kate and Ashley Pocket Planner (never released in Japan)**
+- **McDonald's Monogatari : Honobono Tenchou Ikusei Game (マクドナルド物語)**
 - *Mickey's Racing Adventure (never released in Japan)*
 - *Mickey's Speedway USA (never released in Japan)*
 - *Mission: Impossible (never released in Japan)*
@@ -90,14 +93,14 @@ The tiniest possible Game Boy printer emulator storing images on SD card made wi
 - *Monster ★ Race Okawari (もんすたあ★レース おかわり)*
 - *Nakayoshi Cooking Series 1 - Oishii Cake-ya-san (なかよしクッキングシリーズ1 おいしいケーキ屋さん)*
 - *Nakayoshi Cooking Series 2 - Oishii Panya-san (なかよしクッキングシリーズ2 おいしいパン屋さん)*
-- *Nakayoshi Cooking Series 3 - Tanoshii Obentou (なかよしクッキングシリーズ3 たのしいお弁当)*
-- *Nakayoshi Cooking Series 4 - Tanoshii Dessert (なかよしクッキングシリーズ4 たのしいデザート)*
-- *Nakayoshi Cooking Series 5 - Cake Wo Tsukurou (なかよしクッキングシリーズ5 こむぎちゃんのケーキをつくろう!)*
+- **Nakayoshi Cooking Series 3 - Tanoshii Obentou (なかよしクッキングシリーズ3 たのしいお弁当)**
+- **Nakayoshi Cooking Series 4 - Tanoshii Dessert (なかよしクッキングシリーズ4 たのしいデザート)**
+- **Nakayoshi Cooking Series 5 - Cake Wo Tsukurou (なかよしクッキングシリーズ5 こむぎちゃんのケーキをつくろう!)**
 - *Nakayoshi Pet Series 1: Kawaii Hamster (なかよしペットシリーズ1 かわいいハムスタ)*
 - *Nakayoshi Pet Series 2: Kawaii Usagi (なかよしペットシリーズ2 かわいいウサギ)*
 - *Nakayoshi Pet Series 3: Kawaii koinu (なかよしペットシリーズ3 かわいい仔犬)*
 - *NFL Blitz (never released in Japan)*
-- *Nintama Rantarou GB: Eawase Challenge Puzzle (忍たま乱太郎GB えあわせチャレンジパズル)*
+- **Nintama Rantarou GB: Eawase Challenge Puzzle (忍たま乱太郎GB えあわせチャレンジパズル)**
 - *Ojarumaru: Mitsunegai Jinja no Ennichi de Ojaru! (おじゃる丸 〜満願神社は縁日でおじゃる!)*
 - *Pachinko Data Card - Chou Ataru-kun (Pachinko Data Card ちょ〜あたる君〜)*
 - *Perfect Dark (never released in Japan)*
