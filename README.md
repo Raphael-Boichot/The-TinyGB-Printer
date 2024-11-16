@@ -26,7 +26,7 @@ The tiniest possible Game Boy printer emulator storing images on SD card made wi
 
 ## List of compatible game (homebrews non included)
 
-In *Italics* game working fine in automatic mode, in **bold** games requiring the pushbutton to tear paper, or tear mode.
+In *Italics* game working fine in automatic mode, in **bold** games requiring the pushbutton to tear paper, or tear mode. All known homebrews to date are compatible with the automatic mode.
 
 - *1942 (never released in Japan)*
 - *Alice in Wonderland (never released in Japan)*
