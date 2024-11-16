@@ -25,7 +25,7 @@ The tiniest possible Game Boy printer emulator storing images on SD card made wi
 ## Showcase
 ![](Tiny_GB_Printer.jpg)
 
-## List of compatible game (homebrews non included)
+## List of compatible game (tested)
 
 In *Italics* game working fine in automatic mode, in **bold** games requiring the pushbutton to tear paper, or tear mode. All known homebrews to date are compatible with the automatic mode.
 
