@@ -17,8 +17,8 @@ The tiniest possible Game Boy printer emulator storing images on SD card made wi
 - Core 1 now ready to convert data to BMP format (to be done). Core 1 has plenty of time to do this, basically between two print commands, so the code can be inefficient as hell without any consequence. No need to rush conversion during printing delay.
 
 ## How do I want it to work ?
-- boot without pressing pushbutton: margin mode (green LED), an image is closed automatically when an after margin is detected;
-- boot while pressing pushbutton: idle mode (blue LED), an image is closed only when you press the pushbutton. Pressing the pushbutton is like tearing paper;
+- boot without pressing pushbutton: **automatic mode** (green LED), an image is closed automatically when an after margin is detected;
+- boot while pressing pushbutton: **tear mode** (blue LED), an image is closed only when you press the pushbutton. Pressing the pushbutton is like tearing paper;
 - red led at boot: the device has general SD failure or no SD card, it can only work with the USB port, but works nevertheless (or not, have to see).
 - it must run on one single or two AA NiMH batteries because lithium is evil.
 
