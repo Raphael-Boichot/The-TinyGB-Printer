@@ -14,6 +14,7 @@ The tiniest possible Game Boy printer emulator storing images on SD card made wi
 - Support for the SD card in mofosyne code added.
 - Main functions for making BMPs and keep track of file ID added.
 - Core 1 now ready to memcopy data from core 0.
+- Core 1 now ready to convert data to BMP format (to be done). Core 1 has plenty of time to do this, basically between two print commands, so the code can be inefficient as hell without any consequence.
 
 ## How do I want it to work ?
 - boot without pressing pushbutton: margin mode (green LED), an image is closed automatically when an after margin is detected;
