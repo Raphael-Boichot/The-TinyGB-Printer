@@ -25,21 +25,17 @@
  *
  */
 
-// See /WEBUSB.md for details
-#if USB_VERSION == 0x210
-#include <WebUSB.h>
-WebUSB WebUSBSerial(1, "herrzatacke.github.io/gb-printer-web/#/webusb");
-#define Serial WebUSBSerial
-#endif
+//Dev notes
+//Parse mode and decompressor are forced by default
+//Parse mode uses tons of variable to assess the state of the printer so it's easier to interface with an inner decoder
 
-#define GAME_BOY_PRINTER_MODE true       // to use with https://github.com/Mraulio/GBCamera-Android-Manager and https://github.com/Raphael-Boichot/PC-to-Game-Boy-Printer-interface
-#define GBP_OUTPUT_RAW_PACKETS false     // by default, packets are parsed. if enabled, output will change to raw data packets for parsing and decompressing later
-#define GBP_USE_PARSE_DECOMPRESSOR true  // embedded decompressor can be enabled for use with parse mode but it requires fast hardware (SAMD21, SAMD51, ESP8266, ESP32)
+#define GAME_BOY_PRINTER_MODE false  // to use with https://github.com/Mraulio/GBCamera-Android-Manager and https://github.com/Raphael-Boichot/PC-to-Game-Boy-Printer-interface
 
 #include <stdint.h>  // uint8_t
 #include <stddef.h>  // size_t
 #include "gameboy_printer_protocol.h"
 #include "gbp_serial_io.h"
+#include "gbp_pkt.h"  //PARSE MODE forced by default
 
 /////////////////////////////////////BOICHOT
 #include <Adafruit_NeoPixel.h>
@@ -50,18 +46,8 @@ WebUSB WebUSBSerial(1, "herrzatacke.github.io/gb-printer-web/#/webusb");
 // #include "hardware/gpio.h"
 /////////////////////////////////////
 
-#if GBP_OUTPUT_RAW_PACKETS
-#define GBP_FEATURE_PACKET_CAPTURE_MODE
-#else
-#define GBP_FEATURE_PARSE_PACKET_MODE
-#if GBP_USE_PARSE_DECOMPRESSOR
 #define GBP_FEATURE_PARSE_PACKET_USE_DECOMPRESSOR
-#endif
-#endif
-
-#ifdef GBP_FEATURE_PARSE_PACKET_MODE
-#include "gbp_pkt.h"
-#endif
+#define GBP_BUFFER_SIZE 400  //parce mode does not store the 640 bytes of payload
 
 /* Gameboy Link Cable Mapping to Arduino Pin */
 // Note: Serial Clock Pin must be attached to an interrupt pin of the arduino
@@ -81,20 +67,11 @@ uint32_t WS2812_Color = pixels.Color(0, intensity, 0);  //RGB triplet
 
 /*******************************************************************************
 *******************************************************************************/
-
-// Dev Note: Gamboy camera sends data payload of 640 bytes usually
-
-#ifdef GBP_FEATURE_PARSE_PACKET_MODE
-#define GBP_BUFFER_SIZE 400
-#else
-#define GBP_BUFFER_SIZE 650
-#endif
-
 /* Serial IO */
 // This circular buffer contains a stream of raw packets from the gameboy
 uint8_t gbp_serialIO_raw_buffer[GBP_BUFFER_SIZE] = { 0 };
 
-#ifdef GBP_FEATURE_PARSE_PACKET_MODE
+
 /* Packet Buffer */
 gbp_pkt_t gbp_pktState = { GBP_REC_NONE, 0 };
 uint8_t gbp_pktbuff[GBP_PKT_PAYLOAD_BUFF_SIZE_IN_BYTE] = { 0 };
@@ -102,14 +79,9 @@ uint8_t gbp_pktbuffSize = 0;
 #ifdef GBP_FEATURE_PARSE_PACKET_USE_DECOMPRESSOR
 gbp_pkt_tileAcc_t tileBuff = { 0 };
 #endif
-#endif
 
-#ifdef GBP_FEATURE_PACKET_CAPTURE_MODE
-inline void gbp_packet_capture_loop();
-#endif
-#ifdef GBP_FEATURE_PARSE_PACKET_MODE
 inline void gbp_parse_packet_loop();
-#endif
+
 
 /*******************************************************************************
   Utility Functions
@@ -157,8 +129,8 @@ void setup() {
 
   // Wait for Serial to be ready
   //while (!Serial) { ; }  //no need for autonomous design with the RP2040
-  Connect_to_printer();  //makes an attempt to switch in printer mode
-  Tiny_printer_preparation(); //switches in Tiny Printer mode
+  Connect_to_printer();        //makes an attempt to switch in printer mode
+  Tiny_printer_preparation();  //switches in Tiny Printer mode
 
   /* Pins from gameboy link cable */
   pinMode(GBP_SC_PIN, INPUT);
@@ -179,45 +151,24 @@ void setup() {
 #endif
 
   /* Packet Parser */
-#ifdef GBP_FEATURE_PARSE_PACKET_MODE
   gbp_pkt_init(&gbp_pktState);
-#endif
 
-#define VERSION_STRING "V3.2.1 (Copyright (C) 2022 Brian Khuu)"
+#define VERSION_STRING "V0.1 (Copyright (C) 2022/2024 Brian KHUU/Raphaël BOICHOT)"
 
   /* Welcome Message */
-#ifdef GBP_FEATURE_PACKET_CAPTURE_MODE
-  Serial.println(F("// GAMEBOY PRINTER Packet Capture " VERSION_STRING));
-  Serial.println(F("// Note: Each byte is from each GBP packet is from the gameboy"));
-  Serial.println(F("//       except for the last two bytes which is from the printer"));
-  Serial.println(F("// JS Raw Packet Decoder: https://mofosyne.github.io/arduino-gameboy-printer-emulator/GameBoyPrinterDecoderJS/gameboy_printer_js_raw_decoder.html"));
-#endif
-#ifdef GBP_FEATURE_PARSE_PACKET_MODE
-  Serial.println(F("// GAMEBOY PRINTER Emulator " VERSION_STRING));
+  Serial.println(F("// Tiny Printer Emulator " VERSION_STRING));
   Serial.println(F("// Note: Each hex encoded line is a gameboy tile"));
-  Serial.println(F("// JS Decoder: https://mofosyne.github.io/arduino-gameboy-printer-emulator/GameBoyPrinterDecoderJS/gameboy_printer_js_decoder.html"));
-#endif
   Serial.println(F("// --- GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 ---"));
-  Serial.println(F("// This program comes with ABSOLUTELY NO WARRANTY;"));
-  Serial.println(F("// This is free software, and you are welcome to redistribute it"));
-  Serial.println(F("// under certain conditions. Refer to LICENSE file for detail."));
-  Serial.println(F("// ---"));
   Serial.flush();
 }  // setup()
 
 void setup1() {
-// nothing here
-} // setup1()
+  // nothing here
+}  // setup1()
 
-void loop()  {//core 0
+void loop() {  //core 0
   static uint16_t sioWaterline = 0;
-
-#ifdef GBP_FEATURE_PACKET_CAPTURE_MODE
-  gbp_packet_capture_loop();
-#endif
-#ifdef GBP_FEATURE_PARSE_PACKET_MODE
   gbp_parse_packet_loop();
-#endif
 
   // Trigger Timeout and reset the printer if byte stopped being received.
   static uint32_t last_millis = 0;
@@ -233,13 +184,10 @@ void loop()  {//core 0
       Serial.print(gbp_serial_io_dataBuff_max());
       Serial.println("B)");
       Serial.flush();
-      LED_WS2812_state(WS2812_Color, 0);
 
-#ifdef GBP_FEATURE_PARSE_PACKET_MODE
       gbp_pkt_reset(&gbp_pktState);
 #ifdef GBP_FEATURE_PARSE_PACKET_USE_DECOMPRESSOR
       tileBuff.count = 0;
-#endif
 #endif
     }
   }
@@ -266,21 +214,14 @@ void loop()  {//core 0
 void loop1()  //core 1
 {
   //BMP and SD stuff will be here
-  if (DATA_flag == 1) {
-    DATA_flag = 0;
-    Serial.println("");
-    Serial.println("Data packet detected by core 1");
-  }
-} // loop1()
+}  // loop1()
 
 /******************************************************************************/
-#ifdef GBP_FEATURE_PARSE_PACKET_MODE
 inline void gbp_parse_packet_loop(void) {
   const char nibbleToCharLUT[] = "0123456789ABCDEF";
   for (int i = 0; i < gbp_serial_io_dataBuff_getByteCount(); i++) {
     if (gbp_pkt_processByte(&gbp_pktState, (const uint8_t)gbp_serial_io_dataBuff_getByte(), gbp_pktbuff, &gbp_pktbuffSize, sizeof(gbp_pktbuff))) {
       if (gbp_pktState.received == GBP_REC_GOT_PACKET) {
-        LED_WS2812_state(WS2812_Color, 1);
         Serial.print((char)'{');
         Serial.print("\"command\":\"");
         Serial.print(gbpCommand_toStr(gbp_pktState.command));
@@ -318,8 +259,16 @@ inline void gbp_parse_packet_loop(void) {
           Serial.print(gbp_pkt_printInstruction_palette_value(gbp_pktbuff));
           Serial.print(", \"density\":");
           Serial.print(gbp_pkt_printInstruction_print_density(gbp_pktbuff));
+
+          ////////////////////////////////////////////////////////////////////////BOICHOT
+          DATA_bytes_counter = 0;   //counter for data bytes
+          DATA_packet_counter = 0;  //counter for packets transmitted
+          Serial.println("");
+          Serial.println("All packets resetted");
+          ///////////////////////////////////////////////////////////////////////
         }
         if (gbp_pktState.command == GBP_COMMAND_DATA) {
+          LED_WS2812_state(WS2812_Color, 1);
           //!{"command":"DATA", "compressed":0, "more":0}
 #ifdef GBP_FEATURE_PARSE_PACKET_USE_DECOMPRESSOR
           Serial.print(", \"compressed\":0");  // Already decompressed by us, so no need to do so
@@ -329,12 +278,7 @@ inline void gbp_parse_packet_loop(void) {
 #endif
           Serial.print(", \"more\":");
           Serial.print((gbp_pktState.dataLength != 0) ? '1' : '0');
-          ////////////////////////////////////////////////////////////////////////BOICHOT
-          DATA_flag = 0;
-          if (gbpCommand_toStr(gbp_pktState.command) == "DATA") {
-            DATA_flag = 1;
-          }
-          ///////////////////////////////////////////////////////////////////////
+          LED_WS2812_state(WS2812_Color, 0);
         }
         Serial.println((char)'}');
         Serial.flush();
@@ -346,88 +290,62 @@ inline void gbp_parse_packet_loop(void) {
             // Got Tile
             for (int i = 0; i < GBP_TILE_SIZE_IN_BYTE; i++) {
               const uint8_t data_8bit = tileBuff.tile[i];
-              if (i == GBP_TILE_SIZE_IN_BYTE - 1) {
-                Serial.print((char)nibbleToCharLUT[(data_8bit >> 4) & 0xF]);
-                Serial.println((char)nibbleToCharLUT[(data_8bit >> 0) & 0xF]);  // use println on last byte to reduce serial calls
-              } else {
-                Serial.print((char)nibbleToCharLUT[(data_8bit >> 4) & 0xF]);
-                Serial.print((char)nibbleToCharLUT[(data_8bit >> 0) & 0xF]);
-                Serial.print((char)' ');
+              // if (i == GBP_TILE_SIZE_IN_BYTE - 1) {
+              //   Serial.print((char)nibbleToCharLUT[(data_8bit >> 4) & 0xF]);
+              //   Serial.println((char)nibbleToCharLUT[(data_8bit >> 0) & 0xF]);  // use println on last byte to reduce serial calls
+              // } else {
+              //   Serial.print((char)nibbleToCharLUT[(data_8bit >> 4) & 0xF]);
+              //   Serial.print((char)nibbleToCharLUT[(data_8bit >> 0) & 0xF]);
+              //   Serial.print((char)' ');
+              // }
+
+              ////////////////////////////////////////////////////////////////////////BOICHOT
+              printer_memory_buffer_core_0[DATA_bytes_counter] = data_8bit;
+              DATA_bytes_counter++;
+              if (DATA_bytes_counter % 640 == 0) {
+                DATA_packet_counter++;
+                Serial.println("Packet added");
+                Serial.println(DATA_packet_counter, DEC);
               }
+              ///////////////////////////////////////////////////////////////////////
             }
             Serial.flush();
           }
         }
-#else
-        // Simplified support for gameboy camera only application
+#else   //GBP_FEATURE_PARSE_PACKET_USE_DECOMPRESSOR \
+        // Simplified support for gameboy camera only application \
         // Dev Note: Good for checking if everything above decompressor is working
         if (gbp_pktbuffSize > 0) {
           // Got Tile
           for (int i = 0; i < gbp_pktbuffSize; i++) {
             const uint8_t data_8bit = gbp_pktbuff[i];
-            if (i == gbp_pktbuffSize - 1) {
-              Serial.print((char)nibbleToCharLUT[(data_8bit >> 4) & 0xF]);
-              Serial.println((char)nibbleToCharLUT[(data_8bit >> 0) & 0xF]);  // use println on last byte to reduce serial calls
-            } else {
-              Serial.print((char)nibbleToCharLUT[(data_8bit >> 4) & 0xF]);
-              Serial.print((char)nibbleToCharLUT[(data_8bit >> 0) & 0xF]);
-              Serial.print((char)' ');
+            // if (i == gbp_pktbuffSize - 1) {
+            //   Serial.print((char)nibbleToCharLUT[(data_8bit >> 4) & 0xF]);
+            //   Serial.println((char)nibbleToCharLUT[(data_8bit >> 0) & 0xF]);  // use println on last byte to reduce serial calls
+            // } else {
+            //   Serial.print((char)nibbleToCharLUT[(data_8bit >> 4) & 0xF]);
+            //   Serial.print((char)nibbleToCharLUT[(data_8bit >> 0) & 0xF]);
+            //   Serial.print((char)' ');
+            // }
+
+            ////////////////////////////////////////////////////////////////////////BOICHOT
+            printer_memory_buffer_core_0[DATA_bytes_counter] = data_8bit;
+            DATA_bytes_counter++;
+            if (DATA_bytes_counter % 640 == 0) {
+              DATA_packet_counter++;
+              Serial.println("Packet added");
+              Serial.println(DATA_packet_counter, DEC);
             }
+            ///////////////////////////////////////////////////////////////////////
           }
           Serial.flush();
         }
-#endif
+#endif  //GBP_FEATURE_PARSE_PACKET_USE_DECOMPRESSOR
       }
     }
   }
-}
-#endif
+}  //inline void gbp_parse_packet_loop(void)
 
-#ifdef GBP_FEATURE_PACKET_CAPTURE_MODE
-inline void gbp_packet_capture_loop() {
-  /* tiles received */
-  static uint32_t byteTotal = 0;
-  static uint32_t pktTotalCount = 0;
-  static uint32_t pktByteIndex = 0;
-  static uint16_t pktDataLength = 0;
-  const size_t dataBuffCount = gbp_serial_io_dataBuff_getByteCount();
-  if (
-    ((pktByteIndex != 0) && (dataBuffCount > 0)) || ((pktByteIndex == 0) && (dataBuffCount >= 6))) {
-    const char nibbleToCharLUT[] = "0123456789ABCDEF";
-    uint8_t data_8bit = 0;
-    for (int i = 0; i < dataBuffCount; i++) {  // Display the data payload encoded in hex
-      // Start of a new packet
-      if (pktByteIndex == 0) {
-        pktDataLength = gbp_serial_io_dataBuff_getByte_Peek(4);
-        pktDataLength |= (gbp_serial_io_dataBuff_getByte_Peek(5) << 8) & 0xFF00;
-#if 0
-        Serial.print("// ");
-        Serial.print(pktTotalCount);
-        Serial.print(" : ");
-        Serial.println(gbpCommand_toStr(gbp_serial_io_dataBuff_getByte_Peek(2)));
-#endif
-        LED_WS2812_state(WS2812_Color, 1);
-      }
-      // Print Hex Byte
-      data_8bit = gbp_serial_io_dataBuff_getByte();
-      Serial.print((char)nibbleToCharLUT[(data_8bit >> 4) & 0xF]);
-      Serial.print((char)nibbleToCharLUT[(data_8bit >> 0) & 0xF]);
-      // Splitting packets for convenience
-      if ((pktByteIndex > 5) && (pktByteIndex >= (9 + pktDataLength))) {
-        LED_WS2812_state(WS2812_Color, 0);
-        Serial.println("");
-        pktByteIndex = 0;
-        pktTotalCount++;
-      } else {
-        Serial.print((char)' ');
-        pktByteIndex++;  // Byte hex split counter
-        byteTotal++;     // Byte total counter
-      }
-    }
-    Serial.flush();
-  }
-}
-#endif
 
 void Connect_to_printer() {
 #if GAME_BOY_PRINTER_MODE  //Printer mode
@@ -502,23 +420,22 @@ void LED_WS2812_state(uint32_t WS2812_Color, bool state) {
   }
 }
 
-void Tiny_printer_preparation()
-{
+void Tiny_printer_preparation() {
   ////////////////////////////////////////////////////////BOICHOT
-Serial.begin(115200);
-delay(1000);
+  Serial.begin(115200);
+  delay(1000);
   if (digitalRead(BTN_PUSH)) {
     WS2812_Color = pixels.Color(0, 0, intensity);  //RGB triplet
     TEAR_mode = 1;                                 //idle mode with tear paper
     Serial.println("// Tear mode, push button to close an image (tear paper)");
-  }else{
+  } else {
     Serial.println("// Margin mode, images will be closed automatically");
   }
   // Ensure the SPI pinout the SD card is connected to / is configured properly
   SPI1.setRX(SD_MISO);
   SPI1.setTX(SD_MOSI);
   SPI1.setSCK(SD_SCK);
-  if (SD.begin(SD_CS, SPI1)) { //SD.begin(SD_CS) for SPI0, SPI.setRX, etc. because...
+  if (SD.begin(SD_CS, SPI1)) {  //SD.begin(SD_CS) for SPI0, SPI.setRX, etc. because...
     SDcard_READY = 1;
     Serial.println("// SD card detected");
   } else {
