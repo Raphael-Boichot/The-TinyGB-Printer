@@ -220,23 +220,54 @@ void loop1()  //core 1
     image_palette[2] = bitRead(inner_palette, 2) + 2 * bitRead(inner_palette, 3);
     image_palette[1] = bitRead(inner_palette, 4) + 2 * bitRead(inner_palette, 5);
     image_palette[0] = bitRead(inner_palette, 6) + 2 * bitRead(inner_palette, 7);
-    if (inner_palette>0){//the printer asks to feed paper, end of file
-      CLOSE_flag=1;
+    if (inner_palette > 0) {  //the printer asks to feed paper, end of file
+      CLOSE_flag = 1;
     }
-    //now the big loop
 
-    Serial.println("");
-    Serial.println("Core 1 is ready to convert tiles to BMP");
-    sprintf(storage_file_name, "/%05d/%07d.bmp", Next_dir, Next_ID);
-    Serial.println(storage_file_name);
-    Serial.print(inner_palette, HEX);
-    Serial.print("/");
-    Serial.print(image_palette[0], HEX);
-    Serial.print(image_palette[1], HEX);
-    Serial.print(image_palette[2], HEX);
-    Serial.println(image_palette[3], HEX);
-    Serial.println(inner_lower_margin, HEX);
-    Serial.println("");
+    //now the BMP conversion, for later
+
+    // Serial.println("");
+    // Serial.println("Core 1 is ready to convert tiles to BMP");
+    // sprintf(storage_file_name, "/%05d/%07d.bmp", Next_dir, Next_ID);
+    // Serial.println(storage_file_name);
+    // Serial.print(inner_palette, HEX);
+    // Serial.print("/");
+    // Serial.print(image_palette[0], HEX);
+    // Serial.print(image_palette[1], HEX);
+    // Serial.print(image_palette[2], HEX);
+    // Serial.println(image_palette[3], HEX);
+    // Serial.println(inner_lower_margin, HEX);
+    // Serial.println("");
+
+    //writing loop
+    if (NEWFILE_flag == 1) {  //we want to open a new file
+      NEWFILE_flag = 0;
+      lines_in_bmp_file = 0;
+      SD_card_access_Color = pixels.Color(intensity, 0, 0);  //RGB triplet
+      LED_WS2812_state(SD_card_access_Color, 1);
+      File Datafile = SD.open(storage_file_name, FILE_WRITE);
+      Datafile.write(BMP_header_generic, 54);                           //creates a dummy BMP header
+      Datafile.write(BMP_indexed_palette, 1024);                        //indexed RGB palette
+      Datafile.write(BMP_image_color, 160 * 16 * DATA_packet_counter);  //writes the data to SD card
+      lines_in_bmp_file = lines_in_bmp_file + 16 * DATA_packet_counter;
+      Datafile.close();
+      LED_WS2812_state(SD_card_access_Color, 0);
+    }
+
+    if (CLOSE_flag == 1) {                              // now updating the BMP header
+      Pre_allocate_bmp_header(160, lines_in_bmp_file);  //number of lines will be updated now
+      LED_WS2812_state(SD_card_access_Color, 1);
+      File Datafile = SD.open(storage_file_name, FILE_WRITE);
+      Datafile.seek(0);                           //go to the beginning of the file
+      Datafile.write(BMP_header_generic, 54);     //fixed header fixed with correct lenght
+      Datafile.write(BMP_indexed_palette, 1024);  //indexed RGB palette
+      Datafile.close();
+      LED_WS2812_state(SD_card_access_Color, 0);
+      lines_in_bmp_file = 0;
+      Next_ID++;
+      store_next_ID("/tiny.sys", Next_ID, Next_dir);
+      NEWFILE_flag = 1;
+    }
   }
   //BMP and SD stuff will be here
 }  // loop1()
@@ -473,6 +504,12 @@ void Tiny_printer_preparation() {
     SDcard_READY = 0;
     WS2812_Color = pixels.Color(intensity, 0, 0);  //RGB triplet
     Serial.println("// SD card not detected, images will not be stored");
+    while (1) {
+      LED_WS2812_state(WS2812_Color, 1);
+      delay(250);
+      LED_WS2812_state(WS2812_Color, 0);
+      delay(250);
+    }
   }
   for (int i = 0; i < 20; i++) {  // For each pixel..
     LED_WS2812_state(WS2812_Color, 1);

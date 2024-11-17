@@ -25,7 +25,7 @@
 unsigned int Next_ID, Next_dir;                             //for directories and filenames
 unsigned char printer_memory_buffer_core_0[9 * 640];        //Game Boy printer buffer of 9*640 bytes (maximum possible), core 0
 unsigned char printer_memory_buffer_core_1[9 * 640];        //Game Boy printer buffer of 9*640 bytes (maximum possible), core 1
-unsigned char image_color[144*160];                        //color RGB image for BMP, real color known from palette (maximum possible), core 1
+unsigned char BMP_image_color[144*160];                     //color RGB image for BMP, real color known from palette (maximum possible), core 1
 char storage_file_name[64];                                 //character string to store images
 unsigned char inner_palette;                                //inner palette to use for core 1
 unsigned char inner_lower_margin;                           //inner margin to use for core 1
@@ -34,10 +34,13 @@ unsigned char image_palette[4] = { 0, 0, 0, 0 };            //2 bpp colors refer
 unsigned int DATA_bytes_counter = 0;                        //counter for data bytes
 unsigned char DATA_packet_counter = 0;                      //counter for packets transmitted
 unsigned char DATA_packet_to_print = 0;                     //counter for packets transmitted for core 1
+unsigned long lines_in_bmp_file = 0;                        //to keep tack of image file length
 uint8_t intensity = 150;                                    //WS2812 intensity 255 is a death ray, 10 to 15 is normal
+uint32_t SD_card_access_Color;
 bool SDcard_READY = 0;
 bool PRINT_flag = 0;
 bool CLOSE_flag = 0;
+bool NEWFILE_flag = 1;
 bool TEAR_mode = 0;
 //////////////////////////////////////////////SD stuff///////////////////////////////////////////////////////////////////////////////////////////
 void ID_file_creator(const char* path) {  //from fresh SD, device needs a "secret" binary storage file
