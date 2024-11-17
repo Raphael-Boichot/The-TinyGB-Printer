@@ -129,7 +129,6 @@ void setup() {
 
   // Wait for Serial to be ready
   //while (!Serial) { ; }  //no need for autonomous design with the RP2040
-  Connect_to_printer();        //makes an attempt to switch in printer mode
   Tiny_printer_preparation();  //switches in Tiny Printer mode
 
   /* Pins from gameboy link cable */
@@ -212,6 +211,9 @@ void loop() {  //core 0
 void loop1()  //core 1
 {
   if (PRINT_flag == 1) {
+    SD_card_access_Color = pixels.Color(intensity, 0, 0);  //RGB triplet
+    LED_WS2812_state(SD_card_access_Color, 1);
+    delay(500);// if printing is ran immediately, it interferes with the interrupt...
     PRINT_flag = 0;
     //preparing palette;
     image_palette[3] = bitRead(inner_palette, 0) + 2 * bitRead(inner_palette, 1);
@@ -237,6 +239,7 @@ void loop1()  //core 1
     Serial.print("/");
     Serial.println(inner_lower_margin, HEX);
 
+
     if (NEWFILE_flag == 1) {
       sprintf(storage_file_name, "/%05d/%07d.bmp", Next_dir, Next_ID);
       Serial.println("This is a new file, Dummy BMP header is now written");
@@ -244,16 +247,16 @@ void loop1()  //core 1
       Serial.println(storage_file_name);
       NEWFILE_flag = 0;
       Pre_allocate_bmp_header(0, 0);  //creates a dummy BMP header
-      //  File Datafile = SD.open(storage_file_name, FILE_WRITE);
-      //  Datafile.write(BMP_header_generic, 54);                            //writes a dummy BMP header
-      //  Datafile.write(BMP_indexed_palette, 1024);                         //indexed RGB palette
-      //  Datafile.close();
+        File Datafile = SD.open(storage_file_name, FILE_WRITE);
+        Datafile.write(BMP_header_generic, 54);                            //writes a dummy BMP header
+        Datafile.write(BMP_indexed_palette, 1024);                         //indexed RGB palette
+        Datafile.close();
     }
     //writing loop
     Serial.println("Writing new packets to BMP file");
-    // File Datafile = SD.open(storage_file_name, FILE_WRITE);
-    // Datafile.write(BMP_image_color, 160 * 16 * DATA_packet_to_print);  //writes the data to SD card
-    // Datafile.close();
+     File Datafile = SD.open(storage_file_name, FILE_WRITE);
+     Datafile.write(BMP_image_color, 160 * 16 * DATA_packet_to_print);  //writes the data to SD card
+     Datafile.close();
     lines_in_bmp_file = lines_in_bmp_file + 16 * DATA_packet_to_print;
     Serial.print("Current lines in BMP file: ");
     Serial.println(lines_in_bmp_file, DEC);
@@ -270,16 +273,17 @@ void loop1()  //core 1
     if (CLOSE_flag == 1) {
       Serial.println("Closing an existing file, finalising BMP header");  // now updating the BMP header
       Pre_allocate_bmp_header(160, lines_in_bmp_file);                    //number of lines will be updated now
-      // File Datafile = SD.open(storage_file_name, FILE_WRITE);
-      // Datafile.seek(0);                           //go to the beginning of the file
-      // Datafile.write(BMP_header_generic, 54);     //fixed header fixed with correct lenght
-      // Datafile.close();
+       File Datafile = SD.open(storage_file_name, FILE_WRITE);
+       Datafile.seek(0);                           //go to the beginning of the file
+       Datafile.write(BMP_header_generic, 54);     //fixed header fixed with correct lenght
+       Datafile.close();
       lines_in_bmp_file = 0;
       Next_ID++;
       store_next_ID("/tiny.sys", Next_ID, Next_dir);
       NEWFILE_flag = 1;
       lines_in_bmp_file = 0;
     }
+    LED_WS2812_state(SD_card_access_Color, 0);
   }
   //BMP and SD stuff will be here
 }  // loop1()
@@ -416,70 +420,6 @@ inline void gbp_parse_packet_loop(void) {
     }
   }
 }  //inline void gbp_parse_packet_loop(void)
-
-
-void Connect_to_printer() {
-#if GAME_BOY_PRINTER_MODE  //Printer mode
-  pinMode(GBP_SC_PIN, OUTPUT);
-  pinMode(GBP_SO_PIN, INPUT_PULLUP);
-  pinMode(GBP_SI_PIN, OUTPUT);
-  LED_WS2812_state(WS2812_Color, OUTPUT);
-  const char INIT[] = { 0x88, 0x33, 0x01, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00 };  //INIT command
-  uint8_t junk, status;
-  for (uint8_t i = 0; i < 10; i++) {
-    junk = (printing(INIT[i]));
-    if (i == 8) {
-      status = junk;
-    }
-  }
-  if (status == 0X81)  //Printer connected !
-  {
-    digitalWrite(GBP_SC_PIN, HIGH);  //acts like a real Game Boy
-    digitalWrite(GBP_SI_PIN, LOW);   //acts like a real Game Boy
-    Serial.println(F("// A printer is connected to the serial cable !!!"));
-    Serial.println(F("// GAME BOY PRINTER I/O INTERFACE Made By Raphaël BOICHOT, 2023"));
-    Serial.println(F("// Use with the GBCamera-Android-Manager: https://github.com/Mraulio/GBCamera-Android-Manager"));
-    Serial.println(F("// Or with the PC-to-Game-Boy-Printer-interface: https://github.com/Raphael-Boichot/PC-to-Game-Boy-Printer-interface"));
-    delay(100);
-    Serial.begin(9600);
-    while (!Serial) { ; }
-    while (Serial.available() > 0) {  //flush the buffer from any remaining data
-      Serial.read();
-    }
-    LED_WS2812_state(WS2812_Color, 1);
-
-    while (true) {
-      if (Serial.available() > 0) {
-        Serial.write(printing(Serial.read()));
-      }
-    }
-  }
-#endif
-}
-
-#if GAME_BOY_PRINTER_MODE      //Printer mode
-char printing(char byte_sent)  // this function prints bytes to the serial
-{
-  uint32_t WS2812_Color = pixels.Color(intensity, intensity, intensity);  //RGB triplet
-  bool bit_sent, bit_read;
-  char byte_read;
-  for (int i = 0; i <= 7; i++) {
-    bit_sent = bitRead(byte_sent, 7 - i);
-    digitalWrite(GBP_SC_PIN, LOW);
-    digitalWrite(GBP_SI_PIN, bit_sent);  //GBP_SI_PIN is SOUT for the printer
-    LED_WS2812_state(WS2812_Color, bit_sent);
-    delayMicroseconds(30);  //double speed mode
-    digitalWrite(GBP_SC_PIN, HIGH);
-    bit_read = (digitalRead(GBP_SO_PIN));  //GBP_SO_PIN is SIN for the printer
-    bitWrite(byte_read, 7 - i, bit_read);
-    delayMicroseconds(30);  //double speed mode
-  }
-  delayMicroseconds(0);  //optionnal delay between bytes, may be less than 1490 µs
-  //  Serial.println(byte_sent, HEX);
-  //  Serial.println(byte_read, HEX);
-  return byte_read;
-}
-#endif
 
 void LED_WS2812_state(uint32_t WS2812_Color, bool state) {
   if (state) {
