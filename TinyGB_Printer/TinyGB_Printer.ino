@@ -213,18 +213,13 @@ void loop1()  //core 1
   if (PRINT_flag == 1) {
     SD_card_access_Color = pixels.Color(intensity, 0, 0);  //RGB triplet
     LED_WS2812_state(SD_card_access_Color, 1);
-    delay(500);// if printing is ran immediately, it interferes with the interrupt...
+    delay(500);  // if printing is ran immediately, it interferes with the interrupt...
     PRINT_flag = 0;
     //preparing palette;
     image_palette[3] = bitRead(inner_palette, 0) + 2 * bitRead(inner_palette, 1);
     image_palette[2] = bitRead(inner_palette, 2) + 2 * bitRead(inner_palette, 3);
     image_palette[1] = bitRead(inner_palette, 4) + 2 * bitRead(inner_palette, 5);
     image_palette[0] = bitRead(inner_palette, 6) + 2 * bitRead(inner_palette, 7);
-
-    //now the BMP conversion, for later
-    //for the moment, it just makes a dumb copy or Game Boy Tile Format data to image
-    memset(BMP_image_color, 127, sizeof(BMP_image_color));                              //clean the image data array
-    memcpy(BMP_image_color, printer_memory_buffer_core_1, 640 * DATA_packet_to_print);  //just to check that packets are transmitted
 
     Serial.println("");
     Serial.print("Packets to print: ");
@@ -239,6 +234,36 @@ void loop1()  //core 1
     Serial.print("/");
     Serial.println(inner_lower_margin, HEX);
 
+    memset(BMP_image_color, 0, sizeof(BMP_image_color));  //clean the image data array
+    //memcpy(BMP_image_color, printer_memory_buffer_core_1, 640 * DATA_packet_to_print);  //just to check that packets are transmitted
+
+///////////////////////////////BMP converter stuff to debug
+    // offset_x = 0;
+    // BMP_bytes_counter = 0;
+    // column = 0;
+    // for (int tile = 0; tile < DATA_packet_to_print * 40; tile++) {  // For alls packets (40 tiles per packet, always)
+    //   for (int byte = 0; byte < 16; byte++) {                       // For each tile (16 bytes per tile, always)
+    //     //this part creates a tile
+    //     //the meat is here: https://www.huderlem.com/demos/gameboy2bpp.html
+    //     local_byte_LSB = printer_memory_buffer_core_1[BMP_bytes_counter];
+    //     BMP_bytes_counter++;
+    //     local_byte_MSB = printer_memory_buffer_core_1[BMP_bytes_counter];
+    //     BMP_bytes_counter++;
+    //     for (int pos = 0; pos < 8; pos++) {
+    //       pixel_level = bitRead(local_byte_LSB, 7 - pos) + 2 * bitRead(local_byte_MSB, 7 - pos);
+    //       BMP_image_color[offset_x + pos] = BMP_palette[image_palette[pixel_level]];
+    //     }
+    //     offset_x = offset_x + 160;  //go to next line of pixels
+    //   }
+    //   offset_x = offset_x - 160 * 8;  //return to initial position
+    //   offset_x = offset_x + 8;        //go 8 pixels to the right
+    //   column++;
+    //   if (column == 20) {
+    //     column = 0;
+    //     offset_x = offset_x + 8 * 160;  //go to next line of tiles
+    //   }
+    // }
+///////////////////////////////BMP converter stuff 
 
     if (NEWFILE_flag == 1) {
       sprintf(storage_file_name, "/%05d/%07d.bmp", Next_dir, Next_ID);
@@ -247,16 +272,16 @@ void loop1()  //core 1
       Serial.println(storage_file_name);
       NEWFILE_flag = 0;
       Pre_allocate_bmp_header(0, 0);  //creates a dummy BMP header
-        File Datafile = SD.open(storage_file_name, FILE_WRITE);
-        Datafile.write(BMP_header_generic, 54);                            //writes a dummy BMP header
-        Datafile.write(BMP_indexed_palette, 1024);                         //indexed RGB palette
-        Datafile.close();
+      File Datafile = SD.open(storage_file_name, FILE_WRITE);
+      Datafile.write(BMP_header_generic, 54);     //writes a dummy BMP header
+      Datafile.write(BMP_indexed_palette, 1024);  //indexed RGB palette
+      Datafile.close();
     }
     //writing loop
     Serial.println("Writing new packets to BMP file");
-     File Datafile = SD.open(storage_file_name, FILE_WRITE);
-     Datafile.write(BMP_image_color, 160 * 16 * DATA_packet_to_print);  //writes the data to SD card
-     Datafile.close();
+    File Datafile = SD.open(storage_file_name, FILE_WRITE);
+    Datafile.write(BMP_image_color, 160 * 16 * DATA_packet_to_print);  //writes the data to SD card
+    Datafile.close();
     lines_in_bmp_file = lines_in_bmp_file + 16 * DATA_packet_to_print;
     Serial.print("Current lines in BMP file: ");
     Serial.println(lines_in_bmp_file, DEC);
@@ -273,10 +298,10 @@ void loop1()  //core 1
     if (CLOSE_flag == 1) {
       Serial.println("Closing an existing file, finalising BMP header");  // now updating the BMP header
       Pre_allocate_bmp_header(160, lines_in_bmp_file);                    //number of lines will be updated now
-       File Datafile = SD.open(storage_file_name, FILE_WRITE);
-       Datafile.seek(0);                           //go to the beginning of the file
-       Datafile.write(BMP_header_generic, 54);     //fixed header fixed with correct lenght
-       Datafile.close();
+      File Datafile = SD.open(storage_file_name, FILE_WRITE);
+      Datafile.seek(0);                        //go to the beginning of the file
+      Datafile.write(BMP_header_generic, 54);  //fixed header fixed with correct lenght
+      Datafile.close();
       lines_in_bmp_file = 0;
       Next_ID++;
       store_next_ID("/tiny.sys", Next_ID, Next_dir);
