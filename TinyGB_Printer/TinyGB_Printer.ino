@@ -213,69 +213,75 @@ void loop1()  //core 1
 {
   if (PRINT_flag == 1) {
     PRINT_flag = 0;
-    sprintf(storage_file_name, "/%05d/%07d.bmp", Next_dir, Next_ID);
     //preparing palette;
     image_palette[3] = bitRead(inner_palette, 0) + 2 * bitRead(inner_palette, 1);
     image_palette[2] = bitRead(inner_palette, 2) + 2 * bitRead(inner_palette, 3);
     image_palette[1] = bitRead(inner_palette, 4) + 2 * bitRead(inner_palette, 5);
     image_palette[0] = bitRead(inner_palette, 6) + 2 * bitRead(inner_palette, 7);
 
-  //now the BMP conversion, for later
+    //now the BMP conversion, for later
+    //for the moment, it just makes a dumb copy or Game Boy Tile Format data to image
+    memset(BMP_image_color, 127, sizeof(BMP_image_color));                              //clean the image data array
+    memcpy(BMP_image_color, printer_memory_buffer_core_1, 640 * DATA_packet_to_print);  //just to check that packets are transmitted
 
-  Serial.println("");
-  Serial.println("Core 1 is ready to convert tiles to BMP");
-  Serial.print("Packets to print: ");
-  Serial.println(DATA_packet_to_print, DEC);
-  Serial.print("Burning: ");
-  Serial.println(storage_file_name);
-  Serial.print(inner_palette, HEX);
-  Serial.print("/");
-  Serial.print(image_palette[0], HEX);
-  Serial.print(image_palette[1], HEX);
-  Serial.print(image_palette[2], HEX);
-  Serial.print(image_palette[3], HEX);
-  Serial.print("/");
-  Serial.println(inner_lower_margin, HEX);
+    Serial.println("");
+    Serial.print("Packets to print: ");
+    Serial.println(DATA_packet_to_print, DEC);
+    Serial.print("Palette/GB to color/after margin: ");
+    Serial.print(inner_palette, HEX);
+    Serial.print("/");
+    Serial.print(image_palette[0], HEX);
+    Serial.print(image_palette[1], HEX);
+    Serial.print(image_palette[2], HEX);
+    Serial.print(image_palette[3], HEX);
+    Serial.print("/");
+    Serial.println(inner_lower_margin, HEX);
 
-  //writing loop
-  Serial.println("Writing packets to BMP file");
-  SD_card_access_Color = pixels.Color(intensity, 0, 0);  //RGB triplet
-  LED_WS2812_state(SD_card_access_Color, 1);
-  File Datafile = SD.open(storage_file_name, FILE_WRITE);
-  Pre_allocate_bmp_header(160, 0);                                   //creates a dummy BMP header
-  Datafile.write(BMP_header_generic, 54);                            //writes a dummy BMP header
-  Datafile.write(BMP_indexed_palette, 1024);                         //indexed RGB palette
-  Datafile.write(BMP_image_color, 160 * 16 * DATA_packet_to_print);  //writes the data to SD card
-  lines_in_bmp_file = lines_in_bmp_file + 16 * DATA_packet_to_print;
-  Datafile.close();
-  LED_WS2812_state(SD_card_access_Color, 0);
+    if (NEWFILE_flag == 1) {
+      sprintf(storage_file_name, "/%05d/%07d.bmp", Next_dir, Next_ID);
+      Serial.println("This is a new file, Dummy BMP header is now written");
+      Serial.print("Burning: ");
+      Serial.println(storage_file_name);
+      NEWFILE_flag = 0;
+      Pre_allocate_bmp_header(0, 0);  //creates a dummy BMP header
+      //  File Datafile = SD.open(storage_file_name, FILE_WRITE);
+      //  Datafile.write(BMP_header_generic, 54);                            //writes a dummy BMP header
+      //  Datafile.write(BMP_indexed_palette, 1024);                         //indexed RGB palette
+      //  Datafile.close();
+    }
+    //writing loop
+    Serial.println("Writing new packets to BMP file");
+    // File Datafile = SD.open(storage_file_name, FILE_WRITE);
+    // Datafile.write(BMP_image_color, 160 * 16 * DATA_packet_to_print);  //writes the data to SD card
+    // Datafile.close();
+    lines_in_bmp_file = lines_in_bmp_file + 16 * DATA_packet_to_print;
+    Serial.print("Current lines in BMP file: ");
+    Serial.println(lines_in_bmp_file, DEC);
+    DATA_packet_to_print = 0;
 
     if (inner_lower_margin > 0) {  //the printer asks to feed paper, end of file
       CLOSE_flag = 1;
-      Serial.println("File will be closed");
+      Serial.println("File will be closed after writing the current packets");
     } else {
       CLOSE_flag = 0;
       Serial.println("Continuing on existing file for next packets...");
     }
 
-  if (CLOSE_flag == 1) {
-    Serial.println("Closing an existing file, finalising BMP header");  // now updating the BMP header
-    Pre_allocate_bmp_header(160, lines_in_bmp_file);                    //number of lines will be updated now
-    LED_WS2812_state(SD_card_access_Color, 1);
-    File Datafile = SD.open(storage_file_name, FILE_WRITE);
-    Datafile.seek(0);                           //go to the beginning of the file
-    Datafile.write(BMP_header_generic, 54);     //fixed header fixed with correct lenght
-    Datafile.write(BMP_indexed_palette, 1024);  //indexed RGB palette
-    Datafile.close();
-    LED_WS2812_state(SD_card_access_Color, 0);
-    lines_in_bmp_file = 0;
-    Next_ID++;
-    store_next_ID("/tiny.sys", Next_ID, Next_dir);
-    NEWFILE_flag = 1;
-    lines_in_bmp_file = 0;
+    if (CLOSE_flag == 1) {
+      Serial.println("Closing an existing file, finalising BMP header");  // now updating the BMP header
+      Pre_allocate_bmp_header(160, lines_in_bmp_file);                    //number of lines will be updated now
+      // File Datafile = SD.open(storage_file_name, FILE_WRITE);
+      // Datafile.seek(0);                           //go to the beginning of the file
+      // Datafile.write(BMP_header_generic, 54);     //fixed header fixed with correct lenght
+      // Datafile.close();
+      lines_in_bmp_file = 0;
+      Next_ID++;
+      store_next_ID("/tiny.sys", Next_ID, Next_dir);
+      NEWFILE_flag = 1;
+      lines_in_bmp_file = 0;
+    }
   }
-}
-//BMP and SD stuff will be here
+  //BMP and SD stuff will be here
 }  // loop1()
 
 /******************************************************************************/
