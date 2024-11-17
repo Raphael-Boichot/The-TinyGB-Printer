@@ -157,8 +157,6 @@ void setup() {
 
   /* Welcome Message */
   Serial.println(F("// Tiny Printer Emulator " VERSION_STRING));
-  Serial.println(F("// Note: Each hex encoded line is a gameboy tile"));
-  Serial.println(F("// --- GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 ---"));
   Serial.flush();
 }  // setup()
 
@@ -215,61 +213,69 @@ void loop1()  //core 1
 {
   if (PRINT_flag == 1) {
     PRINT_flag = 0;
+    sprintf(storage_file_name, "/%05d/%07d.bmp", Next_dir, Next_ID);
     //preparing palette;
     image_palette[3] = bitRead(inner_palette, 0) + 2 * bitRead(inner_palette, 1);
     image_palette[2] = bitRead(inner_palette, 2) + 2 * bitRead(inner_palette, 3);
     image_palette[1] = bitRead(inner_palette, 4) + 2 * bitRead(inner_palette, 5);
     image_palette[0] = bitRead(inner_palette, 6) + 2 * bitRead(inner_palette, 7);
-    if (inner_palette > 0) {  //the printer asks to feed paper, end of file
+
+  //now the BMP conversion, for later
+
+  Serial.println("");
+  Serial.println("Core 1 is ready to convert tiles to BMP");
+  Serial.print("Packets to print: ");
+  Serial.println(DATA_packet_to_print, DEC);
+  Serial.print("Burning: ");
+  Serial.println(storage_file_name);
+  Serial.print(inner_palette, HEX);
+  Serial.print("/");
+  Serial.print(image_palette[0], HEX);
+  Serial.print(image_palette[1], HEX);
+  Serial.print(image_palette[2], HEX);
+  Serial.print(image_palette[3], HEX);
+  Serial.print("/");
+  Serial.println(inner_lower_margin, HEX);
+
+  //writing loop
+  Serial.println("Writing packets to BMP file");
+  SD_card_access_Color = pixels.Color(intensity, 0, 0);  //RGB triplet
+  LED_WS2812_state(SD_card_access_Color, 1);
+  File Datafile = SD.open(storage_file_name, FILE_WRITE);
+  Pre_allocate_bmp_header(160, 0);                                   //creates a dummy BMP header
+  Datafile.write(BMP_header_generic, 54);                            //writes a dummy BMP header
+  Datafile.write(BMP_indexed_palette, 1024);                         //indexed RGB palette
+  Datafile.write(BMP_image_color, 160 * 16 * DATA_packet_to_print);  //writes the data to SD card
+  lines_in_bmp_file = lines_in_bmp_file + 16 * DATA_packet_to_print;
+  Datafile.close();
+  LED_WS2812_state(SD_card_access_Color, 0);
+
+    if (inner_lower_margin > 0) {  //the printer asks to feed paper, end of file
       CLOSE_flag = 1;
+      Serial.println("File will be closed");
+    } else {
+      CLOSE_flag = 0;
+      Serial.println("Continuing on existing file for next packets...");
     }
 
-    //now the BMP conversion, for later
-
-    // Serial.println("");
-    // Serial.println("Core 1 is ready to convert tiles to BMP");
-    // sprintf(storage_file_name, "/%05d/%07d.bmp", Next_dir, Next_ID);
-    // Serial.println(storage_file_name);
-    // Serial.print(inner_palette, HEX);
-    // Serial.print("/");
-    // Serial.print(image_palette[0], HEX);
-    // Serial.print(image_palette[1], HEX);
-    // Serial.print(image_palette[2], HEX);
-    // Serial.println(image_palette[3], HEX);
-    // Serial.println(inner_lower_margin, HEX);
-    // Serial.println("");
-
-    //writing loop
-    if (NEWFILE_flag == 1) {  //we want to open a new file
-      NEWFILE_flag = 0;
-      lines_in_bmp_file = 0;
-      SD_card_access_Color = pixels.Color(intensity, 0, 0);  //RGB triplet
-      LED_WS2812_state(SD_card_access_Color, 1);
-      File Datafile = SD.open(storage_file_name, FILE_WRITE);
-      Datafile.write(BMP_header_generic, 54);                           //creates a dummy BMP header
-      Datafile.write(BMP_indexed_palette, 1024);                        //indexed RGB palette
-      Datafile.write(BMP_image_color, 160 * 16 * DATA_packet_counter);  //writes the data to SD card
-      lines_in_bmp_file = lines_in_bmp_file + 16 * DATA_packet_counter;
-      Datafile.close();
-      LED_WS2812_state(SD_card_access_Color, 0);
-    }
-
-    if (CLOSE_flag == 1) {                              // now updating the BMP header
-      Pre_allocate_bmp_header(160, lines_in_bmp_file);  //number of lines will be updated now
-      LED_WS2812_state(SD_card_access_Color, 1);
-      File Datafile = SD.open(storage_file_name, FILE_WRITE);
-      Datafile.seek(0);                           //go to the beginning of the file
-      Datafile.write(BMP_header_generic, 54);     //fixed header fixed with correct lenght
-      Datafile.write(BMP_indexed_palette, 1024);  //indexed RGB palette
-      Datafile.close();
-      LED_WS2812_state(SD_card_access_Color, 0);
-      lines_in_bmp_file = 0;
-      Next_ID++;
-      store_next_ID("/tiny.sys", Next_ID, Next_dir);
-      NEWFILE_flag = 1;
-    }
+  if (CLOSE_flag == 1) {
+    Serial.println("Closing an existing file, finalising BMP header");  // now updating the BMP header
+    Pre_allocate_bmp_header(160, lines_in_bmp_file);                    //number of lines will be updated now
+    LED_WS2812_state(SD_card_access_Color, 1);
+    File Datafile = SD.open(storage_file_name, FILE_WRITE);
+    Datafile.seek(0);                           //go to the beginning of the file
+    Datafile.write(BMP_header_generic, 54);     //fixed header fixed with correct lenght
+    Datafile.write(BMP_indexed_palette, 1024);  //indexed RGB palette
+    Datafile.close();
+    LED_WS2812_state(SD_card_access_Color, 0);
+    lines_in_bmp_file = 0;
+    Next_ID++;
+    store_next_ID("/tiny.sys", Next_ID, Next_dir);
+    NEWFILE_flag = 1;
+    lines_in_bmp_file = 0;
   }
-  //BMP and SD stuff will be here
+}
+//BMP and SD stuff will be here
 }  // loop1()
 
 /******************************************************************************/
@@ -278,72 +284,69 @@ inline void gbp_parse_packet_loop(void) {
   for (int i = 0; i < gbp_serial_io_dataBuff_getByteCount(); i++) {
     if (gbp_pkt_processByte(&gbp_pktState, (const uint8_t)gbp_serial_io_dataBuff_getByte(), gbp_pktbuff, &gbp_pktbuffSize, sizeof(gbp_pktbuff))) {
       if (gbp_pktState.received == GBP_REC_GOT_PACKET) {
-        Serial.print((char)'{');
-        Serial.print("\"command\":\"");
-        Serial.print(gbpCommand_toStr(gbp_pktState.command));
-        Serial.print("\"");
+        // Serial.print((char)'{');
+        // Serial.print("\"command\":\"");
+        // Serial.print(gbpCommand_toStr(gbp_pktState.command));
+        // Serial.print("\"");
         if (gbp_pktState.command == GBP_COMMAND_INQUIRY) {
-          // !{"command":"INQY","status":{"lowbatt":0,"jam":0,"err":0,"pkterr":0,"unproc":1,"full":0,"bsy":0,"chk_err":0}}
-          Serial.print(", \"status\":{");
-          Serial.print("\"LowBat\":");
-          Serial.print(gpb_status_bit_getbit_low_battery(gbp_pktState.status) ? '1' : '0');
-          Serial.print(",\"ER2\":");
-          Serial.print(gpb_status_bit_getbit_other_error(gbp_pktState.status) ? '1' : '0');
-          Serial.print(",\"ER1\":");
-          Serial.print(gpb_status_bit_getbit_paper_jam(gbp_pktState.status) ? '1' : '0');
-          Serial.print(",\"ER0\":");
-          Serial.print(gpb_status_bit_getbit_packet_error(gbp_pktState.status) ? '1' : '0');
-          Serial.print(",\"Untran\":");
-          Serial.print(gpb_status_bit_getbit_unprocessed_data(gbp_pktState.status) ? '1' : '0');
-          Serial.print(",\"Full\":");
-          Serial.print(gpb_status_bit_getbit_print_buffer_full(gbp_pktState.status) ? '1' : '0');
-          Serial.print(",\"Busy\":");
-          Serial.print(gpb_status_bit_getbit_printer_busy(gbp_pktState.status) ? '1' : '0');
-          Serial.print(",\"Sum\":");
-          Serial.print(gpb_status_bit_getbit_checksum_error(gbp_pktState.status) ? '1' : '0');
-          Serial.print((char)'}');
+          // Serial.print(", \"status\":{");
+          // Serial.print("\"LowBat\":");
+          // Serial.print(gpb_status_bit_getbit_low_battery(gbp_pktState.status) ? '1' : '0');
+          // Serial.print(",\"ER2\":");
+          // Serial.print(gpb_status_bit_getbit_other_error(gbp_pktState.status) ? '1' : '0');
+          // Serial.print(",\"ER1\":");
+          // Serial.print(gpb_status_bit_getbit_paper_jam(gbp_pktState.status) ? '1' : '0');
+          // Serial.print(",\"ER0\":");
+          // Serial.print(gpb_status_bit_getbit_packet_error(gbp_pktState.status) ? '1' : '0');
+          // Serial.print(",\"Untran\":");
+          // Serial.print(gpb_status_bit_getbit_unprocessed_data(gbp_pktState.status) ? '1' : '0');
+          // Serial.print(",\"Full\":");
+          // Serial.print(gpb_status_bit_getbit_print_buffer_full(gbp_pktState.status) ? '1' : '0');
+          // Serial.print(",\"Busy\":");
+          // Serial.print(gpb_status_bit_getbit_printer_busy(gbp_pktState.status) ? '1' : '0');
+          // Serial.print(",\"Sum\":");
+          // Serial.print(gpb_status_bit_getbit_checksum_error(gbp_pktState.status) ? '1' : '0');
+          // Serial.print((char)'}');
         }
         if (gbp_pktState.command == GBP_COMMAND_PRINT) {
-          //!{"command":"PRNT","sheets":1,"margin_upper":1,"margin_lower":3,"pallet":228,"density":64 }
-          Serial.print(", \"sheets\":");
-          Serial.print(gbp_pkt_printInstruction_num_of_sheets(gbp_pktbuff));
-          Serial.print(", \"margin_upper\":");
-          Serial.print(gbp_pkt_printInstruction_num_of_linefeed_before_print(gbp_pktbuff));
-          Serial.print(", \"margin_lower\":");
-          Serial.print(gbp_pkt_printInstruction_num_of_linefeed_after_print(gbp_pktbuff));
-          Serial.print(", \"pallet\":");
-          Serial.print(gbp_pkt_printInstruction_palette_value(gbp_pktbuff));
-          Serial.print(", \"density\":");
-          Serial.print(gbp_pkt_printInstruction_print_density(gbp_pktbuff));
+          // Serial.print(", \"sheets\":");
+          // Serial.print(gbp_pkt_printInstruction_num_of_sheets(gbp_pktbuff));
+          // Serial.print(", \"margin_upper\":");
+          // Serial.print(gbp_pkt_printInstruction_num_of_linefeed_before_print(gbp_pktbuff));
+          // Serial.print(", \"margin_lower\":");
+          // Serial.print(gbp_pkt_printInstruction_num_of_linefeed_after_print(gbp_pktbuff));
+          // Serial.print(", \"pallet\":");
+          // Serial.print(gbp_pkt_printInstruction_palette_value(gbp_pktbuff));
+          // Serial.print(", \"density\":");
+          // Serial.print(gbp_pkt_printInstruction_print_density(gbp_pktbuff));
 
           ////////////////////////////////////////////////////////////////////////BOICHOT
           DATA_packet_to_print = DATA_packet_counter;  //counter for packets transmitted to be transmitted to core 1
+          //Serial.println("PRINT command received");
+          //Serial.println("All packets resetted, core 1 deals with next steps");
           memcpy(printer_memory_buffer_core_1, printer_memory_buffer_core_0, 640 * DATA_packet_to_print);
           inner_palette = gbp_pkt_printInstruction_palette_value(gbp_pktbuff);
           inner_lower_margin = gbp_pkt_printInstruction_num_of_linefeed_after_print(gbp_pktbuff);
           PRINT_flag = 1;           //triggers stuff on core 1, from now core 1 have plenty of time to convert image
           DATA_bytes_counter = 0;   //counter for data bytes
           DATA_packet_counter = 0;  //counter for packets transmitted
-          Serial.println("");
-          Serial.println("PRINT command received");
-          Serial.println("All packets resetted, core 1 deals with next steps");
           ///////////////////////////////////////////////////////////////////////
         }
         if (gbp_pktState.command == GBP_COMMAND_DATA) {
           LED_WS2812_state(WS2812_Color, 1);
           //!{"command":"DATA", "compressed":0, "more":0}
 #ifdef GBP_FEATURE_PARSE_PACKET_USE_DECOMPRESSOR
-          Serial.print(", \"compressed\":0");  // Already decompressed by us, so no need to do so
+          // Serial.print(", \"compressed\":0");  // Already decompressed by us, so no need to do so
 #else
-          Serial.print(", \"compressed\":");
-          Serial.print(gbp_pktState.compression);
+          // Serial.print(", \"compressed\":");
+          // Serial.print(gbp_pktState.compression);
 #endif
-          Serial.print(", \"more\":");
-          Serial.print((gbp_pktState.dataLength != 0) ? '1' : '0');
+          // Serial.print(", \"more\":");
+          // Serial.print((gbp_pktState.dataLength != 0) ? '1' : '0');
           LED_WS2812_state(WS2812_Color, 0);
         }
-        Serial.println((char)'}');
-        Serial.flush();
+        // Serial.println((char)'}');
+        // Serial.flush();
       } else {
 #ifdef GBP_FEATURE_PARSE_PACKET_USE_DECOMPRESSOR
         // Required for more complex games with compression support
@@ -366,8 +369,8 @@ inline void gbp_parse_packet_loop(void) {
               DATA_bytes_counter++;
               if (DATA_bytes_counter % 640 == 0) {
                 DATA_packet_counter++;
-                Serial.println("Packet added");
-                Serial.println(DATA_packet_counter, DEC);
+                //Serial.print("Packet added: ");
+                //Serial.println(DATA_packet_counter, DEC);
               }
               ///////////////////////////////////////////////////////////////////////
             }
