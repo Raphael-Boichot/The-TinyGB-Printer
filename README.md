@@ -10,8 +10,8 @@ Because people are working on a diversity of OS and do not want to learn how to 
 - If you want to modify the code and compile it, install the [RP2040 core for Arduino IDE](https://github.com/earlephilhower/arduino-pico) and the [Adafruit Neopixel for Arduino IDE](https://github.com/adafruit/Adafruit_NeoPixel), choose the Waveshare RP2040 PiZero and compile/upload with the default options.
 
 ## Easy to use
-- Switch on without touching anything, the LED flashes green, images are recorded automatically.
-- Switch on while pressing the pushbutton : the LED flashes blue, images are stacked together until you press the pushbutton again.
+- Switch on without touching anything, the LED flashes green, images are recorded automatically. This is perfect for the Game Boy Camera for example.
+- Switch on while pressing the pushbutton : the LED flashes blue, images are stacked together in a single fil until you press the pushbutton again. Some rare games require this (see compatibility list).
 - Switch on and the LED flashes red: SD card not connected or not formatted in FAT32.
 
 ## What have been done at the moment
