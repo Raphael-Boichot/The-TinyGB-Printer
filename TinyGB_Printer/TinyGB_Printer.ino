@@ -28,8 +28,8 @@
 //Dev notes
 //Parse mode and decompressor are forced by default
 //Parse mode uses tons of variable to assess the state of the printer so it's easier to interface with an inner decoder
-
-#define GAME_BOY_PRINTER_MODE false  // to use with https://github.com/Mraulio/GBCamera-Android-Manager and https://github.com/Raphael-Boichot/PC-to-Game-Boy-Printer-interface
+#define CORE_0_SPEAKING false //for debug, better let only one core speaking at a time
+#define CORE_1_SPEAKING false //for debug, better let only one core speaking at a time
 
 #include <stdint.h>  // uint8_t
 #include <stddef.h>  // size_t
@@ -214,12 +214,20 @@ void loop1()  //core 1
     SD_card_access_Color = pixels.Color(intensity, 0, 0);  //RGB triplet
     LED_WS2812_state(SD_card_access_Color, 1);
     delay(500);  // if printing is ran immediately, it interferes with the interrupt...
+    // It must be due to a voltage drop or some interrupt routines interfering, not sure
+    // As we have plenty of time on core 1, it's not that a problem. Image must just be decoded before the next PRINT command
     PRINT_flag = 0;
     //preparing palette;
+
+    if (inner_palette==0x00){
+      inner_palette==0xE4; //se Game Boy Programming manual, palette 0x00 is a default palette interpreted as 0xE4 or 0b11100100
+    }
+
     image_palette[3] = bitRead(inner_palette, 0) + 2 * bitRead(inner_palette, 1);
     image_palette[2] = bitRead(inner_palette, 2) + 2 * bitRead(inner_palette, 3);
     image_palette[1] = bitRead(inner_palette, 4) + 2 * bitRead(inner_palette, 5);
     image_palette[0] = bitRead(inner_palette, 6) + 2 * bitRead(inner_palette, 7);
+
 
     Serial.println("");
     Serial.print("Packets to print: ");
@@ -234,36 +242,50 @@ void loop1()  //core 1
     Serial.print("/");
     Serial.println(inner_lower_margin, HEX);
 
-    memset(BMP_image_color, 0, sizeof(BMP_image_color));  //clean the image data array
-    //memcpy(BMP_image_color, printer_memory_buffer_core_1, 640 * DATA_packet_to_print);  //just to check that packets are transmitted
 
-///////////////////////////////BMP converter stuff to debug
-    // offset_x = 0;
-    // BMP_bytes_counter = 0;
-    // column = 0;
-    // for (int tile = 0; tile < DATA_packet_to_print * 40; tile++) {  // For alls packets (40 tiles per packet, always)
-    //   for (int byte = 0; byte < 16; byte++) {                       // For each tile (16 bytes per tile, always)
-    //     //this part creates a tile
-    //     //the meat is here: https://www.huderlem.com/demos/gameboy2bpp.html
-    //     local_byte_LSB = printer_memory_buffer_core_1[BMP_bytes_counter];
-    //     BMP_bytes_counter++;
-    //     local_byte_MSB = printer_memory_buffer_core_1[BMP_bytes_counter];
-    //     BMP_bytes_counter++;
-    //     for (int pos = 0; pos < 8; pos++) {
-    //       pixel_level = bitRead(local_byte_LSB, 7 - pos) + 2 * bitRead(local_byte_MSB, 7 - pos);
-    //       BMP_image_color[offset_x + pos] = BMP_palette[image_palette[pixel_level]];
-    //     }
-    //     offset_x = offset_x + 160;  //go to next line of pixels
-    //   }
-    //   offset_x = offset_x - 160 * 8;  //return to initial position
-    //   offset_x = offset_x + 8;        //go 8 pixels to the right
-    //   column++;
-    //   if (column == 20) {
-    //     column = 0;
-    //     offset_x = offset_x + 8 * 160;  //go to next line of tiles
-    //   }
-    // }
-///////////////////////////////BMP converter stuff 
+//BMP converter is written to decode pixels line by line in order to ease future integration with png encoder for example (not planned but possible)
+//All the meat to decode the 2bpp Game Boy Tile Format is explained here (among other sources): https://www.huderlem.com/demos/gameboy2bpp.html
+//the bmp data are a simple one dimenstional array because there is no gain to have a 2D array, in particular when burning data to SD card
+memset(BMP_image_color, 0, sizeof(BMP_image_color));  //clean the whole image data array
+BMP_bytes_counter = 0;
+pixel_line=0;
+int max_tile_line=DATA_packet_to_print*2;
+Serial.print("Max lines of tiles: ");
+Serial.println(max_tile_line, DEC);
+int max_pixel_line=DATA_packet_to_print*16;
+Serial.print("Max lines of pixels to convert: ");
+Serial.println(max_pixel_line, DEC);
+//
+for (tile_line = 0; tile_line < max_tile_line; tile_line++){// This part fills 8 lines of pixels
+for (int i = 0; i < 8; i++){// This part fills a line of pixels
+offset_x = pixel_line*160;
+for (tile_column = 0; tile_column < 20; tile_column++){//we progress along 20 column tiles
+        local_byte_LSB = printer_memory_buffer_core_1[BMP_bytes_counter];
+        local_byte_MSB = printer_memory_buffer_core_1[BMP_bytes_counter+1];
+        for (int posx = 0; posx < 8; posx++) {
+          pixel_level = bitRead(local_byte_LSB, 7 - posx) + 2 * bitRead(local_byte_MSB, 7 - posx);
+          BMP_image_color[offset_x + posx] = BMP_palette[image_palette[pixel_level]];
+        }
+        BMP_bytes_counter=BMP_bytes_counter+16;//jump to the next tile in byte
+        offset_x=offset_x+8;//jump to the next tile in pixels
+}// This part fills a line of pixels
+Serial.print("BMP byte counter: ");
+Serial.println(BMP_bytes_counter, DEC);
+Serial.print("pixel_line: ");
+Serial.println(pixel_line, DEC);
+BMP_bytes_counter=BMP_bytes_counter-16*20 + 2; //shift to the next two bytes among 16 per tile, so the next line of pixels in a tile
+pixel_line=pixel_line+1;//jump to the next line
+}// This part fills 8 lines of pixels
+Serial.print("BMP byte counter: ");
+Serial.println(BMP_bytes_counter, DEC);
+BMP_bytes_counter=16*20*tile_line;
+}//this part fills the entire image
+
+Serial.print("BMP byte counter at the end: ");
+Serial.println(BMP_bytes_counter, DEC);
+Serial.print("pixel line at the end: ");
+Serial.println(pixel_line, DEC);
+//////////////////////////////////////////////end of BMP converter stuff
 
     if (NEWFILE_flag == 1) {
       sprintf(storage_file_name, "/%05d/%07d.bmp", Next_dir, Next_ID);
