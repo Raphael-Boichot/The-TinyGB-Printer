@@ -15,7 +15,7 @@ The tiniest possible Game Boy printer emulator storing images on SD card made wi
 - Main functions for making BMPs and keep track of file ID added.
 - Core 1 now ready to memcopy data from core 0.
 - Core 1 now ready to convert data to BMP format (to be done). Core 1 has plenty of time to do this, basically between two print commands, so the code can be inefficient as hell without any consequence. No need to rush conversion during printing delay.
-- For the moment loosing the interrupt randomly when I access to the SD card... Adding a delay on core 1 seems to fix the issue.
+- For the moment loosing the interrupt randomly when I access to the SD card... Adding a delay on core 1 seems to fix the issue. Not sure if this is voltage related or some interrupt interference.
 - BMP converter added but not tested yet
 
 ## To do
