@@ -15,8 +15,8 @@ The tiniest possible Game Boy printer emulator storing images on SD card made wi
 - Main functions for making BMPs and keep track of file ID added.
 - Core 1 now ready to memcopy data from core 0.
 - Core 1 now ready to convert data to BMP format (to be done). Core 1 has plenty of time to do this, basically between two print commands, so the code can be inefficient as hell without any consequence. No need to rush conversion during printing delay.
-- For the moment loosing the interrupt randomly when I access to the SD card... Adding a delay on core 1 seems to fix the issue. Not sure if this is voltage related or some interrupt interference.
-- BMP converter added but not tested yet
+- For the moment loosing the interrupt randomly when I access to the SD card... Adding a dead time on core 1 after PRINT command seems to fix the issue. Not sure if this is voltage related or some interrupt interference. I think a single AA battery is too weak, must work on two AAs. I see slight image differences between powering by USB and using a single AA battery, and sometimes SD card just don't record anything if the battery is too low.
+- BMP converter added but not tested yet. This part is more difficult than I though initially as converting 2D tiles to 2D pixels in a 1D array is tricky.
 
 ## To do
 - deal with the tear mode (in core 0 or core 1, not sure)
