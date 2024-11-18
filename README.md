@@ -1,10 +1,18 @@
 # The TinyGB Printer /// A WORK IN PROGRESS
 
-The tiniest possible Game Boy printer emulator storing images on SD card made with easily available parts and easy to assemble. Basically a simplified NeoGB printer. 100% compatibility with all known GB/GBC games, homebrews included.
+The tiniest possible Game Boy printer emulator storing images on SD card made with easily available parts and easy to assemble. Basically a demake of the [NeoGB printer](https://github.com/zenaro147/NeoGB-Printer) made by the same authors. The device has 100% compatibility with all known GB/GBC games, homebrews included.
 
-## Libraries required for Arduino IDE
-- [RP2040 core for Arduino IDE](https://github.com/earlephilhower/arduino-pico)
-- [Adafruit Neopixel for Arduino IDE](https://github.com/adafruit/Adafruit_NeoPixel)
+## Why ?
+Because people are working on a diversity of OS and do not want to learn how to use a new programming langage or a new IDE to get their Game Boy Camera images out of their cartridges. Here everything is simple: build the device, drop the compiled binary to the Raspberry Pi Pico, print immediately and enjoy your images on the SD card.
+
+## Installation guide
+- After soldering everything, connect the Raspberry Pi Pico with a USB cable to your computer while pressing BOOT, drop the uf2 file to the USB folder poping and enjoy your device.
+- If you want to modify the code and compile it, install the [RP2040 core for Arduino IDE](https://github.com/earlephilhower/arduino-pico) and the [Adafruit Neopixel for Arduino IDE](https://github.com/adafruit/Adafruit_NeoPixel), choose the Waveshare RP2040 PiZero and compile/upload with the default options.
+
+## Easy to use
+- Switch on without touching anything, the LED flashes green, images are recorded automatically.
+- Switch on while pressing the pushbutton : the LED flashes blue, images are stacked together until you press the pushbutton again.
+- Switch on and the LED flashes red: SD card not connected or not formatted in FAT32.
 
 ## What have been done at the moment
 - a PCB with all individual functions working was done (works natively with the [Arduino emulator](https://github.com/mofosyne/arduino-gameboy-printer-emulator), access to LED and SD card OK).
