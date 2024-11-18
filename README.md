@@ -18,6 +18,9 @@ The tiniest possible Game Boy printer emulator storing images on SD card made wi
 - For the moment loosing the interrupt randomly when I access to the SD card... Adding a delay on core 1 seems to fix the issue.
 - BMP converter added but not tested yet
 
+## To do
+- deal with the tear mode (in core 0 or core 1, not sure)
+
 ## How do I want it to work ?
 - boot without pressing pushbutton: **automatic mode** (green LED), an image is closed automatically when an after margin is detected;
 - boot while pressing pushbutton: **tear mode** (blue LED), an image is closed only when you press the pushbutton. Pressing the pushbutton is like tearing paper;
