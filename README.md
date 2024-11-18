@@ -8,7 +8,7 @@ The tiniest possible Game Boy printer emulator storing images on SD card made wi
 
 ## What have been done at the moment
 - a PCB with all individual functions working was done (works natively with the [Arduino emulator](https://github.com/mofosyne/arduino-gameboy-printer-emulator), access to LED and SD card OK).
-- Starting from the NeoGB Printer code and removed/commented all ESP32/Wifi/LED/png specific command until it compiles for the rp2040 core. Removed all unneccessary dependencies. Pins not allocated, still the same as ESP32.
+- Starting from the NeoGB Printer code and removed/commented all ESP32/Wifi/LED/png specific command until it compiles for the rp2040 core. Removed all unneccessary dependencies. Pins not allocated, still the same as ESP32. Too complicated at the end, I prefer restarting from fresh.
 - Starting now from the mofosyne code. I think it will be simplier to rebuild from it while stealing chunks of the NeoGB Printer when necessary.
 - Support for the WS2812 internal LED in mofosyne code added.
 - Support for the SD card in mofosyne code added.
