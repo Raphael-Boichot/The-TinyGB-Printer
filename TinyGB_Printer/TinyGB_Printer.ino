@@ -28,8 +28,8 @@
 //Dev notes
 //Parse mode and decompressor are forced by default
 //Parse mode uses tons of variable to assess the state of the printer so it's easier to interface with an inner decoder
-#define CORE_0_SPEAKING false //for debug, better let only one core speaking at a time
-#define CORE_1_SPEAKING false //for debug, better let only one core speaking at a time
+#define CORE_0_SPEAKING false  //for debug, better let only one core speaking at a time
+#define CORE_1_SPEAKING false  //for debug, better let only one core speaking at a time
 
 #include <stdint.h>  // uint8_t
 #include <stddef.h>  // size_t
@@ -208,19 +208,19 @@ void loop() {  //core 0
   };
 }  // loop()
 
-void loop1()  //core 1
+void loop1()  //core 1 loop written by Raphaël BOICHOT, november 2024
 {
   if (PRINT_flag == 1) {
-    SD_card_access_Color = pixels.Color(intensity, 0, 0);  //RGB triplet
-    LED_WS2812_state(SD_card_access_Color, 1);
-    delay(500);  // if printing is ran immediately, it interferes with the interrupt...
+    SD_card_access_Color = pixels.Color(intensity, 0, 0);       //RGB triplet
+    BMP_decoder_color = pixels.Color(0, intensity, intensity);  //RGB triplet
+    delay(500);                                                 // if printing is ran immediately, it interferes with the interrupt...
     // It must be due to a voltage drop or some interrupt routines interfering, not sure
     // As we have plenty of time on core 1, it's not that a problem. Image must just be decoded before the next PRINT command
     PRINT_flag = 0;
     //preparing palette;
 
-    if (inner_palette==0x00){
-      inner_palette==0xE4; //se Game Boy Programming manual, palette 0x00 is a default palette interpreted as 0xE4 or 0b11100100
+    if (inner_palette == 0x00) {
+      inner_palette == 0xE4;  //see Game Boy Programming manual, palette 0x00 is a default palette interpreted as 0xE4 or 0b11100100
     }
 
     image_palette[3] = bitRead(inner_palette, 0) + 2 * bitRead(inner_palette, 1);
@@ -229,69 +229,73 @@ void loop1()  //core 1
     image_palette[0] = bitRead(inner_palette, 6) + 2 * bitRead(inner_palette, 7);
 
 
-    Serial.println("");
-    Serial.print("Packets to print: ");
-    Serial.println(DATA_packet_to_print, DEC);
-    Serial.print("Palette/GB to color/after margin: ");
-    Serial.print(inner_palette, HEX);
-    Serial.print("/");
-    Serial.print(image_palette[0], HEX);
-    Serial.print(image_palette[1], HEX);
-    Serial.print(image_palette[2], HEX);
-    Serial.print(image_palette[3], HEX);
-    Serial.print("/");
-    Serial.println(inner_lower_margin, HEX);
+    // Serial.println("");
+    // Serial.print("Packets to print: ");
+    // Serial.println(DATA_packet_to_print, DEC);
+    // Serial.print("Palette/GB to color/after margin: ");
+    // Serial.print(inner_palette, HEX);
+    // Serial.print("/");
+    // Serial.print(image_palette[0], HEX);
+    // Serial.print(image_palette[1], HEX);
+    // Serial.print(image_palette[2], HEX);
+    // Serial.print(image_palette[3], HEX);
+    // Serial.print("/");
+    // Serial.println(inner_lower_margin, HEX);
 
 
-//BMP converter is written to decode pixels line by line in order to ease future integration with png encoder for example (not planned but possible)
-//All the meat to decode the 2bpp Game Boy Tile Format is explained here (among other sources): https://www.huderlem.com/demos/gameboy2bpp.html
-//the bmp data are a simple one dimenstional array because there is no gain to have a 2D array, in particular when burning data to SD card
-memset(BMP_image_color, 0, sizeof(BMP_image_color));  //clean the whole image data array
-BMP_bytes_counter = 0;
-pixel_line=0;
-int max_tile_line=DATA_packet_to_print*2;
-Serial.print("Max lines of tiles: ");
-Serial.println(max_tile_line, DEC);
-int max_pixel_line=DATA_packet_to_print*16;
-Serial.print("Max lines of pixels to convert: ");
-Serial.println(max_pixel_line, DEC);
-//
-for (tile_line = 0; tile_line < max_tile_line; tile_line++){// This part fills 8 lines of pixels
-for (int i = 0; i < 8; i++){// This part fills a line of pixels
-offset_x = pixel_line*160;
-for (tile_column = 0; tile_column < 20; tile_column++){//we progress along 20 column tiles
-        local_byte_LSB = printer_memory_buffer_core_1[BMP_bytes_counter];
-        local_byte_MSB = printer_memory_buffer_core_1[BMP_bytes_counter+1];
-        for (int posx = 0; posx < 8; posx++) {
-          pixel_level = bitRead(local_byte_LSB, 7 - posx) + 2 * bitRead(local_byte_MSB, 7 - posx);
-          BMP_image_color[offset_x + posx] = BMP_palette[image_palette[pixel_level]];
-        }
-        BMP_bytes_counter=BMP_bytes_counter+16;//jump to the next tile in byte
-        offset_x=offset_x+8;//jump to the next tile in pixels
-}// This part fills a line of pixels
-Serial.print("BMP byte counter: ");
-Serial.println(BMP_bytes_counter, DEC);
-Serial.print("pixel_line: ");
-Serial.println(pixel_line, DEC);
-BMP_bytes_counter=BMP_bytes_counter-16*20 + 2; //shift to the next two bytes among 16 per tile, so the next line of pixels in a tile
-pixel_line=pixel_line+1;//jump to the next line
-}// This part fills 8 lines of pixels
-Serial.print("BMP byte counter: ");
-Serial.println(BMP_bytes_counter, DEC);
-BMP_bytes_counter=16*20*tile_line;
-}//this part fills the entire image
+    //BMP converter is written to decode pixels line by line in order to ease future integration with png encoder for example (not planned but possible)
+    //All the meat to decode the 2bpp Game Boy Tile Format is explained here (among other sources): https://www.huderlem.com/demos/gameboy2bpp.html
+    //the bmp data are a simple one dimenstional array because there is no gain to have a 2D array, in particular when burning data to SD card
+    LED_WS2812_state(BMP_decoder_color, 1);
+    memset(BMP_image_color, 0, sizeof(BMP_image_color));  //clean the whole image data array
+    BMP_bytes_counter = 0;
+    pixel_line = 0;
+    int max_tile_line = DATA_packet_to_print * 2;
+    // Serial.print("Max lines of tiles: ");
+    // Serial.println(max_tile_line, DEC);
+    int max_pixel_line = DATA_packet_to_print * 16;
+    // Serial.print("Max lines of pixels to convert: ");
+    // Serial.println(max_pixel_line, DEC);
+    //
+    for (tile_line = 0; tile_line < max_tile_line; tile_line++) {  // This part fills 8 lines of pixels
+      BMP_bytes_counter = 16 * 20 * tile_line;
+      for (int i = 0; i < 8; i++) {  // This part fills a line of pixels
+        offset_x = pixel_line * 160;
+        for (tile_column = 0; tile_column < 20; tile_column++) {  //we progress along 20 column tiles
+          local_byte_LSB = printer_memory_buffer_core_1[BMP_bytes_counter];
+          local_byte_MSB = printer_memory_buffer_core_1[BMP_bytes_counter + 1];
+          for (int posx = 0; posx < 8; posx++) {
+            pixel_level = bitRead(local_byte_LSB, 7 - posx) + 2 * bitRead(local_byte_MSB, 7 - posx);
+            BMP_image_color[offset_x + posx] = BMP_palette[image_palette[pixel_level]];
+          }
+          BMP_bytes_counter = BMP_bytes_counter + 16;  //jump to the next tile in byte
+          offset_x = offset_x + 8;                     //jump to the next tile in pixels
+        }                                              // This part fills a line of pixels
+        // Serial.print("BMP byte counter: ");
+        // Serial.println(BMP_bytes_counter, DEC);
+        // Serial.print("pixel_line: ");
+        // Serial.println(pixel_line, DEC);
+        BMP_bytes_counter = BMP_bytes_counter - 16 * 20 + 2;  //shift to the next two bytes among 16 per tile, so the next line of pixels in a tile
+        pixel_line = pixel_line + 1;                          //jump to the next line
+      }                                                       // This part fills 8 lines of pixels
+      // Serial.print("BMP byte counter: ");
+      // Serial.println(BMP_bytes_counter, DEC);
+    }  //this part fills the entire image
 
-Serial.print("BMP byte counter at the end: ");
-Serial.println(BMP_bytes_counter, DEC);
-Serial.print("pixel line at the end: ");
-Serial.println(pixel_line, DEC);
-//////////////////////////////////////////////end of BMP converter stuff
+    // Serial.print("BMP byte counter at the end: ");
+    // Serial.println(BMP_bytes_counter, DEC);
+    // Serial.print("pixel line at the end: ");
+    // Serial.println(pixel_line, DEC);
+
+    memset(printer_memory_buffer_core_1, 0, sizeof(printer_memory_buffer_core_1));  //clean the whole image data array
+    //////////////////////////////////////////////end of BMP converter stuff
+    LED_WS2812_state(SD_card_access_Color, 1);
 
     if (NEWFILE_flag == 1) {
       sprintf(storage_file_name, "/%05d/%07d.bmp", Next_dir, Next_ID);
-      Serial.println("This is a new file, Dummy BMP header is now written");
-      Serial.print("Burning: ");
-      Serial.println(storage_file_name);
+      // Serial.println("This is a new file, Dummy BMP header is now written");
+      // Serial.print("Burning: ");
+      // Serial.println(storage_file_name);
       NEWFILE_flag = 0;
       Pre_allocate_bmp_header(0, 0);  //creates a dummy BMP header
       File Datafile = SD.open(storage_file_name, FILE_WRITE);
@@ -300,25 +304,25 @@ Serial.println(pixel_line, DEC);
       Datafile.close();
     }
     //writing loop
-    Serial.println("Writing new packets to BMP file");
+    //Serial.println("Writing new packets to BMP file");
     File Datafile = SD.open(storage_file_name, FILE_WRITE);
     Datafile.write(BMP_image_color, 160 * 16 * DATA_packet_to_print);  //writes the data to SD card
     Datafile.close();
     lines_in_bmp_file = lines_in_bmp_file + 16 * DATA_packet_to_print;
-    Serial.print("Current lines in BMP file: ");
-    Serial.println(lines_in_bmp_file, DEC);
+    // Serial.print("Current lines in BMP file: ");
+    // Serial.println(lines_in_bmp_file, DEC);
     DATA_packet_to_print = 0;
 
     if (inner_lower_margin > 0) {  //the printer asks to feed paper, end of file
       CLOSE_flag = 1;
-      Serial.println("File will be closed after writing the current packets");
+      //Serial.println("File will be closed after writing the current packets");
     } else {
       CLOSE_flag = 0;
-      Serial.println("Continuing on existing file for next packets...");
+      //Serial.println("Continuing on existing file for next packets...");
     }
 
     if (CLOSE_flag == 1) {
-      Serial.println("Closing an existing file, finalising BMP header");  // now updating the BMP header
+      //Serial.println("Closing an existing file, finalising BMP header");  // now updating the BMP header
       Pre_allocate_bmp_header(160, lines_in_bmp_file);                    //number of lines will be updated now
       File Datafile = SD.open(storage_file_name, FILE_WRITE);
       Datafile.seek(0);                        //go to the beginning of the file
@@ -341,41 +345,41 @@ inline void gbp_parse_packet_loop(void) {
   for (int i = 0; i < gbp_serial_io_dataBuff_getByteCount(); i++) {
     if (gbp_pkt_processByte(&gbp_pktState, (const uint8_t)gbp_serial_io_dataBuff_getByte(), gbp_pktbuff, &gbp_pktbuffSize, sizeof(gbp_pktbuff))) {
       if (gbp_pktState.received == GBP_REC_GOT_PACKET) {
-        // Serial.print((char)'{');
-        // Serial.print("\"command\":\"");
-        // Serial.print(gbpCommand_toStr(gbp_pktState.command));
-        // Serial.print("\"");
+        Serial.print((char)'{');
+        Serial.print("\"command\":\"");
+        Serial.print(gbpCommand_toStr(gbp_pktState.command));
+        Serial.print("\"");
         if (gbp_pktState.command == GBP_COMMAND_INQUIRY) {
-          // Serial.print(", \"status\":{");
-          // Serial.print("\"LowBat\":");
-          // Serial.print(gpb_status_bit_getbit_low_battery(gbp_pktState.status) ? '1' : '0');
-          // Serial.print(",\"ER2\":");
-          // Serial.print(gpb_status_bit_getbit_other_error(gbp_pktState.status) ? '1' : '0');
-          // Serial.print(",\"ER1\":");
-          // Serial.print(gpb_status_bit_getbit_paper_jam(gbp_pktState.status) ? '1' : '0');
-          // Serial.print(",\"ER0\":");
-          // Serial.print(gpb_status_bit_getbit_packet_error(gbp_pktState.status) ? '1' : '0');
-          // Serial.print(",\"Untran\":");
-          // Serial.print(gpb_status_bit_getbit_unprocessed_data(gbp_pktState.status) ? '1' : '0');
-          // Serial.print(",\"Full\":");
-          // Serial.print(gpb_status_bit_getbit_print_buffer_full(gbp_pktState.status) ? '1' : '0');
-          // Serial.print(",\"Busy\":");
-          // Serial.print(gpb_status_bit_getbit_printer_busy(gbp_pktState.status) ? '1' : '0');
-          // Serial.print(",\"Sum\":");
-          // Serial.print(gpb_status_bit_getbit_checksum_error(gbp_pktState.status) ? '1' : '0');
-          // Serial.print((char)'}');
+          Serial.print(", \"status\":{");
+          Serial.print("\"LowBat\":");
+          Serial.print(gpb_status_bit_getbit_low_battery(gbp_pktState.status) ? '1' : '0');
+          Serial.print(",\"ER2\":");
+          Serial.print(gpb_status_bit_getbit_other_error(gbp_pktState.status) ? '1' : '0');
+          Serial.print(",\"ER1\":");
+          Serial.print(gpb_status_bit_getbit_paper_jam(gbp_pktState.status) ? '1' : '0');
+          Serial.print(",\"ER0\":");
+          Serial.print(gpb_status_bit_getbit_packet_error(gbp_pktState.status) ? '1' : '0');
+          Serial.print(",\"Untran\":");
+          Serial.print(gpb_status_bit_getbit_unprocessed_data(gbp_pktState.status) ? '1' : '0');
+          Serial.print(",\"Full\":");
+          Serial.print(gpb_status_bit_getbit_print_buffer_full(gbp_pktState.status) ? '1' : '0');
+          Serial.print(",\"Busy\":");
+          Serial.print(gpb_status_bit_getbit_printer_busy(gbp_pktState.status) ? '1' : '0');
+          Serial.print(",\"Sum\":");
+          Serial.print(gpb_status_bit_getbit_checksum_error(gbp_pktState.status) ? '1' : '0');
+          Serial.print((char)'}');
         }
         if (gbp_pktState.command == GBP_COMMAND_PRINT) {
-          // Serial.print(", \"sheets\":");
-          // Serial.print(gbp_pkt_printInstruction_num_of_sheets(gbp_pktbuff));
-          // Serial.print(", \"margin_upper\":");
-          // Serial.print(gbp_pkt_printInstruction_num_of_linefeed_before_print(gbp_pktbuff));
-          // Serial.print(", \"margin_lower\":");
-          // Serial.print(gbp_pkt_printInstruction_num_of_linefeed_after_print(gbp_pktbuff));
-          // Serial.print(", \"pallet\":");
-          // Serial.print(gbp_pkt_printInstruction_palette_value(gbp_pktbuff));
-          // Serial.print(", \"density\":");
-          // Serial.print(gbp_pkt_printInstruction_print_density(gbp_pktbuff));
+          Serial.print(", \"sheets\":");
+          Serial.print(gbp_pkt_printInstruction_num_of_sheets(gbp_pktbuff));
+          Serial.print(", \"margin_upper\":");
+          Serial.print(gbp_pkt_printInstruction_num_of_linefeed_before_print(gbp_pktbuff));
+          Serial.print(", \"margin_lower\":");
+          Serial.print(gbp_pkt_printInstruction_num_of_linefeed_after_print(gbp_pktbuff));
+          Serial.print(", \"pallet\":");
+          Serial.print(gbp_pkt_printInstruction_palette_value(gbp_pktbuff));
+          Serial.print(", \"density\":");
+          Serial.print(gbp_pkt_printInstruction_print_density(gbp_pktbuff));
 
           ////////////////////////////////////////////////////////////////////////BOICHOT
           DATA_packet_to_print = DATA_packet_counter;  //counter for packets transmitted to be transmitted to core 1
@@ -393,17 +397,17 @@ inline void gbp_parse_packet_loop(void) {
           LED_WS2812_state(WS2812_Color, 1);
           //!{"command":"DATA", "compressed":0, "more":0}
 #ifdef GBP_FEATURE_PARSE_PACKET_USE_DECOMPRESSOR
-          // Serial.print(", \"compressed\":0");  // Already decompressed by us, so no need to do so
+          Serial.print(", \"compressed\":0");  // Already decompressed by us, so no need to do so
 #else
-          // Serial.print(", \"compressed\":");
-          // Serial.print(gbp_pktState.compression);
+          Serial.print(", \"compressed\":");
+          Serial.print(gbp_pktState.compression);
 #endif
-          // Serial.print(", \"more\":");
-          // Serial.print((gbp_pktState.dataLength != 0) ? '1' : '0');
+          Serial.print(", \"more\":");
+          Serial.print((gbp_pktState.dataLength != 0) ? '1' : '0');
           LED_WS2812_state(WS2812_Color, 0);
         }
-        // Serial.println((char)'}');
-        // Serial.flush();
+        Serial.println((char)'}');
+        Serial.flush();
       } else {
 #ifdef GBP_FEATURE_PARSE_PACKET_USE_DECOMPRESSOR
         // Required for more complex games with compression support
@@ -412,14 +416,14 @@ inline void gbp_parse_packet_loop(void) {
             // Got Tile
             for (int i = 0; i < GBP_TILE_SIZE_IN_BYTE; i++) {
               const uint8_t data_8bit = tileBuff.tile[i];
-              // if (i == GBP_TILE_SIZE_IN_BYTE - 1) {
-              //   Serial.print((char)nibbleToCharLUT[(data_8bit >> 4) & 0xF]);
-              //   Serial.println((char)nibbleToCharLUT[(data_8bit >> 0) & 0xF]);  // use println on last byte to reduce serial calls
-              // } else {
-              //   Serial.print((char)nibbleToCharLUT[(data_8bit >> 4) & 0xF]);
-              //   Serial.print((char)nibbleToCharLUT[(data_8bit >> 0) & 0xF]);
-              //   Serial.print((char)' ');
-              // }
+              if (i == GBP_TILE_SIZE_IN_BYTE - 1) {
+                Serial.print((char)nibbleToCharLUT[(data_8bit >> 4) & 0xF]);
+                Serial.println((char)nibbleToCharLUT[(data_8bit >> 0) & 0xF]);  // use println on last byte to reduce serial calls
+              } else {
+                Serial.print((char)nibbleToCharLUT[(data_8bit >> 4) & 0xF]);
+                Serial.print((char)nibbleToCharLUT[(data_8bit >> 0) & 0xF]);
+                Serial.print((char)' ');
+              }
 
               ////////////////////////////////////////////////////////////////////////BOICHOT
               printer_memory_buffer_core_0[DATA_bytes_counter] = data_8bit;
@@ -441,22 +445,22 @@ inline void gbp_parse_packet_loop(void) {
           // Got Tile
           for (int i = 0; i < gbp_pktbuffSize; i++) {
             const uint8_t data_8bit = gbp_pktbuff[i];
-            // if (i == gbp_pktbuffSize - 1) {
-            //   Serial.print((char)nibbleToCharLUT[(data_8bit >> 4) & 0xF]);
-            //   Serial.println((char)nibbleToCharLUT[(data_8bit >> 0) & 0xF]);  // use println on last byte to reduce serial calls
-            // } else {
-            //   Serial.print((char)nibbleToCharLUT[(data_8bit >> 4) & 0xF]);
-            //   Serial.print((char)nibbleToCharLUT[(data_8bit >> 0) & 0xF]);
-            //   Serial.print((char)' ');
-            // }
+            if (i == gbp_pktbuffSize - 1) {
+              Serial.print((char)nibbleToCharLUT[(data_8bit >> 4) & 0xF]);
+              Serial.println((char)nibbleToCharLUT[(data_8bit >> 0) & 0xF]);  // use println on last byte to reduce serial calls
+            } else {
+              Serial.print((char)nibbleToCharLUT[(data_8bit >> 4) & 0xF]);
+              Serial.print((char)nibbleToCharLUT[(data_8bit >> 0) & 0xF]);
+              Serial.print((char)' ');
+            }
 
             ////////////////////////////////////////////////////////////////////////BOICHOT
             printer_memory_buffer_core_0[DATA_bytes_counter] = data_8bit;
             DATA_bytes_counter++;
             if (DATA_bytes_counter % 640 == 0) {
               DATA_packet_counter++;
-              Serial.println("Packet added");
-              Serial.println(DATA_packet_counter, DEC);
+              // Serial.println("Packet added");
+              // Serial.println(DATA_packet_counter, DEC);
             }
             ///////////////////////////////////////////////////////////////////////
           }

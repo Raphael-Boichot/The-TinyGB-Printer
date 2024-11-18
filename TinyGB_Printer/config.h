@@ -43,6 +43,7 @@ unsigned char pixel_level = 0;                              //storage byte for c
 unsigned long lines_in_bmp_file = 0;                        //to keep tack of image file length
 uint8_t intensity = 150;                                    //WS2812 intensity 255 is a death ray, 10 to 15 is normal
 uint32_t SD_card_access_Color;
+uint32_t BMP_decoder_color;
 bool SDcard_READY = 0;
 bool PRINT_flag = 0;
 bool CLOSE_flag = 0;
