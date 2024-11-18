@@ -146,3 +146,5 @@ In *Italics* game working fine in automatic mode, in **bold** games requiring th
 - *VS Lemmings (VS.レミングス)*
 
 ## Aknowledgements
+- Zenaro
+- Mofosyne
