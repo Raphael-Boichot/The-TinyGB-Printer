@@ -254,6 +254,7 @@ void loop1()  //core 1 loop written by Raphaël BOICHOT, november 2024
     //BMP converter is written to decode pixels line by line in order to ease future integration with png encoder for example (not planned but possible)
     //All the meat to decode the 2bpp Game Boy Tile Format is explained here (among other sources): https://www.huderlem.com/demos/gameboy2bpp.html
     //the bmp data are a simple one dimenstional array because there is no gain to have a 2D array, in particular when burning data to SD card
+    //As BMP format is quite simple, I prefer do my own version to have perfect control on everything for future features
     LED_WS2812_state(BMP_decoder_color, 1);
     memset(BMP_image_color, 0, sizeof(BMP_image_color));  //clean the whole image data array
     BMP_bytes_counter = 0;
