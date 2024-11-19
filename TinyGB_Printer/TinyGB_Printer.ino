@@ -209,6 +209,11 @@ void loop() {  //core 0
 }  // loop()
 
 void loop1()  //core 1 loop written by Raphaël BOICHOT, november 2024
+// current status: when any access to SD card is called, it interferes with the printer side
+// as the two cores are independant and the SD card not on the same SPI group as the serial cable, I do not think this is software issue
+// but access to SD in writing mode is known to pull spikes of current. SD card pulls direcly current from the 3.3 volts line through a 22 µF cap
+// two solutions: powering SD card from the +5V and it's own power converter or finding the capacitance necessary to smooth current spikes pulled from SD card
+// maybe some magic caps are also required on SCK, SIN and SOUT. Have to try.
 {
   if (PRINT_flag == 1) {
     SD_card_access_Color = pixels.Color(intensity, 0, 0);       //RGB triplet
