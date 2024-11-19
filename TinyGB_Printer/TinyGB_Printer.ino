@@ -217,6 +217,7 @@ void loop1()  //core 1 loop written by Raphaël BOICHOT, november 2024
 // maybe some magic caps are also required on SCK, SIN and SOUT, probably around dozens of pF. Have to try.
 // also a make dir at boot would limit the access to SD card for the first file to be written. Creating a dir takes very long time (about 1 second).
 // only software part to write is the tear button for games not using after margin to close images but it is quite easy to do, not a priority
+// oh, and I use the PARSE mode because it integrates the decompression algorithm and is easier to interface So I basically remove all unnecessary stuff to have a clear view of the code 
 {
   if (PRINT_flag == 1) {
     SD_card_access_Color = pixels.Color(intensity, 0, 0);       //RGB triplet
