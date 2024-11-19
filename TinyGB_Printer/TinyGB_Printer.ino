@@ -214,13 +214,13 @@ void loop1()  //core 1 loop written by Raphaël BOICHOT, november 2024
 // but access to SD in writing mode is known to pull spikes of current. SD card pulls direcly current from the 3.3 volts line through a 22 µF cap
 // two solutions: powering SD card from the +5V and it's own power converter or finding the capacitance necessary to smooth current spikes pulled from SD card
 // maybe some magic caps are also required on SCK, SIN and SOUT. Have to try.
+// also a make dir at boot would limit the access to SD card. Creating a dir takes very long time (about 1 second).
 {
   if (PRINT_flag == 1) {
     SD_card_access_Color = pixels.Color(intensity, 0, 0);       //RGB triplet
     BMP_decoder_color = pixels.Color(0, intensity, intensity);  //RGB triplet
-    delay(500);                                                 // if printing is ran immediately, it interferes with the interrupt...
-    // It must be due to a voltage drop or some interrupt routines interfering, not sure
-    // As we have plenty of time on core 1, it's not that a problem. Image must just be decoded before the next PRINT command
+    delay(500);                                                 // this is to delay the jamming due to SD access within a DATA packet to avoid protocol crash
+    // this is a transitory fix of course
     PRINT_flag = 0;
     //preparing palette;
 
