@@ -211,10 +211,12 @@ void loop() {  //core 0
 void loop1()  //core 1 loop written by Raphaël BOICHOT, november 2024
 // current status: when any access to SD card is called, it interferes with the printer side
 // as the two cores are independant and the SD card not on the same SPI group as the serial cable, I do not think this is software issue
-// but access to SD in writing mode is known to pull spikes of current. SD card pulls direcly current from the 3.3 volts line through a 22 µF cap
-// two solutions: powering SD card from the +5V and it's own power converter or finding the capacitance necessary to smooth current spikes pulled from SD card
-// maybe some magic caps are also required on SCK, SIN and SOUT. Have to try.
-// also a make dir at boot would limit the access to SD card. Creating a dir takes very long time (about 1 second).
+// but access to SD in writing mode is known to pull spikes of current. SD card pulls direcly current from the main 3.3 volts line through a 22 µF cap
+// two solutions: powering SD card from the +5V and its own power converter or finding the capacitance necessary to filter current spikes pulled from SD card
+// on the DashBoy camera I solved that by adding a giant filterig cap of 2000 µF (SD draws current from 5V line) but the main buck boost converter could handle that, not the Pico internal regulator
+// maybe some magic caps are also required on SCK, SIN and SOUT, probably around dozens of pF. Have to try.
+// also a make dir at boot would limit the access to SD card for the first file to be written. Creating a dir takes very long time (about 1 second).
+// only software part to write is the tear button for games not using after margin to close images but it is quite easy to do, not a priority
 {
   if (PRINT_flag == 1) {
     SD_card_access_Color = pixels.Color(intensity, 0, 0);       //RGB triplet
