@@ -26,9 +26,12 @@ Because people are working on a diversity of OS and do not want to learn how to 
 - For the moment loosing the interrupt randomly when I access to the SD card... Adding a dead time on core 1 after PRINT command seems to fix the issue. Not sure if this is voltage related or some interrupt interference. I think a single AA battery is too weak, must work on two AAs. I see slight image differences between powering by USB and using a single AA battery, and sometimes SD card just don't record anything if the battery is too low.
 - BMP converter added but not tested yet. This part is more difficult than I though initially as converting 2D tiles to 2D pixels in a 1D array is tricky.
 - BMP converter now working but writing to SD while communicating interferes with printer protocol despite the two core being independant. No idea how to solve that.
+- Glitches removed by using an SD shield powered by the 5V line (own 3.3V concerter, not using the pico one).
 
 ## To do
 - deal with the tear mode (in core 0 or core 1, not sure)
+- update the PCB
+- test a gazillion game
 
 ## How do I want it to work ?
 - boot without pressing pushbutton: **automatic mode** (green LED), an image is closed automatically when an after margin is detected;
