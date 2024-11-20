@@ -33,6 +33,9 @@ Because people are working on a diversity of OS and do not want to learn how to 
 - update the PCB
 - test a gazillion game
 
+## To do maybe in the future
+- add png converter / upscaler
+
 ## How do I want it to work ?
 - boot without pressing pushbutton: **automatic mode** (green LED), an image is closed automatically when an after margin is detected;
 - boot while pressing pushbutton: **tear mode** (blue LED), an image is closed only when you press the pushbutton. Pressing the pushbutton is like tearing paper;
@@ -43,7 +46,6 @@ Because people are working on a diversity of OS and do not want to learn how to 
 ![](Tiny_GB_Printer.jpg)
 
 ## List of compatible game (tested)
-
 In *Italics* game working fine in automatic mode, in **bold** games requiring the pushbutton to tear paper, or tear mode. All known homebrews to date are compatible with the automatic mode.
 
 - *1942 (never released in Japan)*
