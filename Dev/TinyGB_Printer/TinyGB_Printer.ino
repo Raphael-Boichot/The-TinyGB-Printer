@@ -286,7 +286,7 @@ void loop1()  //core 1 loop written by Raphaël BOICHOT, november 2024
       store_next_ID("/tiny.sys", Next_ID, Next_dir);
       NEWFILE_flag = 1;
       lines_in_bmp_file = 0;
-      //png_upscaler(storage_file_name, "/test.png", 4);
+      png_upscaler(storage_file_name, "/test.png", 4);
     }
     LED_WS2812_state(SD_card_access_Color, 0);
   }
