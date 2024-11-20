@@ -215,7 +215,7 @@ void loop1()  //core 1 loop written by Raphaël BOICHOT, november 2024
     PRINT_flag = 0;
     //preparing palette;
     if (inner_palette == 0x00) {
-      inner_palette == 0xE4;  //see Game Boy Programming manual, palette 0x00 is a default palette interpreted as 0xE4 or 0b11100100
+      inner_palette = 0xE4;  //see Game Boy Programming manual, palette 0x00 is a default palette interpreted as 0xE4 or 0b11100100
     }
     image_palette[0] = bitRead(inner_palette, 0) + 2 * bitRead(inner_palette, 1);
     image_palette[1] = bitRead(inner_palette, 2) + 2 * bitRead(inner_palette, 3);
