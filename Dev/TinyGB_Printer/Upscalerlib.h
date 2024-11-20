@@ -55,8 +55,6 @@ void png_upscaler(char input[], char output[], int scale_factor) {
         index = 0;
         for (unsigned k = 0; k < w; k++) {
           pixel = file.read();
-          junk = file.read();
-          junk = file.read();
           if (pixel == 0xFF) octet = 0x03;
           if (pixel == 0xAA) octet = 0x02;
           if (pixel == 0x55) octet = 0x01;

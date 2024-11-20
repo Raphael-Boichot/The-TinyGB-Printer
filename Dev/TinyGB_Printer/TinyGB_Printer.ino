@@ -286,6 +286,7 @@ void loop1()  //core 1 loop written by Raphaël BOICHOT, november 2024
       store_next_ID("/tiny.sys", Next_ID, Next_dir);
       NEWFILE_flag = 1;
       lines_in_bmp_file = 0;
+      //png_upscaler(storage_file_name, "/test.png", 4);
     }
     LED_WS2812_state(SD_card_access_Color, 0);
   }
@@ -475,13 +476,13 @@ void Tiny_printer_preparation() {
     Serial.println("// SD card detected, no switch to emulator mode");
   } else {
     SDcard_READY = 0;
-    WS2812_Color = pixels.Color(intensity, 0, 0);  //RGB triplet
+    uint32_t WS2812_SD_crash = pixels.Color(intensity, 0, 0);  //RGB triplet
     Serial.println("// SD card not detected, images will not be stored. SD card can still be inserted now");
     while (!SD.begin(SD_CS, SPI1)) {
-      LED_WS2812_state(WS2812_Color, 1);
-      delay(500);
-      LED_WS2812_state(WS2812_Color, 0);
-      delay(500);
+      LED_WS2812_state(WS2812_SD_crash, 1);
+      delay(200);
+      LED_WS2812_state(WS2812_SD_crash, 0);
+      delay(200);
     }
   }
   for (int i = 0; i < 20; i++) {  // For each pixel..
