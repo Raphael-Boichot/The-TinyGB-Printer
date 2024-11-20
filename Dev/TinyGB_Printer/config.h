@@ -30,7 +30,8 @@ char storage_file_name[64];                                 //character string t
 char storage_file_dir[64];                                  //character string to store images
 unsigned char inner_palette;                                //inner palette to use for core 1
 unsigned char inner_lower_margin;                           //inner margin to use for core 1
-unsigned char BMP_palette[4] = { 0x00, 0x55, 0xAA, 0xFF };  //colors as they will appear in the bmp file and display after dithering
+//unsigned char BMP_palette[4] = { 0x00, 0x55, 0xAA, 0xFF };  //colors as they will appear in the bmp file and display after dithering
+unsigned char BMP_palette[4] = { 0xFF, 0xAA, 0x55, 0x00 };  //colors as they will appear in the bmp file and display after dithering
 unsigned char image_palette[4] = { 0, 0, 0, 0 };            //2 bpp colors refering to BMP_palette[4]
 unsigned int DATA_bytes_counter = 0;                        //counter for data bytes
 unsigned int BMP_bytes_counter = 0;                         //counter for data bytes
@@ -39,7 +40,7 @@ unsigned char DATA_packet_counter = 0;                      //counter for packet
 unsigned char DATA_packet_to_print = 0;                     //counter for packets transmitted for core 1
 unsigned char local_byte_LSB = 0;                           //storage byte for conversion
 unsigned char local_byte_MSB = 0;                           //storage byte for conversion
-unsigned int  tile_column, tile_line, pixel_line = 0;       //storage byte for conversion
+unsigned int tile_column, tile_line, pixel_line = 0;        //storage byte for conversion
 unsigned char pixel_level = 0;                              //storage byte for conversion
 unsigned long lines_in_bmp_file = 0;                        //to keep tack of image file length
 uint8_t intensity = 150;                                    //WS2812 intensity 255 is a death ray, 10 to 15 is normal
