@@ -1,20 +1,20 @@
 # The TinyGB Printer - A portable Game Boy Printer emulator
 
-The tiniest possible Game Boy printer emulator storing images on SD card made with easily available parts and easy to assemble. Basically a demake of the [NeoGB printer](https://github.com/zenaro147/NeoGB-Printer) made by the same authors. The device has 100% compatibility with all known GB/GBC games, homebrews included. It stores the printed images in 4x PNG by default.
+The tiniest possible Game Boy printer emulator storing images on SD card made with easily available parts and easy to assemble. Basically a demake of the [NeoGB printer](https://github.com/zenaro147/NeoGB-Printer) made by the same authors. The device has 100% compatibility with all known GB/GBC games, homebrews included. It stores the printed images in pixel perfect 4x PNG by default.
 
-## Why ?
-Because people are working on a diversity of OS and do not want to learn how to use a new programming langage or a new IDE to get their Game Boy Camera images out of their cartridges. Here everything is simple: build the device, drop the compiled binary to the Raspberry Pi Pico, print immediately and enjoy your images on the SD card.
+## Yet a new printer emulator, what's different ?
+Because people are working on a diversity of OS and do not want to learn how to use a new programming langage or a new IDE to get their Game Boy Camera images out of their precious saves. Here everything is simple: build the device, drop the compiled binary to it, print, and publish immediately your images from the SD card.
 
 ## Easy to install
 - After soldering everything, connect the Raspberry Pi Pico with a USB cable to your computer while pressing BOOT, drop the uf2 file to the USB folder poping and enjoy your device.
 - If you want to modify the code and compile it, use the [Arduino IDE](https://www.arduino.cc/en/software) equiped with the [RP2040 core for Arduino IDE](https://github.com/earlephilhower/arduino-pico). Then from the Arduino library manager install the [PNGEnc library](https://github.com/bitbank2/PNGenc) and the [Adafruit Neopixel for Arduino IDE](https://github.com/adafruit/Adafruit_NeoPixel), choose the Waveshare RP2040 PiZero and compile/upload with the default options.
 
 ## Easy to use
-- Switch device on without touching anything, the LED flashes green, images are recorded automatically. This is perfect for the Game Boy Camera for example. Multi-print is of course supported.
-- Switch device on while pressing the pushbutton : the LED flashes blue, images are stacked together in a single file until you press the pushbutton again. Some rare games require this (see compatibility list).
+- Switch the device on without touching anything, the LED flashes green, images are recorded automatically. This is perfect for the Game Boy Camera for example. Multi-print is of course supported.
+- Switch the device on while pressing the pushbutton : the LED flashes blue, all images are stacked together in a single file until you press the pushbutton to "tear paper". Some rare games require this (see compatibility list).
 - Switch device on and the LED flashes red: SD card not connected or not formatted in FAT32. SD card can be inserted even at this step.
 
-## Easy to fabricate
+## Cheap to fabricate
 **Parts to order:**
 - [The PCB](/PCB). Order at [JLCPCB.com](https://jlcpcb.com/) (just drop the gerber .zip to the site and use default options). VAT is paid when ordering so no bad surprise for European customers.
 - [A Raspberry Pi Pico Zero](https://fr.aliexpress.com/item/1005005862794169.html). Just check pinout if seller is not the same.
@@ -38,7 +38,7 @@ Because people are working on a diversity of OS and do not want to learn how to 
 ## Showcase
 ![](Tiny_GB_Printer.jpg)
 
-## List of compatible game (tested)
+## 100% compatibility with all knwon games using the printer
 In *Italics* game working fine in automatic mode, in **bold** games requiring the pushbutton to tear paper, or tear mode. All known homebrews to date are compatible with the automatic mode.
 
 - *1942 (never released in Japan)*
