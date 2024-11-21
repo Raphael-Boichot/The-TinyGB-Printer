@@ -29,9 +29,8 @@ Because people are working on a diversity of OS and do not want to learn how to 
 - Glitches removed by using an SD shield powered by the 5V line (own 3.3V concerter, not using the pico one).
 
 ## To do
-- deal with the tear mode (in core 0 or core 1, not sure)
-- update the PCB
-- test a gazillion game
+- fix the png upscaler from NeoGB Printer
+- fix the power management on the board
 
 ## To do maybe in the future
 - add png converter / upscaler
