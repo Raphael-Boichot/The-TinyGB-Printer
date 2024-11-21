@@ -1,4 +1,4 @@
-# The TinyGB Printer /// A WORK IN PROGRESS
+# The TinyGB Printer - A portable Game Boy Printer emulator
 
 The tiniest possible Game Boy printer emulator storing images on SD card made with easily available parts and easy to assemble. Basically a demake of the [NeoGB printer](https://github.com/zenaro147/NeoGB-Printer) made by the same authors. The device has 100% compatibility with all known GB/GBC games, homebrews included.
 
@@ -15,7 +15,7 @@ Because people are working on a diversity of OS and do not want to learn how to 
 - Switch device on and the LED flashes red: SD card not connected or not formatted in FAT32. SD card can be inserted even at this step.
 
 ## Easy to fabricate
-Parts to order: 
+**Parts to order:**
 - [The PCB](/PCB). Order at [JLCPCB.com](https://jlcpcb.com/) (just drop the gerber .zip to the site and use default options). VAT is paid when ordering so no bad surprise for European customers.
 - [A Raspberry Pi Pico Zero](https://fr.aliexpress.com/item/1005005862794169.html). Just check pinout if seller is not the same.
 - [A generic MicroSd shield](https://fr.aliexpress.com/item/1005005302035188.html) without internal power converter. The most simple.
@@ -28,7 +28,7 @@ Parts to order:
 - [A AMS1117-3.3V converter](https://fr.aliexpress.com/item/4001104149446.html). The SD card is powered independently by this converter as the Pi Pico puny onboard converter is not powerfull enough.
 - A [2xAA](https://fr.aliexpress.com/item/4000980371784.html) or [2xAAA](https://fr.aliexpress.com/item/1005004195965365.html) battery box with switch. Single AA battery is a bit too weak to power the device reliably (it can work or not).
 
-How to make it:
+**How to make it:**
 - Mount the Pi Pico, the SD shield, the level shifter and the step-up converter on pin headers.
 - Solder the caps and the 3.3V converter. They are surface mount but big enough to be soldered easily.
 - Solder all parts with minimal clearance against the PCB.
