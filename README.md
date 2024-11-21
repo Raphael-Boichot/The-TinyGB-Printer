@@ -32,7 +32,7 @@ A new folder is created at each boot. Each image file has a unique ID. Flashes d
 - [A GBA/GBC Game Boy serial slot](https://fr.aliexpress.com/item/1005006361884480.html). They can be cheap or not depending on the seller, do not hesistate to change.
 - [A 6x6 mm pushbutton](https://fr.aliexpress.com/item/1005003938244847.html), whatever height. The softer the better.
 - [3x22 µF caps with a 1206](https://fr.aliexpress.com/item/1005006022131059.html) (10 to 50 µF is OK if you have spares).
-- [A AMS1117-3.3V converter](https://fr.aliexpress.com/item/4001104149446.html). The SD card is powered independently by this converter as the Pi Pico puny onboard converter is not powerfull enough.
+- [An AMS1117-3.3V converter](https://fr.aliexpress.com/item/4001104149446.html). The SD card is powered independently by this converter as the Pi Pico puny onboard converter is not powerfull enough.
 - A [2xAA](https://fr.aliexpress.com/item/4000980371784.html) or [2xAAA](https://fr.aliexpress.com/item/1005004195965365.html) battery box with switch. Single AA battery is a bit too weak to power the device reliably (it can work or not).
 
 **How to make it:**
