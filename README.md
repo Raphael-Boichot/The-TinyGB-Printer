@@ -18,7 +18,7 @@ Because people are working on a diversity of OS and do not want to learn how to 
 **Parts to order:**
 - [The PCB](/PCB). Order at [JLCPCB.com](https://jlcpcb.com/) (just drop the gerber .zip to the site and use default options). VAT is paid when ordering so no bad surprise for European customers.
 - [A Raspberry Pi Pico Zero](https://fr.aliexpress.com/item/1005005862794169.html). Just check pinout if seller is not the same.
-- [A generic MicroSd shield](https://fr.aliexpress.com/item/1005005302035188.html) without internal power converter. The most simple.
+- [A bare MicroSD shield](https://fr.aliexpress.com/item/1005005302035188.html) without internal power converter. The most simple.
 - [A 4 gates level shifter](https://fr.aliexpress.com/item/1005004560297038.html). The Pi Pico pins are not 5V rated, so the need for a level shifter.
 - [A 5V DC-DC step-up converter](https://fr.aliexpress.com/item/32809095271.html), 0.9-5V (input) to 5V (output).
 - [Pin headers](https://fr.aliexpress.com/item/1005007324368709.html) with 2.54 mm spacing.
