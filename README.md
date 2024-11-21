@@ -15,14 +15,16 @@ Because people are working on a diversity of OS and do not want to learn how to 
 - Switch on and the LED flashes red: SD card not connected or not formatted in FAT32.
 
 ## Easy to fabricate
-- [A Raspberry Pi Pico Zero]()
-- [A generic MicroSd module]()
-- [A 5V DC-DC buck boost converter]()
-- [A GBA/GBC Game Boy serial slot]()
+- [The PCB](). Order at [JLCPCB.com](https://jlcpcb.com/) (just drop the gerber .zip to the site and use default options). VAT is paid when ordering so no bad surprise for European customers.
+- [A Raspberry Pi Pico Zero](https://fr.aliexpress.com/item/1005005862794169.html). Just check pinout if seller is not the same.
+- [A generic MicroSd shield](https://fr.aliexpress.com/item/1005005302035188.html) without internal power converter. The most simple.
+- [A 5V DC-DC step-up converter](https://fr.aliexpress.com/item/32809095271.html), 0.9-5V (input) to 5V (output).
+- Pin headers.
+- [A GBA/GBC Game Boy serial slot](https://fr.aliexpress.com/item/1005006361884480.html).
 - [A 6x6 mm pushbutton]()
 - [3x22 µF caps with a 1206]()
-- [A 3.3 volts conveter]()
-- [A 2xAA or 2xAAA battery box with switch]()
+- [A AMS1117-3.3V converter](https://fr.aliexpress.com/item/4001104149446.html). The SD card is powered independently by this converter.
+- A [2xAA](https://fr.aliexpress.com/item/4000980371784.html) or [2xAAA](https://fr.aliexpress.com/item/1005004195965365.html) battery box with switch.
 
 ## What have been done at the moment
 - a PCB with all individual functions working was done (works natively with the [Arduino emulator](https://github.com/mofosyne/arduino-gameboy-printer-emulator), access to LED and SD card OK).
