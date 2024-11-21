@@ -38,8 +38,9 @@ Because people are working on a diversity of OS and do not want to learn how to 
 ## Showcase
 ![](Tiny_GB_Printer.jpg)
 
-## 100% compatibility with all knwon games using the printer
-In *Italics* game working fine in automatic mode, in **bold** games requiring the pushbutton to tear paper, or tear mode. All known homebrews to date are compatible with the automatic mode.
+## 100% compatibility with all known games using the Game Boy Printer
+In *Italics* game working fine in automatic mode, in **bold** games requiring the pushbutton to tear paper, or tear mode. 
+All known homebrews to date are compatible with the automatic mode (like Photo!).
 
 - *1942 (never released in Japan)*
 - *Alice in Wonderland (never released in Japan)*
