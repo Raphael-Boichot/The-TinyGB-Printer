@@ -27,6 +27,7 @@ Because people are working on a diversity of OS and do not want to learn how to 
 - BMP converter added but not tested yet. This part is more difficult than I though initially as converting 2D tiles to 2D pixels in a 1D array is tricky.
 - BMP converter now working but writing to SD while communicating interferes with printer protocol despite the two core being independant. No idea how to solve that.
 - Glitches removed by using an SD shield powered by the 5V line (own 3.3V concerter, not using the pico one).
+- Lot of game tested and working when printing in 1x BMP, but bugs on the png upscaler
 
 ## To do
 - fix the png upscaler from NeoGB Printer
