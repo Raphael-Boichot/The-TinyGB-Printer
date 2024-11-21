@@ -160,4 +160,4 @@ The code and current design come as it. If you're not happy with the current har
 
 ## Aknowledgements
 - [Rafael Zenaro](https://github.com/zenaro147) because I stole chunks of code and ideas from the [NeoGB Printer project](https://github.com/zenaro147/NeoGB-Printer). This project is basically a demake.
-- [Brian Khuu](https://github.com/mofosyne) for the emulator code I have butchered here.
+- [Brian Khuu](https://github.com/mofosyne) for the emulator code I have butchered until it worked with my janky code.
