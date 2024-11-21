@@ -26,13 +26,16 @@
 #define DG 0xAA  //palette Dark Gray
 #define LG 0x55  //palette Light Gray
 #define W 0xFF   //palette White
+#define PNG_upscaling_factor 4
+#define CORE_0_VERBOSE false  //for debug, better let only one core speaking at a time
+#define PNG_OUTPUT false
 
 unsigned int Next_ID, Next_dir;                       //for directories and filenames
 unsigned char printer_memory_buffer_core_0[9 * 640];  //Game Boy printer buffer of 9*640 bytes (maximum possible), core 0
 unsigned char printer_memory_buffer_core_1[9 * 640];  //Game Boy printer buffer of 9*640 bytes (maximum possible), core 1
 unsigned char BMP_image_color[144 * 160];             //color RGB image for BMP, real color known from palette (maximum possible), core 1
 char png_storage_file_name[64];                       //character string to store images
-char storage_file_name[64];                           //character string to store images
+char bmp_storage_file_name[64];                           //character string to store images
 char storage_file_dir[64];                            //character string to store images
 unsigned char inner_palette;                          //inner palette to use for core 1
 unsigned char inner_lower_margin;                     //inner margin to use for core 1
