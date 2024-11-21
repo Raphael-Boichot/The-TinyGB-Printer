@@ -2,7 +2,7 @@
 
 The tiniest possible Game Boy printer emulator storing images on SD card made with easily available parts and easy to assemble. Basically a demake of the [NeoGB printer](https://github.com/zenaro147/NeoGB-Printer), made by the same authors. The device has 100% compatibility with all known GB/GBC games, homebrews included. It stores the printed images in pixel perfect 4x PNG by default.
 
-## Yet a new printer emulator, what's different ?
+## Yet another printer emulator ! what's different ?
 This emulator does not require any converter, it's like a [BitBoy](https://gameboyphoto.bigcartel.com/product/bitboy) but open access and much cheaper. This allows people working on a diversity of OS to get their images out of their precious saves without the hassle of installing / configuring / running a decoder. Here everything is simple: build the device, drop the compiled binary to it, print and publish immediately your images direct from the SD card. Only skill required is very basic knowldege in soldering.
 
 ## What's inside / how does it work ?
