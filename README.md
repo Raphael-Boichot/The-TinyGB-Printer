@@ -1,12 +1,14 @@
 # The TinyGB Printer - A portable Game Boy Printer emulator
 
-The tiniest possible Game Boy printer emulator storing images on SD card made with easily available parts and easy to assemble. Basically a demake of the [NeoGB printer](https://github.com/zenaro147/NeoGB-Printer) made by the same authors. The device has 100% compatibility with all known GB/GBC games, homebrews included. It stores the printed images in pixel perfect 4x PNG by default.
+The tiniest possible Game Boy printer emulator storing images on SD card made with easily available parts and easy to assemble. Basically a demake of the [NeoGB printer](https://github.com/zenaro147/NeoGB-Printer), made by the same authors. The device has 100% compatibility with all known GB/GBC games, homebrews included. It stores the printed images in pixel perfect 4x PNG by default.
 
 ## Yet a new printer emulator, what's different ?
-This emulator does not require any converter, it's like a [BitBoy](https://gameboyphoto.bigcartel.com/product/bitboy) but open access (and much cheaper). This allows people working on a diversity of OS to get their images out of their precious saves without the hassle of installing / configuring / running a decoder. Here everything is simple: build the device, drop the compiled binary to it, print, and publish immediately your images from the SD card. Only skill required is very basic knowldege in soldering.
+This emulator does not require any converter, it's like a [BitBoy](https://gameboyphoto.bigcartel.com/product/bitboy) but open access and much cheaper. This allows people working on a diversity of OS to get their images out of their precious saves without the hassle of installing / configuring / running a decoder. Here everything is simple: build the device, drop the compiled binary to it, print and publish immediately your images direct from the SD card. Only skill required is very basic knowldege in soldering.
 
 ## What's inside / how does it work ?
-The code is basically the [Arduino Game Boy Printer emulator](https://github.com/mofosyne/arduino-gameboy-printer-emulator) (with a bit of butchering to adapt it) running on core 0 and a custom image decoder running on core 1 in parallel. Core 0 and 1 communicates together with simple boolean flags. Core 0 is quite busy with interrupts while core 1 is rather bored and has a ton of free time to convert images. Why not starting from another emulator ? Because I have yet tested / debugged / pimped this one and I'm sure it is 100% copatible with all existing games.
+The code is basically the [Arduino Game Boy Printer emulator](https://github.com/mofosyne/arduino-gameboy-printer-emulator) (with a bit of butchering to adapt it) running on core 0 and a custom image decoder running on core 1 in parallel. Core 0 politely asks core 1 to convert data at certain times with a flag. Core 0 is ultra busy with interrupts while core 1 is pretty bored and has a ton of free time to create images. 
+
+Why not starting from another emulator yet made for a Pi Pico ? Because I have tested / debugged / pimped this particular one during months with dozens of games and I'm sure it is 100% compatible even with homebrews.
 
 ## Easy to install
 - After soldering everything, connect the Raspberry Pi Pico with a USB cable to your computer while pressing BOOT, drop the uf2 file to the USB folder poping and enjoy your device.
