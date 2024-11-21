@@ -1,6 +1,6 @@
 # The TinyGB Printer - A portable Game Boy Printer emulator
 
-The tiniest possible Game Boy printer emulator storing images on SD card made with easily available parts and easy to assemble. Basically a demake of the [NeoGB printer](https://github.com/zenaro147/NeoGB-Printer) made by the same authors. The device has 100% compatibility with all known GB/GBC games, homebrews included. It outputs the printed images in 4x PNG by default.
+The tiniest possible Game Boy printer emulator storing images on SD card made with easily available parts and easy to assemble. Basically a demake of the [NeoGB printer](https://github.com/zenaro147/NeoGB-Printer) made by the same authors. The device has 100% compatibility with all known GB/GBC games, homebrews included. It stores the printed images in 4x PNG by default.
 
 ## Why ?
 Because people are working on a diversity of OS and do not want to learn how to use a new programming langage or a new IDE to get their Game Boy Camera images out of their cartridges. Here everything is simple: build the device, drop the compiled binary to the Raspberry Pi Pico, print immediately and enjoy your images on the SD card.
