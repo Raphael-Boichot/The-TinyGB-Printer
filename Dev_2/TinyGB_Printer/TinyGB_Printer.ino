@@ -286,7 +286,7 @@ void loop1()  //core 1 loop written by Raphaël BOICHOT, november 2024
   //in TEAR mode, a file is never closed unless you push a button
   if ((TEAR_mode == 1) & (digitalRead(BTN_PUSH)) & (lines_in_bmp_file > 0)) {  //in tear mode, a button push only can close file, whatever the printer (non empty) state
     LED_WS2812_state(SD_card_access_Color, 1);
-    //Serial.println("Closing an existing file, finalising BMP header");  // now updating the BMP header
+    Serial.println("Closing an existing file, finalising BMP header");  // now updating the BMP header
     Pre_allocate_bmp_header(160, lines_in_bmp_file);  //number of lines will be updated now
     File Datafile = SD.open(bmp_storage_file_name, FILE_WRITE);
     Datafile.seek(0);                        //go to the beginning of the file
