@@ -14,7 +14,7 @@ Because people are working on a diversity of OS and do not want to learn how to 
 - Switch the device on while pressing the pushbutton : the LED flashes blue, all images are stacked together in a single file until you press the pushbutton to "tear paper". Some rare games require this (see compatibility list).
 - Switch device on and the LED flashes red: SD card not connected or not formatted in FAT32. SD card can be inserted even at this step.
 
-## Cheap to fabricate
+## Easy to fabricate
 **Parts to order:**
 - [The PCB](/PCB). Order at [JLCPCB.com](https://jlcpcb.com/) (just drop the gerber .zip to the site and use default options). VAT is paid when ordering so no bad surprise for European customers.
 - [A Raspberry Pi Pico Zero](https://fr.aliexpress.com/item/1005005862794169.html). Just check pinout if seller is not the same.
