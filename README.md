@@ -15,9 +15,9 @@ The code is basically the [Arduino Game Boy Printer emulator](https://github.com
 ## Easy to use
 - Switch the device on without touching anything, the LED flashes green, images are recorded automatically. This is perfect for the Game Boy Camera for example. Multi-print is of course supported.
 - Switch the device on while pressing the pushbutton : the LED flashes blue, all images are stacked together in a single file until you press the pushbutton to "tear paper". Some rare games require this (see compatibility list).
-- Switch device on and the LED flashes red: SD card not connected or not formatted in FAT32. SD card can be inserted even at this step.
+- Switch device on and the LED blinks red on and off in cycle: SD card not connected or not formatted in FAT32. SD card can be inserted during this step, the device will then boot normally.
 
-A new folder is created at each boot. Each image file has a unique ID.
+A new folder is created at each boot. Each image file has a unique ID. Flashes during printing indicate packet transmission. Color of flashes indicates the mode (green for automatic, blue for tear mode). Red / magenta flashes during a print session indicate decoder / access to SD card.
 
 ## Easy to fabricate
 **Parts to order:**
