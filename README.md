@@ -5,6 +5,9 @@ The tiniest possible Game Boy printer emulator storing images on SD card made wi
 ## Yet a new printer emulator, what's different ?
 Because people are working on a diversity of OS and do not want to learn how to use a new programming langage or a new IDE to get their Game Boy Camera images out of their precious saves. Here everything is simple: build the device, drop the compiled binary to it, print, and publish immediately your images from the SD card.
 
+## What's inside / how does it work ?
+The code is basically the [Arduino Game Boy Printer emulator](https://github.com/mofosyne/arduino-gameboy-printer-emulator) (with a bit of butchering to adapt it) running on core 0 and a custom image decoder running on core 1 in parallel. Core 0 and 1 communicates together with simple boolean flags. Core 0 is quite busy with interrupts while core 1 is rather bored and has a ton of free time to convert images. Why not starting from another emulator ? Because I have yet tested / debugged / pimped this one and I'm sure it is 100% copatible with all existing games.
+
 ## Easy to install
 - After soldering everything, connect the Raspberry Pi Pico with a USB cable to your computer while pressing BOOT, drop the uf2 file to the USB folder poping and enjoy your device.
 - If you want to modify the code and compile it, use the [Arduino IDE](https://www.arduino.cc/en/software) equiped with the [RP2040 core for Arduino IDE](https://github.com/earlephilhower/arduino-pico). Then from the Arduino library manager install the [PNGEnc library](https://github.com/bitbank2/PNGenc) and the [Adafruit Neopixel for Arduino IDE](https://github.com/adafruit/Adafruit_NeoPixel), choose the Waveshare RP2040 PiZero and compile/upload with the default options.
