@@ -11,7 +11,7 @@ The code is basically the [Arduino Game Boy Printer emulator](https://github.com
 Why not starting from another emulator yet made for a Pi Pico ? Because I have tested / debugged / pimped this particular one during months with dozens of games and I'm sure it is 100% compatible even with homebrews.
 
 ## Easy to install
-- After soldering everything, connect the Raspberry Pi Pico with a USB cable to your computer while pressing BOOT, drop the uf2 file to the USB folder poping and enjoy your device.
+- After soldering everything, connect the Raspberry Pi Pico with a USB cable to your computer while pressing BOOT, drop the uf2 file to the USB folder poping and enjoy your device. If it makes smoke, check for shorts with a multimeter.
 - If you want to modify the code and compile it, use the [Arduino IDE](https://www.arduino.cc/en/software) equiped with the [RP2040 core for Arduino IDE](https://github.com/earlephilhower/arduino-pico). Then from the Arduino library manager install the [PNGEnc library](https://github.com/bitbank2/PNGenc) and the [Adafruit Neopixel for Arduino IDE](https://github.com/adafruit/Adafruit_NeoPixel), choose the Waveshare RP2040 PiZero and compile/upload with the default options.
 
 ## Easy to use
@@ -25,7 +25,7 @@ A new folder is created at each boot. Each image file has a unique ID. Flashes d
 **Parts to order:**
 - [The PCB](/PCB). Order at [JLCPCB.com](https://jlcpcb.com/) (just drop the gerber .zip to the site and use default options). VAT is paid when ordering so no bad surprise for European customers.
 - [A Raspberry Pi Pico Zero](https://fr.aliexpress.com/item/1005005862794169.html). Just check pinout if seller is not the same.
-- [A bare MicroSD shield](https://fr.aliexpress.com/item/1005005302035188.html) without internal power converter. The most simple.
+- [A bare MicroSD shield](https://fr.aliexpress.com/item/1005005302035188.html) without internal power converter and pin header. The most simple.
 - [A 4 gates level shifter](https://fr.aliexpress.com/item/1005004560297038.html). The Pi Pico pins are not 5V rated, so the need for a level shifter.
 - [A 5V DC-DC step-up converter](https://fr.aliexpress.com/item/32809095271.html), 0.9-5V (input) to 5V (output).
 - [Pin headers](https://fr.aliexpress.com/item/1005007324368709.html) with 2.54 mm spacing.
@@ -36,11 +36,12 @@ A new folder is created at each boot. Each image file has a unique ID. Flashes d
 - A [2xAA](https://fr.aliexpress.com/item/4000980371784.html) or [2xAAA](https://fr.aliexpress.com/item/1005004195965365.html) battery box with switch. Single AA battery is a bit too weak to power the device reliably (it can work or not).
 
 **How to make it:**
-- Mount the Pi Pico, the SD shield, the level shifter and the step-up converter on pin headers.
-- Solder the caps and the 3.3V converter. They are surface mount but big enough to be soldered easily.
-- Solder all parts with minimal clearance against the PCB.
-- Trim and reflow all pins.
+- Solder the pin headers on the Pi Pico, the SD shield, the level shifter and the step-up converter. Beware of which side you solder the pin header. Check if you can drop the uf2 file to the Pico, it must blink red on and off, it's normal.
+- Solder the caps and the 3.3V converter first. They are surface mount components but big enough to be soldered easily. Don't be afraid by their size. They are not tiny, trust me.
+- Solder all parts with minimal clearance possible against the PCB.
+- Trim and reflow all pins on the back side to get a clean finish. I personally trim pins as short as possible before soldering but there is a risk of cuting a copper line, be carefull.
 - Solder the battery box terminals and stuck the PCB with double sided tape for example (or hot glue).
+- You're ready !
 
 ## Showcase
 ![](Tiny_GB_Printer.jpg)
@@ -161,7 +162,7 @@ All known homebrews to date are compatible with the automatic mode (like Photo!)
 - *VS Lemmings (VS.レミングス)*
 
 ## Kind warning
-The code and current design come as it. If you're not happy with the current hardware, the PCB EasyEDA design or the Arduino IDE, create your own, the licence allows it ! Pull request with tested and working improvements are of course still welcomed.
+The code and current design come as it. If you're not happy with the current hardware, the PCB EasyEDA design or the Arduino IDE, create your own, the licence allows it ! Pull request with tested and working improvements are of course still welcomed. Feel free to design a share a 3D printed case.
 
 ## Aknowledgements
 - [Rafael Zenaro](https://github.com/zenaro147) because I stole chunks of code and ideas from the [NeoGB Printer project](https://github.com/zenaro147/NeoGB-Printer). This project is basically a demake.
