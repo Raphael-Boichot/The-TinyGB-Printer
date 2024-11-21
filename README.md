@@ -7,52 +7,33 @@ Because people are working on a diversity of OS and do not want to learn how to 
 
 ## Easy to install
 - After soldering everything, connect the Raspberry Pi Pico with a USB cable to your computer while pressing BOOT, drop the uf2 file to the USB folder poping and enjoy your device.
-- If you want to modify the code and compile it, install the [RP2040 core for Arduino IDE](https://github.com/earlephilhower/arduino-pico) and the [Adafruit Neopixel for Arduino IDE](https://github.com/adafruit/Adafruit_NeoPixel), choose the Waveshare RP2040 PiZero and compile/upload with the default options.
+- If you want to modify the code and compile it, use the [Arduino IDE](https://www.arduino.cc/en/software) equiped with the [RP2040 core for Arduino IDE](https://github.com/earlephilhower/arduino-pico). Then from the Arduino library manager install the [PNGEnc library](https://github.com/bitbank2/PNGenc) and the [Adafruit Neopixel for Arduino IDE](https://github.com/adafruit/Adafruit_NeoPixel), choose the Waveshare RP2040 PiZero and compile/upload with the default options.
 
 ## Easy to use
-- Switch on without touching anything, the LED flashes green, images are recorded automatically. This is perfect for the Game Boy Camera for example.
-- Switch on while pressing the pushbutton : the LED flashes blue, images are stacked together in a single fil until you press the pushbutton again. Some rare games require this (see compatibility list).
-- Switch on and the LED flashes red: SD card not connected or not formatted in FAT32.
+- Switch device on without touching anything, the LED flashes green, images are recorded automatically. This is perfect for the Game Boy Camera for example. Multi-print is of course supported.
+- Switch device on while pressing the pushbutton : the LED flashes blue, images are stacked together in a single file until you press the pushbutton again. Some rare games require this (see compatibility list).
+- Switch device on and the LED flashes red: SD card not connected or not formatted in FAT32. SD card can be inserted even at this step.
 
 ## Easy to fabricate
-- [The PCB](). Order at [JLCPCB.com](https://jlcpcb.com/) (just drop the gerber .zip to the site and use default options). VAT is paid when ordering so no bad surprise for European customers.
+Parts to order: 
+- [The PCB](/PCB). Order at [JLCPCB.com](https://jlcpcb.com/) (just drop the gerber .zip to the site and use default options). VAT is paid when ordering so no bad surprise for European customers.
 - [A Raspberry Pi Pico Zero](https://fr.aliexpress.com/item/1005005862794169.html). Just check pinout if seller is not the same.
 - [A generic MicroSd shield](https://fr.aliexpress.com/item/1005005302035188.html) without internal power converter. The most simple.
+- [A 4 gates level shifter](https://fr.aliexpress.com/item/1005004560297038.html). The Pi Pico pins are not 5V rated, so the need for a level shifter.
 - [A 5V DC-DC step-up converter](https://fr.aliexpress.com/item/32809095271.html), 0.9-5V (input) to 5V (output).
-- Pin headers.
-- [A GBA/GBC Game Boy serial slot](https://fr.aliexpress.com/item/1005006361884480.html).
-- [A 6x6 mm pushbutton]()
-- [3x22 µF caps with a 1206]()
-- [A AMS1117-3.3V converter](https://fr.aliexpress.com/item/4001104149446.html). The SD card is powered independently by this converter.
-- A [2xAA](https://fr.aliexpress.com/item/4000980371784.html) or [2xAAA](https://fr.aliexpress.com/item/1005004195965365.html) battery box with switch.
+- [Pin headers](https://fr.aliexpress.com/item/1005007324368709.html) with 2.54 mm spacing.
+- [A GBA/GBC Game Boy serial slot](https://fr.aliexpress.com/item/1005006361884480.html). They can be cheap or not depending on the seller, do not hesistate to change.
+- [A 6x6 mm pushbutton](https://fr.aliexpress.com/item/1005003938244847.html), whatever height. The softer the better.
+- [3x22 µF caps with a 1206](https://fr.aliexpress.com/item/1005006022131059.html) (10 to 50 µF is OK if you have spares).
+- [A AMS1117-3.3V converter](https://fr.aliexpress.com/item/4001104149446.html). The SD card is powered independently by this converter as the Pi Pico puny onboard converter is not powerfull enough.
+- A [2xAA](https://fr.aliexpress.com/item/4000980371784.html) or [2xAAA](https://fr.aliexpress.com/item/1005004195965365.html) battery box with switch. Single AA battery is a bit too weak to power the device reliably (it can work or not).
 
-## What have been done at the moment
-- a PCB with all individual functions working was done (works natively with the [Arduino emulator](https://github.com/mofosyne/arduino-gameboy-printer-emulator), access to LED and SD card OK).
-- Starting from the NeoGB Printer code and removed/commented all ESP32/Wifi/LED/png specific command until it compiles for the rp2040 core. Removed all unneccessary dependencies. Pins not allocated, still the same as ESP32. Too complicated at the end, I prefer restarting from fresh.
-- Starting now from the mofosyne code. I think it will be simplier to rebuild from it while stealing chunks of the NeoGB Printer when necessary.
-- Support for the WS2812 internal LED in mofosyne code added.
-- Support for the SD card in mofosyne code added.
-- Main functions for making BMPs and keep track of file ID added.
-- Core 1 now ready to memcopy data from core 0.
-- Core 1 now ready to convert data to BMP format (to be done). Core 1 has plenty of time to do this, basically between two print commands, so the code can be inefficient as hell without any consequence. No need to rush conversion during printing delay.
-- For the moment loosing the interrupt randomly when I access to the SD card... Adding a dead time on core 1 after PRINT command seems to fix the issue. Not sure if this is voltage related or some interrupt interference. I think a single AA battery is too weak, must work on two AAs. I see slight image differences between powering by USB and using a single AA battery, and sometimes SD card just don't record anything if the battery is too low.
-- BMP converter added but not tested yet. This part is more difficult than I though initially as converting 2D tiles to 2D pixels in a 1D array is tricky.
-- BMP converter now working but writing to SD while communicating interferes with printer protocol despite the two core being independant. No idea how to solve that.
-- Glitches removed by using an SD shield powered by the 5V line (own 3.3V concerter, not using the pico one).
-- Lot of game tested and working when printing in 1x BMP, but bugs on the png upscaler (the png upscaler code I made for the NeoGB printer is digusting, I do not even understand how it can work).
-
-## To do
-- fix the png upscaler from NeoGB Printer
-- fix the power management on the board
-
-## To do maybe in the future
-- add png converter / upscaler
-
-## How do I want it to work ?
-- boot without pressing pushbutton: **automatic mode** (green LED), an image is closed automatically when an after margin is detected;
-- boot while pressing pushbutton: **tear mode** (blue LED), an image is closed only when you press the pushbutton. Pressing the pushbutton is like tearing paper;
-- red led at boot: the device has general SD failure or no SD card, it can only work with the USB port, but works nevertheless (or not, have to see).
-- it must run on one single or two AA NiMH batteries because lithium is evil.
+How to make it:
+- Mount the Pi Pico, the SD shield, the level shifter and the step-up converter on pin headers.
+- Solder the caps and the 3.3V converter. They are surface mount but big enough to be soldered easily.
+- Solder all parts with minimal clearance against the PCB.
+- Trim and reflow all pins.
+- Solder the battery box terminals and stuck the PCB with double sided tape for example (or hot glue).
 
 ## Showcase
 ![](Tiny_GB_Printer.jpg)
@@ -171,6 +152,9 @@ In *Italics* game working fine in automatic mode, in **bold** games requiring th
 - *Tsuri Sensei 2 (釣り先生2)*
 - *VS Lemmings (VS.レミングス)*
 
+## Kind warning
+The code and current design come as it. If you're not happy with the current hardware, the PCB EasyEDA design or the Arduino IDE, create your own, the licence allows it ! Pull request with tested and working improvements are of course still welcomed.
+
 ## Aknowledgements
-- Zenaro
-- Mofosyne
+- [Rafael Zenaro](https://github.com/zenaro147) because I stole chunks of code and ideas from the [NeoGB Printer project](https://github.com/zenaro147/NeoGB-Printer). This project is basically a demake.
+- [Brian Khuu](https://github.com/mofosyne) for the emulator code I have butchered here.
