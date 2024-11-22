@@ -1,28 +1,27 @@
 ## Current status : new PCB ordered for review and validation.
 
-
 # The TinyGB Printer - A portable Game Boy Printer emulator
 
-The tiniest possible Game Boy printer emulator storing images on SD card made with easily available parts and easy to assemble. Basically a demake of the [NeoGB printer](https://github.com/zenaro147/NeoGB-Printer), made by the same authors. The device has 100% compatibility with all known GB/GBC games, homebrews included. It stores the printed images in pixel perfect 4x PNG by default.
+The TinyGB Printer is the tiniest possible Game Boy printer emulator storing images on SD card made with easily available parts and easy to assemble. It is basically a demake of the [NeoGB printer](https://github.com/zenaro147/NeoGB-Printer) which it shares many functionality with. The device has 100% compatibility with all known GB/GBC games, homebrews included. It stores the printed images in pixel perfect 4x PNG format by default.
 
 ## Yet another printer emulator ! what's different ?
-This emulator does not require any converter, it's like a [BitBoy](https://gameboyphoto.bigcartel.com/product/bitboy) but open access and much cheaper. This allows people working on a diversity of OS to get their images out of their precious saves without the hassle of installing / configuring / running a decoder. Here everything is simple: build the device, drop the compiled binary to it, print and publish immediately your images direct from the SD card. Only skill required is very basic knowldege in soldering.
+This emulator does not require any additional converter, it's like a [BitBoy](https://gameboyphoto.bigcartel.com/product/bitboy) but open access and much cheaper. The goal is to provide an easy way to get images out of your precious saves without the hassle of installing / configuring / running a decoder on a diversity of different OS . Here everything is simple: build the device, drop the compiled binary to it, print and publish immediately your images direct from the SD card. Only skill required is very basic knowldege in soldering.
 
 ## What's inside / how does it work ?
 The code is basically the [Arduino Game Boy Printer emulator](https://github.com/mofosyne/arduino-gameboy-printer-emulator) (with a bit of butchering to adapt it) running on core 0 and a custom image decoder running on core 1 in parallel. Core 0 politely asks core 1 to convert data at certain times with a flag. Core 0 is ultra busy with interrupts while core 1 is pretty bored and has a ton of free time to create images. 
 
-Why not starting from another emulator yet made for a Pi Pico ? Because I have tested / debugged / pimped this particular one during months with dozens of games and I'm sure it is 100% compatible even with homebrews.
+Why not starting from another emulator yet made for a Pi Pico ? Because I have tested / debugged / pimped this particular one during months / years with more than 100 games and I'm sure it is 100% compatible even with homebrews.
 
 ## Easy to install
 - After soldering everything, connect the Raspberry Pi Pico with a USB cable to your computer while pressing BOOT, drop the uf2 file to the USB folder poping and enjoy your device. If it makes smoke, check for shorts with a multimeter.
-- If you want to modify the code and compile it, use the [Arduino IDE](https://www.arduino.cc/en/software) equiped with the [RP2040 core for Arduino IDE](https://github.com/earlephilhower/arduino-pico). Then from the Arduino library manager install the [PNGEnc library](https://github.com/bitbank2/PNGenc) and the [Adafruit Neopixel for Arduino IDE](https://github.com/adafruit/Adafruit_NeoPixel), choose the Waveshare RP2040 PiZero and compile/upload with the default options.
+- If you want to modify the code and compile it, use the [Arduino IDE](https://www.arduino.cc/en/software) equipped with the [RP2040 core for Arduino IDE](https://github.com/earlephilhower/arduino-pico). Then from the Arduino library manager install the [PNGEnc library](https://github.com/bitbank2/PNGenc) and the [Adafruit Neopixel for Arduino IDE](https://github.com/adafruit/Adafruit_NeoPixel), choose the Waveshare RP2040 PiZero and compile/upload with the default options.
 
 ## Easy to use
-- Switch the device on without touching anything, the LED flashes green, images are recorded automatically. This is perfect for the Game Boy Camera for example. Multi-print is of course supported.
+- Switch the device on without touching anything, the LED flashes green, images are recorded automatically. This is perfect for the Game Boy Camera for example. Multi-prints is of course supported.
 - Switch the device on while pressing the pushbutton : the LED flashes blue, all images are stacked together in a single file until you press the pushbutton to "tear paper". Some rare games require this (see compatibility list).
-- Switch device on and the LED blinks red on and off in cycle: SD card not connected or not formatted in FAT32. SD card can be inserted during this step, the device will then boot normally.
+- Switch the device on and the LED blinks red on and off in cycle: SD card not connected or not formatted in FAT32. SD card can be inserted during this step, the device will then boot normally.
 
-A new folder is created at each boot. Each image file has a unique ID. Flashes during printing indicate packet transmission. Color of flashes indicates the mode (green for automatic, blue for tear mode). Red / magenta / yellow flashes during a print session indicate decoder / access to SD card / PNG encoding.
+A new folder is created at each boot. Each image file has a unique ID. Flashes during printing indicate packet transmission. Color of flashes indicates the mode (green for automatic, blue for tear mode). Red / magenta / yellow flashes during a print session indicate decoder / access to SD card / PNG encoding. **Do not switch off while the led is on, images are being processed.**
 
 ## Easy to fabricate
 **Parts to order:**
@@ -42,14 +41,14 @@ A new folder is created at each boot. Each image file has a unique ID. Flashes d
 - Solder the pin headers on the Pi Pico, the SD shield, the level shifter and the step-up converter. Beware of which side you solder the pin header. Check if you can drop the uf2 file to the Pico, it must blink red on and off, it's normal.
 - Solder the caps and the 3.3V converter first. They are surface mount components but big enough to be soldered easily. Don't be afraid by their size. They are not tiny, trust me.
 - Solder all parts with minimal clearance possible against the PCB.
-- Trim and reflow all pins on the back side to get a clean finish. I personally trim pins as short as possible before soldering but there is a risk of cuting a copper line, be carefull.
-- Solder the battery box terminals and stuck the PCB with double sided tape for example (or hot glue).
-- You're ready !
+- Trim and reflow all pins on the back side to get a clean finish. I personally trim pins as short as possible before soldering but there is a risk of scratching the solder mask, so be carefull.
+- Solder the battery box terminals and stuck the PCB on it with double sided tape for example (or hot glue).
+- You're ready to print !
 
 ## Showcase
 ![](Tiny_GB_Printer.jpg)
 
-## 100% compatibility with all known games using the Game Boy Printer
+## 100% compatibie with all known games using the Game Boy Printer
 In *Italics* game working fine in automatic mode, in **bold** games requiring the pushbutton to tear paper, or tear mode. 
 All known homebrews to date are compatible with the automatic mode (like Photo!).
 
@@ -165,7 +164,7 @@ All known homebrews to date are compatible with the automatic mode (like Photo!)
 - *VS Lemmings (VS.レミングス)*
 
 ## Kind warning
-The code and current design come as it. If you're not happy with the current hardware, the PCB EasyEDA design or the Arduino IDE, create your own, the licence allows it ! Pull request with tested and working improvements are of course still welcomed. Feel free to design a share a 3D printed case.
+The code and current design come as it. If you're not happy with the current hardware, the PCB EasyEDA design or the Arduino IDE, create your own, the licence allows it ! Pull request with tested and working improvements are of course still welcomed. Feel free to design and share a 3D printed case, I won't make one.
 
 ## Aknowledgements
 - [Rafael Zenaro](https://github.com/zenaro147) because I stole chunks of code and ideas from the [NeoGB Printer project](https://github.com/zenaro147/NeoGB-Printer). This project is basically a demake.
