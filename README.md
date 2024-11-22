@@ -1,4 +1,4 @@
-## Current status : new PCB ordered for review, BMP output working, PNG output to debug.
+## Current status : new PCB ordered for review and validation.
 
 
 # The TinyGB Printer - A portable Game Boy Printer emulator
