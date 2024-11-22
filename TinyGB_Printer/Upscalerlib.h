@@ -62,7 +62,7 @@ void png_upscaler(char BMP_input[], char PNG_output[], unsigned int upscaling_fa
     //png.setAlphaPalette(ucAlphaPal);                                                    //left empty
     for (unsigned int y = 0; y < BMP_h; y++) {  //treats a line
       index = 0;
-      memset(PNG_Line, 0, sizeof(PNG_Line));  //clean the whole image data array
+      memset(PNG_Line, 0, sizeof(PNG_Line));                         //clean the whole image data array
       for (unsigned int x = 0; x < BMP_w; x++) {                     //starts a line
         pixel_gray_level = BMP_file.read();                          //one byte = one pixel_gray_level
         if (pixel_gray_level == BMP_palette[3]) color_index = 0x03;  //converts BMP gray level to color PNG color index
@@ -78,7 +78,7 @@ void png_upscaler(char BMP_input[], char PNG_output[], unsigned int upscaling_fa
         rc = png.addLine(PNG_Line);                          //the library is made to work line by line, which is cool regarding memory management
       }
     }
-    BMP_file.close();  //closes BMP file
+    BMP_file.close();         //closes BMP file
     iDataSize = png.close();  //closes PNG file
     Serial.print("Core 1 -> Last PNG encoder error (0 is no error): ");
     Serial.println(png.getLastError(), DEC);

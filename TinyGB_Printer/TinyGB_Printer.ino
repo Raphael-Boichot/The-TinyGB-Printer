@@ -114,10 +114,10 @@ void setup() {
   Serial.begin(115200);
 
   // Wait for Serial to be ready
-///////////////////////specific to the TinyGB Printer////////////////////////
+  ///////////////////////specific to the TinyGB Printer////////////////////////
   //while (!Serial) { ; }  //no need for autonomous design with the RP2040
   Tiny_printer_preparation();  //switches in Tiny Printer mode
-///////////////////////specific to the TinyGB Printer////////////////////////
+                               ///////////////////////specific to the TinyGB Printer////////////////////////
 
   /* Pins from gameboy link cable */
   pinMode(GBP_SC_PIN, INPUT);
@@ -202,7 +202,7 @@ void loop1()  //core 1 loop written by Raphaël BOICHOT, november 2024
     PNG_decoder_color = pixels.Color(intensity, intensity, 0);  //RGB triplet
     delay(500);                                                 //To avoid access to SD card during INQUY commands and avoid a bug with Photo!
     PRINT_flag = 0;
-     if (inner_palette == 0x00) {
+    if (inner_palette == 0x00) {
       inner_palette = 0xE4;  //see Game Boy Programming manual, palette 0x00 is a default palette interpreted as 0xE4 or 0b11100100
     }
     image_palette[0] = bitRead(inner_palette, 0) + 2 * bitRead(inner_palette, 1);
@@ -262,9 +262,9 @@ void loop1()  //core 1 loop written by Raphaël BOICHOT, november 2024
     Serial.println(lines_in_bmp_file, DEC);
     DATA_packet_to_print = 0;
 
-    if ((inner_lower_margin > 0) & (TEAR_mode == 0)) {  //the printer asks to feed paper, end of file, except in TEAR mode
+    if ((inner_lower_margin > 0) & (TEAR_mode == 0)) {                                  //the printer asks to feed paper, end of file, except in TEAR mode
       Serial.println("Core 1 -> Closing an existing BMP file, finalising BMP header");  // now updating the BMP header
-      Pre_allocate_bmp_header(160, lines_in_bmp_file);  //number of lines will be updated now
+      Pre_allocate_bmp_header(160, lines_in_bmp_file);                                  //number of lines will be updated now
       File Datafile = SD.open(bmp_storage_file_name, FILE_WRITE);
       Datafile.seek(0);                        //goes to the beginning of the file
       Datafile.write(BMP_header_generic, 54);  //fixed header fixed with correct lenght
@@ -276,7 +276,7 @@ void loop1()  //core 1 loop written by Raphaël BOICHOT, november 2024
       lines_in_bmp_file = 0;
 #ifdef PNG_OUTPUT
       LED_WS2812_state(PNG_decoder_color, 1);
-      Serial.println("Core 1 -> Creating a PNG file from BMP file");  
+      Serial.println("Core 1 -> Creating a PNG file from BMP file");
       png_upscaler(bmp_storage_file_name, png_storage_file_name, PNG_upscaling_factor, BMP_palette);
       SD.remove(bmp_storage_file_name);
 #endif
@@ -289,7 +289,7 @@ void loop1()  //core 1 loop written by Raphaël BOICHOT, november 2024
   if ((TEAR_mode == 1) & (digitalRead(BTN_PUSH)) & (lines_in_bmp_file > 0)) {  //in tear mode, a button push only can close file, whatever the printer (non empty) state
     LED_WS2812_state(SD_card_access_Color, 1);
     Serial.println("Core 1 -> Closing an existing file, finalising BMP header");  // now updating the BMP header
-    Pre_allocate_bmp_header(160, lines_in_bmp_file);  //number of lines will be updated now
+    Pre_allocate_bmp_header(160, lines_in_bmp_file);                              //number of lines will be updated now
     File Datafile = SD.open(bmp_storage_file_name, FILE_WRITE);
     Datafile.seek(0);                        //go to the beginning of the file
     Datafile.write(BMP_header_generic, 54);  //fixed header fixed with correct lenght
@@ -301,7 +301,7 @@ void loop1()  //core 1 loop written by Raphaël BOICHOT, november 2024
     lines_in_bmp_file = 0;
 #ifdef PNG_OUTPUT
     LED_WS2812_state(PNG_decoder_color, 1);
-    Serial.println("Core 1 -> Creating a PNG file from BMP file");  
+    Serial.println("Core 1 -> Creating a PNG file from BMP file");
     png_upscaler(bmp_storage_file_name, png_storage_file_name, PNG_upscaling_factor, BMP_palette);
     SD.remove(bmp_storage_file_name);
 #endif
@@ -315,6 +315,7 @@ inline void gbp_parse_packet_loop(void) {
   for (int i = 0; i < gbp_serial_io_dataBuff_getByteCount(); i++) {
     if (gbp_pkt_processByte(&gbp_pktState, (const uint8_t)gbp_serial_io_dataBuff_getByte(), gbp_pktbuff, &gbp_pktbuffSize, sizeof(gbp_pktbuff))) {
       if (gbp_pktState.received == GBP_REC_GOT_PACKET) {
+        Serial.print("Core 0 -> ");
         Serial.print((char)'{');
         Serial.print("\"command\":\"");
         Serial.print(gbpCommand_toStr(gbp_pktState.command));
@@ -408,7 +409,7 @@ inline void gbp_parse_packet_loop(void) {
             Serial.flush();
           }
         }
-#else   //GBP_FEATURE_PARSE_PACKET_USE_DECOMPRESSOR \
+#else  //GBP_FEATURE_PARSE_PACKET_USE_DECOMPRESSOR \
         // Simplified support for gameboy camera only application \
         // Dev Note: Good for checking if everything above decompressor is working
         if (gbp_pktbuffSize > 0) {

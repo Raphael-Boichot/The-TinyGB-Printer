@@ -14,14 +14,14 @@
 //   ** CS            - pin  9 or 13
 //   ** SCK           - pin 10 or 14
 
-#define SD_MISO 8      // SD card SPI1
-#define SD_CS 9        // SD card SPI1
-#define SD_SCK 10      // SD card SPI1
-#define SD_MOSI 11     // SD card SPI1
-#define BTN_PUSH 12    // Define a PushButton to use to Force a new file in idle mode ///BOICHOT
-#define LED_WS2812 16  // Pi pico waveshare zero RGB LED PIN, onboard LED ///BOICHOT
-#define NUMPIXELS 1    // NeoPixel ring size (just internal LED here)
-//#define CORE_0_VERBOSE   //for debug, better let only one core speaking at a time
+#define SD_MISO 8       // SD card SPI1
+#define SD_CS 9         // SD card SPI1
+#define SD_SCK 10       // SD card SPI1
+#define SD_MOSI 11      // SD card SPI1
+#define BTN_PUSH 12     // Define a PushButton to use to Force a new file in idle mode ///BOICHOT
+#define LED_WS2812 16   // Pi pico waveshare zero RGB LED PIN, onboard LED ///BOICHOT
+#define NUMPIXELS 1     // NeoPixel ring size (just internal LED here)
+//#define CORE_0_VERBOSE  //for debug, better let only one core speaking at a time
 #define PNG_OUTPUT
 
 unsigned char B = 0x00;                               //palette Black
