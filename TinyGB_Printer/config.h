@@ -21,32 +21,41 @@
 #define BTN_PUSH 12    // Define a PushButton to use to Force a new file in idle mode ///BOICHOT
 #define LED_WS2812 16  // Pi pico waveshare zero RGB LED PIN, onboard LED ///BOICHOT
 #define NUMPIXELS 1    // NeoPixel ring size (just internal LED here)
+//#define CORE_0_VERBOSE   //for debug, better let only one core speaking at a time
+#define PNG_OUTPUT
 
-unsigned int Next_ID, Next_dir;                             //for directories and filenames
-unsigned char printer_memory_buffer_core_0[9 * 640];        //Game Boy printer buffer of 9*640 bytes (maximum possible), core 0
-unsigned char printer_memory_buffer_core_1[9 * 640];        //Game Boy printer buffer of 9*640 bytes (maximum possible), core 1
-unsigned char BMP_image_color[144 * 160];                   //color RGB image for BMP, real color known from palette (maximum possible), core 1
-char storage_file_name[64];                                 //character string to store images
-unsigned char inner_palette;                                //inner palette to use for core 1
-unsigned char inner_lower_margin;                           //inner margin to use for core 1
-unsigned char BMP_palette[4] = { 0x00, 0x55, 0xAA, 0xFF };  //colors as they will appear in the bmp file and display after dithering
-unsigned char image_palette[4] = { 0, 0, 0, 0 };            //2 bpp colors refering to BMP_palette[4]
-unsigned int DATA_bytes_counter = 0;                        //counter for data bytes
-unsigned int BMP_bytes_counter = 0;                         //counter for data bytes
-unsigned int offset_x = 0;                                  //offsets for tile conversion in BMP file
-unsigned char DATA_packet_counter = 0;                      //counter for packets transmitted
-unsigned char DATA_packet_to_print = 0;                     //counter for packets transmitted for core 1
-unsigned char local_byte_LSB = 0;                           //storage byte for conversion
-unsigned char local_byte_MSB = 0;                           //storage byte for conversion
-unsigned int  tile_column, tile_line, pixel_line = 0;       //storage byte for conversion
-unsigned char pixel_level = 0;                              //storage byte for conversion
-unsigned long lines_in_bmp_file = 0;                        //to keep tack of image file length
-uint8_t intensity = 150;                                    //WS2812 intensity 255 is a death ray, 10 to 15 is normal
+unsigned char B = 0x00;                               //palette Black
+unsigned char DG = 0x55;                              //palette Dark Gray
+unsigned char LG = 0xAA;                              //palette Light Gray
+unsigned char W = 0xFF;                               //palette White
+unsigned int PNG_upscaling_factor = 4;                //for png encoder
+unsigned int Next_ID, Next_dir;                       //for directories and filenames
+unsigned char printer_memory_buffer_core_0[9 * 640];  //Game Boy printer buffer of 9*640 bytes (maximum possible), core 0
+unsigned char printer_memory_buffer_core_1[9 * 640];  //Game Boy printer buffer of 9*640 bytes (maximum possible), core 1
+unsigned char BMP_image_color[144 * 160];             //color RGB image for BMP, real color known from palette (maximum possible), core 1
+char png_storage_file_name[64];                       //character string to store images
+char bmp_storage_file_name[64];                       //character string to store images
+char storage_file_dir[64];                            //character string to store images
+unsigned char inner_palette;                          //inner palette to use for core 1
+unsigned char inner_lower_margin;                     //inner margin to use for core 1
+unsigned char BMP_palette[4] = { W, LG, DG, B };      //colors as they will appear in the bmp file and display after dithering
+unsigned char image_palette[4] = { 0, 0, 0, 0 };      //2 bpp colors refering to BMP_palette[4]
+unsigned int DATA_bytes_counter = 0;                  //counter for data bytes
+unsigned int BMP_bytes_counter = 0;                   //counter for data bytes
+unsigned int offset_x = 0;                            //offsets for tile conversion in BMP file
+unsigned char DATA_packet_counter = 0;                //counter for packets transmitted
+unsigned char DATA_packet_to_print = 0;               //counter for packets transmitted for core 1
+unsigned char local_byte_LSB = 0;                     //storage byte for conversion
+unsigned char local_byte_MSB = 0;                     //storage byte for conversion
+unsigned int tile_column, tile_line, pixel_line = 0;  //storage byte for conversion
+unsigned char pixel_level = 0;                        //storage byte for conversion
+unsigned long lines_in_bmp_file = 0;                  //to keep tack of image file length
+uint8_t intensity = 150;                              //WS2812 intensity 255 is a death ray, 10 to 15 is normal
 uint32_t SD_card_access_Color;
 uint32_t BMP_decoder_color;
+uint32_t PNG_decoder_color;
 bool SDcard_READY = 0;
 bool PRINT_flag = 0;
-bool CLOSE_flag = 0;
 bool NEWFILE_flag = 1;
 bool TEAR_mode = 0;
 //////////////////////////////////////////////SD stuff///////////////////////////////////////////////////////////////////////////////////////////
