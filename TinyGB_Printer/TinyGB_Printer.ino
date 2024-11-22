@@ -200,7 +200,7 @@ void loop1()  //core 1 loop written by Raphaël BOICHOT, november 2024
     SD_card_access_Color = pixels.Color(intensity, 0, 0);       //RGB triplet
     BMP_decoder_color = pixels.Color(0, intensity, intensity);  //RGB triplet
     PNG_decoder_color = pixels.Color(intensity, intensity, 0);  //RGB triplet
-    delay(250);                                                 //To avoid access to SD card during INQUY commands and avoid a bug with Photo!
+    delay(500);                                                 //To avoid access to SD card during INQUY commands and avoid a bug with Photo!
     PRINT_flag = 0;
      if (inner_palette == 0x00) {
       inner_palette = 0xE4;  //see Game Boy Programming manual, palette 0x00 is a default palette interpreted as 0xE4 or 0b11100100
@@ -243,7 +243,7 @@ void loop1()  //core 1 loop written by Raphaël BOICHOT, november 2024
     if (NEWFILE_flag == 1) {
       sprintf(bmp_storage_file_name, "/%05d/%07d.bmp", Next_dir, Next_ID);
       sprintf(png_storage_file_name, "/%05d/%07d.png", Next_dir, Next_ID);
-      Serial.print("Burning new file: ");
+      Serial.print("Core 1 -> Burning new file: ");
       Serial.println(bmp_storage_file_name);
       NEWFILE_flag = 0;
       Pre_allocate_bmp_header(0, 0);  //creates a dummy BMP header
@@ -258,12 +258,12 @@ void loop1()  //core 1 loop written by Raphaël BOICHOT, november 2024
     Datafile.write(BMP_image_color, 160 * 16 * DATA_packet_to_print);  //writes the data to SD card
     Datafile.close();
     lines_in_bmp_file = lines_in_bmp_file + 16 * DATA_packet_to_print;
-    Serial.print("Current lines in BMP file: ");
+    Serial.print("Core 1 -> Current lines in BMP file: ");
     Serial.println(lines_in_bmp_file, DEC);
     DATA_packet_to_print = 0;
 
     if ((inner_lower_margin > 0) & (TEAR_mode == 0)) {  //the printer asks to feed paper, end of file, except in TEAR mode
-      Serial.println("Closing an existing BMP file, finalising BMP header");  // now updating the BMP header
+      Serial.println("Core 1 -> Closing an existing BMP file, finalising BMP header");  // now updating the BMP header
       Pre_allocate_bmp_header(160, lines_in_bmp_file);  //number of lines will be updated now
       File Datafile = SD.open(bmp_storage_file_name, FILE_WRITE);
       Datafile.seek(0);                        //goes to the beginning of the file
@@ -276,7 +276,7 @@ void loop1()  //core 1 loop written by Raphaël BOICHOT, november 2024
       lines_in_bmp_file = 0;
 #ifdef PNG_OUTPUT
       LED_WS2812_state(PNG_decoder_color, 1);
-      Serial.println("Creating a PNG file from BMP file");  
+      Serial.println("Core 1 -> Creating a PNG file from BMP file");  
       png_upscaler(bmp_storage_file_name, png_storage_file_name, PNG_upscaling_factor, BMP_palette);
       SD.remove(bmp_storage_file_name);
 #endif
@@ -288,7 +288,7 @@ void loop1()  //core 1 loop written by Raphaël BOICHOT, november 2024
   //in TEAR mode, a file is never closed unless you push a button
   if ((TEAR_mode == 1) & (digitalRead(BTN_PUSH)) & (lines_in_bmp_file > 0)) {  //in tear mode, a button push only can close file, whatever the printer (non empty) state
     LED_WS2812_state(SD_card_access_Color, 1);
-    Serial.println("Closing an existing file, finalising BMP header");  // now updating the BMP header
+    Serial.println("Core 1 -> Closing an existing file, finalising BMP header");  // now updating the BMP header
     Pre_allocate_bmp_header(160, lines_in_bmp_file);  //number of lines will be updated now
     File Datafile = SD.open(bmp_storage_file_name, FILE_WRITE);
     Datafile.seek(0);                        //go to the beginning of the file
@@ -301,7 +301,7 @@ void loop1()  //core 1 loop written by Raphaël BOICHOT, november 2024
     lines_in_bmp_file = 0;
 #ifdef PNG_OUTPUT
     LED_WS2812_state(PNG_decoder_color, 1);
-    Serial.println("Creating a PNG file from BMP file");  
+    Serial.println("Core 1 -> Creating a PNG file from BMP file");  
     png_upscaler(bmp_storage_file_name, png_storage_file_name, PNG_upscaling_factor, BMP_palette);
     SD.remove(bmp_storage_file_name);
 #endif

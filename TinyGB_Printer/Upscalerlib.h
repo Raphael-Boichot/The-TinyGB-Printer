@@ -29,7 +29,7 @@ void png_upscaler(char BMP_input[], char PNG_output[], unsigned int upscaling_fa
   File BMP_file = SD.open(BMP_input);
   if (!BMP_file) {
     bool skip = 1;
-    Serial.println(": This BMP file does not exist, skipping png fabrication");
+    Serial.println("Core 1 -> This BMP file does not exist, skipping png fabrication");
   }
 
   if (skip == 0) {
@@ -80,9 +80,9 @@ void png_upscaler(char BMP_input[], char PNG_output[], unsigned int upscaling_fa
     }
     BMP_file.close();  //closes BMP file
     iDataSize = png.close();  //closes PNG file
-    Serial.print("Last PNG encoder error (0 is no error): ");
+    Serial.print("Core 1 -> Last PNG encoder error (0 is no error): ");
     Serial.println(png.getLastError(), DEC);
-    Serial.print("Idata Size: ");
+    Serial.print("Core 1 -> Idata Size: ");
     Serial.println(iDataSize, DEC);
   }
 }
