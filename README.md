@@ -163,6 +163,8 @@ All known homebrews to date are compatible with the automatic mode (like Photo!)
 - *Tsuri Sensei 2 (釣り先生2)*
 - *VS Lemmings (VS.レミングス)*
 
+Want to know more about these games ? Want hints and custom saves to unlock all printing features ? Follow the [link](https://github.com/Raphael-Boichot/GameboyPrinterPaperSimulation).
+
 ## Kind warning
 The code and current design come as it. If you're not happy with the current hardware, the PCB EasyEDA design or the Arduino IDE, create your own, the licence allows it ! Pull request with tested and working improvements are of course still welcomed. Feel free to design and share a 3D printed case, I won't make one.
 
