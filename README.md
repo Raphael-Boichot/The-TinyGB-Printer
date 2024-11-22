@@ -2,13 +2,16 @@
 
 # The TinyGB Printer - A portable Game Boy Printer emulator
 
-The TinyGB Printer is the tiniest possible Game Boy printer emulator storing images on SD card made with easily available parts and easy to assemble. It is basically a demake of the [NeoGB printer](https://github.com/zenaro147/NeoGB-Printer) which it shares many functionality with. The device has 100% compatibility with all known GB/GBC games, homebrews included. It stores the printed images in pixel perfect 4x PNG format by default.
+The TinyGB Printer is the tiniest possible Game Boy printer emulator storing images on SD card made with common parts and easy to assemble. It is basically a demake of the quite convoluted [NeoGB printer](https://github.com/zenaro147/NeoGB-Printer) or a reboot of the way too expensive [BitBoy](https://gameboyphoto.bigcartel.com/product/bitboy). The device has 100% compatibility with all known GB/GBC games, homebrews included. It stores the printed images in pixel perfect 4x PNG format by default. It is of course fully open access.
+
+## Showcase
+![](Tiny_GB_Printer.jpg)
 
 ## Yet another printer emulator ! what's different ?
-This emulator does not require any additional converter, it's like a [BitBoy](https://gameboyphoto.bigcartel.com/product/bitboy) but open access and much cheaper. The goal is to provide an easy way to get images out of your precious saves without the hassle of installing / configuring / running a decoder on a diversity of different OS . Here everything is simple: build the device, drop the compiled binary to it, print and publish immediately your images direct from the SD card. Only skill required is very basic knowldege in soldering.
+This printer emulator does not require any additional converter, it contains its own. The goal is to provide an easy way to get images out of your precious saves without the hassle of installing / configuring / running a decoder on a diversity of OS. Here everything is simple: build the device, drop the compiled binary to it, print and publish immediately your images direct from the SD card. Only skill required is very basic knowldege in soldering.
 
 ## What's inside / how does it work ?
-The code is basically the [Arduino Game Boy Printer emulator](https://github.com/mofosyne/arduino-gameboy-printer-emulator) (with a bit of butchering to adapt it) running on core 0 and a custom image decoder running on core 1 in parallel. Core 0 politely asks core 1 to convert data at certain times with a flag. Core 0 is ultra busy with interrupts while core 1 is pretty bored and has a ton of free time to create images. 
+The code is basically the [Arduino Game Boy Printer emulator](https://github.com/mofosyne/arduino-gameboy-printer-emulator) (with a bit of butchering to adapt it) running on core 0 and a custom image decoder running on core 1 in parallel. Core 0 politely asks core 1 to convert data at certain times with a flag. Core 0 is ultra busy with interrupts while core 1 is pretty idle and has a ton of free time to create images. 
 
 Why not starting from another emulator yet made for a Pi Pico ? Because I have tested / debugged / pimped this particular one during months / years with more than 100 games and I'm sure it is 100% compatible even with homebrews.
 
@@ -44,9 +47,6 @@ A new folder is created at each boot. Each image file has a unique ID. Flashes d
 - Trim and reflow all pins on the back side to get a clean finish. I personally trim pins as short as possible before soldering but there is a risk of scratching the solder mask, so be carefull.
 - Solder the battery box terminals and stuck the PCB on it with double sided tape for example (or hot glue).
 - You're ready to print !
-
-## Showcase
-![](Tiny_GB_Printer.jpg)
 
 ## 100% compatibie with all known games using the Game Boy Printer
 In *Italics* game working fine in automatic mode, in **bold** games requiring the pushbutton to tear paper, or tear mode. 
