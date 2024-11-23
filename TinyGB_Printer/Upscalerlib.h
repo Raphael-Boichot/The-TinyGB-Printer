@@ -1,4 +1,5 @@
 //Very important: in /src/PNGenc.h, increase PNG_FILE_BUF_SIZE to 16384 intead of the 2048 by default which is way too short !
+//modify this manually in your local install of the PNGenc library, there is no call to do this automatically
 #include <PNGenc.h>  //for png encoding
 PNG png;             // static instance of the PNG encoder class
 File myfile;
