@@ -173,6 +173,11 @@ Want to know more about these games ? Want hints and custom saves to unlock all 
 ## Kind warning
 The code and current design come as it. If you're not happy with the current hardware, the PCB EasyEDA design or the Arduino IDE, create your own, the licence allows it ! Pull request with tested and working improvements are of course still welcomed. Feel free to design and share a 3D printed case, I won't make one.
 
+## Dev notes
+- The Pi Pico zero was not able to power the SD card (in writing mode) and keep track of the interrupts with the serial port at the same time, so the separate 3.3V regulator for the SD shied. The 5V step-up converter itself is rather noisy, so extra caps are necessary.
+- The 5 volts line is mandatory for the level shifter so I found easier to power everything from it but it's a design choice. It also eases powering the device with a powerbank or an OTG cable from USB. In brief it is more versatile.
+- The PNGenc library uses very little memory by default (which is cool) but there is no dynamic memory allocation when dealing with big images. I had to increase a lot the size of some buffer to make it work reliably (see [notes] in the upscaler library). This is not the first time I see and report bugs in this library.
+
 ## Aknowledgements
 - [Rafael Zenaro](https://github.com/zenaro147) for the idea and because I uses chunks of code from the [NeoGB Printer project](https://github.com/zenaro147/NeoGB-Printer). This project is basically a demake and a way to get rid of the embarassing ESP32 platform.
 - [Brian Khuu](https://github.com/mofosyne) for the emulator code I have butchered until it worked with my janky code.
