@@ -8,10 +8,12 @@ The TinyGB Printer is the tiniest possible Game Boy printer emulator storing ima
 ## Yet another printer emulator ?! What's different ?
 This printer emulator does not require any additional converter, it contains its own. The goal is to provide an easy way to get images out of your precious saves without the hassle of installing / configuring / running a decoder on a diversity of OS. Here everything is simple: build the device, drop the compiled binary to it, print and publish immediately your images direct from the SD card. Only skill required is very basic knowldege in soldering.
 
-## What's inside / how does it work ?
-The code is basically the [Arduino Game Boy Printer emulator](https://github.com/mofosyne/arduino-gameboy-printer-emulator) (with a bit of butchering to adapt it) running on core 0 and a custom image decoder running on core 1 in parallel. Core 0 politely asks core 1 to convert data at certain times with a flag. Core 0 is ultra busy with interrupts while core 1 is pretty idle and has a ton of free time to create images. 
+This is basically the Game Boy printer of my dreams: a BitBoy without the crashes, with a decent output format and two printing modes.
 
-Why not starting from another emulator yet made for a Pi Pico ? Because I have tested / debugged / pimped this particular one during months / years with more than 100 games and I'm sure it is 100% compatible even with homebrews.
+## What's inside / how does it work ?
+The code is basically the [Arduino Game Boy Printer emulator](https://github.com/mofosyne/arduino-gameboy-printer-emulator) (with a bit of butchering to adapt it) running on core 0 and a custom image decoder running on core 1 in parallel. Core 0 politely asks core 1 to convert data at certain times with a flag. Core 0 is ultra busy with interrupts while core 1 is pretty idle and has a ton of free time to create images. The device uses a 1xBMP image as temporary storage container to avoid memory overflow (and to ease troubleshooting) and converts it to 4x PNG at the end, like the NeoGB Printer.
+
+Why not starting from another emulator yet made for a Pi Pico ? Because I have tested / debugged / pimped this particular one during months / years with more than 100 games and I'm sure it is 100% compatible even with homebrews. On the other hand, it was easier to restart from fresh than to adapt the NeoGB Printer code very polished for the ESP32.
 
 ## Easy to install
 - After soldering everything, connect the Raspberry Pi Pico with a USB cable to your computer while pressing BOOT, drop the uf2 file to the USB folder poping and enjoy your device. If it makes smoke, check for shorts with a multimeter.
@@ -41,10 +43,15 @@ A new folder is created at each boot. Each image file has a unique ID. Flashes d
 **How to make it:**
 - Solder the pin headers on the Pi Pico, the SD shield, the level shifter and the step-up converter. Beware of which side you solder the pin header. Check if you can drop the uf2 file to the Pico, it must blink red on and off, it's normal.
 - Solder the caps and the 3.3V converter first. They are surface mount components but big enough to be soldered easily. Don't be afraid by their size. They are not tiny, trust me.
-- Solder all parts with minimal clearance possible against the PCB.
+- Solder all parts with minimal the clearance possible against the PCB.
 - Trim and reflow all pins on the back side to get a clean finish. I personally trim pins as short as possible before soldering but there is a risk of scratching the solder mask, so be carefull.
 - Solder the battery box terminals and stuck the PCB on it with double sided tape for example (or hot glue).
 - You're ready to print !
+
+**Troubleshooting**
+- Last image is not written, unreadable or in BMP format ? You've probably switched the device off while the led was still on or you forgot to tear paper with the pushbutton in tear mode.
+-A complete batch of images is lacking ? The batteries are out of juice, recharge them.
+
 
 ## 100% compatibie with all known games using the Game Boy Printer
 In *Italics* game working fine in automatic mode, in **bold** games requiring the pushbutton to tear paper, or tear mode. 
