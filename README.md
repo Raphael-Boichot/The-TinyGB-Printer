@@ -54,7 +54,7 @@ A new folder is created at each boot. Each image file has a unique ID. Flashes d
 - Your PNG images are sometimes incomplete when you compile the code by yourself before flashing the Pi Pico Zero ? RTFM.
 
 
-## 100% compatibie with all known games using the Game Boy Printer
+## 100% compatible with all known games using the Game Boy Printer
 In *Italics* game working fine in automatic mode, in **bold** games requiring the pushbutton to tear paper, or tear mode. 
 All known homebrews to date are compatible with the automatic mode (like Photo!).
 
