@@ -200,7 +200,7 @@ void loop1()  //core 1 loop written by Raphaël BOICHOT, november 2024
     SD_card_access_Color = pixels.Color(intensity, 0, 0);       //RGB triplet
     BMP_decoder_color = pixels.Color(0, intensity, intensity);  //RGB triplet
     PNG_decoder_color = pixels.Color(intensity, intensity, 0);  //RGB triplet
-    delay(500);                                                 //To avoid access to SD card during INQUY commands and avoid a bug with Photo!
+    delay(600);                                                 //To avoid access to SD card during INQUY commands and avoid a bug with Photo!
     PRINT_flag = 0;
     if (inner_palette == 0x00) {
       inner_palette = 0xE4;  //see Game Boy Programming manual, palette 0x00 is a default palette interpreted as 0xE4 or 0b11100100
