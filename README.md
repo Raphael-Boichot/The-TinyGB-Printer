@@ -50,7 +50,7 @@ A new folder is created at each boot. Each image file has a unique ID. Flashes d
 
 **Troubleshooting**
 - Last image is not written, unreadable or in BMP format ? You've probably switched the device off while the led was still on or you forgot to tear paper with the pushbutton in tear mode.
-- A complete batch of images is lacking ? The batteries are out of juice, recharge them.
+- Last batch of images is incomplete (empty folder or just first images recorded with a multi-print) ? The batteries are out of juice, recharge them.
 
 
 ## 100% compatibie with all known games using the Game Boy Printer
