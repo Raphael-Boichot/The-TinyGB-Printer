@@ -171,8 +171,8 @@ All known homebrews to date are compatible with the automatic mode (like Photo!)
 
 Want to know more about these games ? Want hints and custom saves to unlock all printing features ? Follow the [link](https://github.com/Raphael-Boichot/GameboyPrinterPaperSimulation).
 
-## known issues
-- Hamster Club always reports a bad connection during first print attempt, then works. No idea why. No interest of solving this.
+## Known non critical issues
+- Hamster Club always reports a bad connection during first print attempt, then works. No idea why.
 - Photo! can only be used with the normal printing mode. Other mode are too fast and the PNG encoder cannot catch up data flux. Further code optimisation will maybe solve that.
 
 ## Kind warning
