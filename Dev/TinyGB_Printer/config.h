@@ -35,11 +35,10 @@ unsigned char printer_memory_buffer_core_1[9 * 640];  //Game Boy printer buffer 
 unsigned char BMP_image_color[144 * 160];             //color RGB image for BMP, real color known from palette (maximum possible), core 1
 char png_storage_file_name[64];                       //character string to store images
 char tmp_storage_file_name[64];                       //character string to store images
-char storage_file_dir[64];                            //character string to store images
 unsigned char inner_palette;                          //inner palette to use for core 1
 unsigned char inner_lower_margin;                     //inner margin to use for core 1
 //This array contains preformated pixels for 2bbp png mode, 4 pixels per bytes, assuming a 4x upscaling factor and so 4 consecutive pixels identical stored per bytes
-unsigned char PNG_compress_4x[4] = { 0b00000000, 0b01010101, 0b10101010, 0b11111111};// this is fortuitely the same as the image palette ^_^
+unsigned char PNG_compress_4x[4] = { 0b00000000, 0b01010101, 0b10101010, 0b11111111};// this is fortuitely the inverse of the image palette ^_^
 unsigned char PNG_palette[4] = { W, LG, DG, B };
 //unsigned char BMP_palette[4] = { W, LG, DG, B };      //colors as they will appear in the bmp file and display after dithering
 unsigned char image_palette[4] = { 0, 0, 0, 0 };      //2 bpp colors refering to BMP_palette[4]

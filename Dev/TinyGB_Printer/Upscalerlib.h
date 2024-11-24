@@ -51,7 +51,7 @@ void png_upscaler(char BMP_input[], char PNG_output[], unsigned int upscaling_fa
     uint8_t PNG_Line[PNG_width];
     uint8_t pixel_gray_level;
     uint8_t color_index;
-    uint8_t Compression_level = 1;  //1 least=fast, 9 most=slow
+    uint8_t Compression_level = 3;  //1 least=fast, 9 most=slow
     //uint8_t bits_per_pixel = 8;
     uint8_t bits_per_pixel = 2;  //assuming an upscaling factor of 4, 4 pixels are stored for each byte;
     unsigned long index;
