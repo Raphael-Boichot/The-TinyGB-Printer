@@ -6,9 +6,9 @@ The TinyGB Printer is the tiniest possible Game Boy printer emulator storing ima
 ![](/Images/Tiny_GB_Printer.jpg)
 
 ## Yet another printer emulator ?! What's different ?
-This printer emulator does not require any additional converter, it contains its own. The goal is to provide an easy way to get images out of your precious saves without the hassle of installing / configuring / running a decoder on a diversity of OS. Here everything is simple: build the device, drop the compiled binary to it, print and publish immediately your images direct from the SD card. Only skill required is very basic knowldege in soldering.
+This printer emulator does not require any additional converter, it contains its own. The goal is to provide an easy way to get images out of your precious saves without the hassle of installing / configuring / maintain / running a decoder on a diversity of OS. Here everything is simple: build the device, drop the compiled binary to it, print and publish immediately your images direct from the SD card. Only skill required is very basic knowldege in soldering.
 
-This is basically the Game Boy printer of my dreams: a BitBoy without the crashes, with a decent output format and two printing modes.
+This is basically the Game Boy printer of my dreams: an open source and cheap BitBoy without the crashes, with a decent output format and two printing modes.
 
 ## What's inside / how does it work ?
 The code is basically the [Arduino Game Boy Printer emulator](https://github.com/mofosyne/arduino-gameboy-printer-emulator) (with a bit of butchering to adapt it) running on core 0 and a custom image decoder running on core 1 in parallel. Core 0 politely asks core 1 to convert data at certain times with a flag. Core 0 is ultra busy with interrupts while core 1 is pretty idle and has a ton of free time to create images. The device uses a 1xBMP indexed image as temporary storage container to avoid memory overflow (images have no limitation in height, only in width) and converts it to 4x PNG at the end, like the NeoGB Printer.
@@ -27,6 +27,9 @@ Why not starting from another emulator yet made for a Pi Pico ? Because I have t
 A new folder is created at each boot. Each image file has a unique ID. Flashes during printing indicate packet transmission. Color of flashes indicates the mode (green for automatic, blue for tear mode). Red / magenta / yellow flashes during a print session indicate decoder / access to SD card / PNG encoding. **Do not switch off while the led is on, images are being processed.**
 
 ## Easy to fabricate
+
+All the parts used here are cheap and easy to find on Aliexpress. You probably yet have some leftovers from other projects. The total price is probably below 30€, shipping of parts included.
+
 **Parts to order:**
 - [The PCB](/PCB). Order at [JLCPCB.com](https://jlcpcb.com/) (just drop the gerber .zip to the site and use default options). VAT is paid when ordering so no bad surprise for European customers. The PCB was designed with [EasyEDA Standard Edition](https://easyeda.com/) if you want to modify something.
 - [A Raspberry Pi Pico Zero](https://fr.aliexpress.com/item/1005005862794169.html). Just check pinout if seller is not the same.
