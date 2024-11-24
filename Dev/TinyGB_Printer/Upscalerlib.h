@@ -36,7 +36,7 @@ void png_upscaler(char BMP_input[], char PNG_output[], unsigned int upscaling_fa
   }
 
   if (skip == 0) {
-    //Serial.println("Core 1 -> Upscaling to PNG 4x");
+    Serial.println("Core 1 -> Upscaling to PNG 4x");
     myTime = millis();
     uint8_t header[54];  //read the image source header
     int rc, iDataSize;
@@ -94,7 +94,7 @@ void png_upscaler(char BMP_input[], char PNG_output[], unsigned int upscaling_fa
     // Serial.println(png.getLastError(), DEC);
     // Serial.print("Core 1 -> Idata Size: ");
     // Serial.println(iDataSize, DEC);
-    // Serial.print("Core 1 -> PNG closed, encoding time (ms): ");
-    // Serial.println(millis() - myTime, DEC);
+    Serial.print("Core 1 -> PNG closed, encoding time (ms): ");
+    Serial.println(millis() - myTime, DEC);
   }
 }
