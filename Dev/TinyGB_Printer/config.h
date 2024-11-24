@@ -34,7 +34,7 @@ unsigned char printer_memory_buffer_core_0[9 * 640];  //Game Boy printer buffer 
 unsigned char printer_memory_buffer_core_1[9 * 640];  //Game Boy printer buffer of 9*640 bytes (maximum possible), core 1
 unsigned char BMP_image_color[144 * 160];             //color RGB image for BMP, real color known from palette (maximum possible), core 1
 char png_storage_file_name[64];                       //character string to store images
-char bmp_storage_file_name[64];                       //character string to store images
+char tmp_storage_file_name[64];                       //character string to store images
 char storage_file_dir[64];                            //character string to store images
 unsigned char inner_palette;                          //inner palette to use for core 1
 unsigned char inner_lower_margin;                     //inner margin to use for core 1
@@ -53,6 +53,7 @@ unsigned char local_byte_MSB = 0;                     //storage byte for convers
 unsigned int tile_column, tile_line, pixel_line = 0;  //storage byte for conversion
 unsigned char pixel_level = 0;                        //storage byte for conversion
 unsigned long lines_in_bmp_file = 0;                  //to keep tack of image file length
+unsigned long lines_in_png_file = 0;                  //to keep tack of image file length
 uint8_t intensity = 150;                              //WS2812 intensity 255 is a death ray, 10 to 15 is normal
 uint32_t SD_card_access_Color;
 uint32_t BMP_decoder_color;

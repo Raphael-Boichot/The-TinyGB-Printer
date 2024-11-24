@@ -26,7 +26,7 @@ int32_t mySeek(PNGFILE *handle, int32_t position) {
 }
 
 //Upscaling factor MUST be 4 for the moment
-void png_upscaler(char BMP_input[], char PNG_output[], unsigned int upscaling_factor, unsigned char PNG_palette[]) {
+void png_upscaler(char BMP_input[], char PNG_output[], unsigned int upscaling_factor, unsigned char PNG_palette[], unsigned long lines_in_bmp_file) {
   unsigned long myTime;
   bool skip = 0;
   File BMP_file = SD.open(BMP_input);
@@ -36,18 +36,12 @@ void png_upscaler(char BMP_input[], char PNG_output[], unsigned int upscaling_fa
   }
 
   if (skip == 0) {
-    Serial.println("Core 1 -> Upscaling to PNG 4x");
+    Serial.print("Core 1 -> Creating ");
+    Serial.println(PNG_output);
     myTime = millis();
-    uint8_t header[54];  //read the image source header
     int rc, iDataSize;
-    //uint8_t ucAlphaPal[256]; //left empty
-    BMP_file.read(header, 54);
-    //unsigned long BMP_size = ((header[5] << 24) | (header[4] << 16) | (header[3] << 8) | (header[2])); //not necessary
-    unsigned long STARToffset = ((header[13] << 24) | (header[12] << 16) | (header[11] << 8) | (header[10]));
-    unsigned int BMP_w = ((header[21] << 24) | (header[20] << 16) | (header[19] << 8) | (header[18]));
-    unsigned int BMP_h = -((header[25] << 24) | (header[24] << 16) | (header[23] << 8) | (header[22]));
-    unsigned int PNG_width = BMP_w * upscaling_factor;
-    unsigned int PNG_height = BMP_h * upscaling_factor;
+    unsigned int PNG_width = 160 * upscaling_factor;
+    unsigned int PNG_height = lines_in_bmp_file * upscaling_factor;
     //We choose to encode an indexed png, palette is 3*0xFF long, this is the default mode here
     //It's possible to pass colors but it's easier to use another software then
     uint8_t PNG_Palette[768] = { PNG_palette[0], PNG_palette[0], PNG_palette[0],
@@ -61,12 +55,11 @@ void png_upscaler(char BMP_input[], char PNG_output[], unsigned int upscaling_fa
     //uint8_t bits_per_pixel = 8;
     uint8_t bits_per_pixel = 2;  //assuming an upscaling factor of 4, 4 pixels are stored for each byte;
     unsigned long index;
-    BMP_file.seek(STARToffset);                                           // skip the 1072 bytes header and start from pixel_gray_level data
     rc = png.open(PNG_output, myOpen, myClose, myRead, myWrite, mySeek);  //mandatory call
     rc = png.encodeBegin(PNG_width, PNG_height, PNG_PIXEL_INDEXED, bits_per_pixel, PNG_Palette, Compression_level);
     //format per se, documentation here: https://github.com/bitbank2/PNGenc/wiki/API
     //png.setAlphaPalette(ucAlphaPal);                                                    //left empty
-    for (unsigned int y = 0; y < BMP_h; y++) {  //treats a line
+    for (unsigned int y = 0; y < lines_in_bmp_file; y++) {  //treats a line
       // index = 0;
       // memset(PNG_Line, 0, sizeof(PNG_Line));                         //clean the whole image data array
       // for (unsigned int x = 0; x < BMP_w; x++) {                     //starts a line
@@ -82,7 +75,7 @@ void png_upscaler(char BMP_input[], char PNG_output[], unsigned int upscaling_fa
       // }
 
       //each line in BMP image is yet a full 4x line in 2bbp
-      BMP_file.read(PNG_Line, BMP_w);
+      BMP_file.read(PNG_Line, 160);
 
       for (unsigned int j = 0; j < upscaling_factor; j++) {  //stacks n identical lines for upscaling
         rc = png.addLine(PNG_Line);                          //the library is made to work line by line, which is cool regarding memory management

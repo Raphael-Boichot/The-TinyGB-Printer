@@ -199,18 +199,16 @@ void loop1() {  //core 0
 void loop()  //core 1 loop written by Raphaël BOICHOT, november 2024
 {
   if (PRINT_flag == 1) {
-          DATA_packet_to_print = DATA_packet_counter;  //counter for packets transmitted to be transmitted to core 1
-          memcpy(printer_memory_buffer_core_1, printer_memory_buffer_core_0, 640 * DATA_packet_to_print);
-          inner_palette = gbp_pkt_printInstruction_palette_value(gbp_pktbuff);
-          inner_lower_margin = gbp_pkt_printInstruction_num_of_linefeed_after_print(gbp_pktbuff);
-          DATA_bytes_counter = 0;   //counter for data bytes
-          DATA_packet_counter = 0;  //counter for packets transmitted
-          Serial.flush();
-
+    DATA_packet_to_print = DATA_packet_counter;  //counter for packets transmitted to be transmitted to core 1
+    memcpy(printer_memory_buffer_core_1, printer_memory_buffer_core_0, 640 * DATA_packet_to_print);
+    inner_palette = gbp_pkt_printInstruction_palette_value(gbp_pktbuff);
+    inner_lower_margin = gbp_pkt_printInstruction_num_of_linefeed_after_print(gbp_pktbuff);
+    DATA_bytes_counter = 0;   //counter for data bytes
+    DATA_packet_counter = 0;  //counter for packets transmitted
     SD_card_access_Color = pixels.Color(intensity, 0, 0);       //RGB triplet
     BMP_decoder_color = pixels.Color(0, intensity, intensity);  //RGB triplet
     PNG_decoder_color = pixels.Color(intensity, intensity, 0);  //RGB triplet
-    delay(100);                                                 //To avoid access to SD card during INQUY commands and avoid a bug with Photo!
+    //delay(100);                                                 //To avoid access to SD card during INQUY commands and avoid a bug with Photo!
     PRINT_flag = 0;
     if (inner_palette == 0x00) {
       inner_palette = 0xE4;  //see Game Boy Programming manual, palette 0x00 is a default palette interpreted as 0xE4 or 0b11100100
@@ -237,7 +235,7 @@ void loop()  //core 1 loop written by Raphaël BOICHOT, november 2024
           local_byte_MSB = printer_memory_buffer_core_1[BMP_bytes_counter + 1];
           for (int posx = 0; posx < 8; posx++) {
             pixel_level = bitRead(local_byte_LSB, 7 - posx) + 2 * bitRead(local_byte_MSB, 7 - posx);
-            BMP_image_color[offset_x + posx] = PNG_compress_4x[image_palette[pixel_level]];//here we store 4 2bbp pixels per byte for next step (png upscaler)
+            BMP_image_color[offset_x + posx] = PNG_compress_4x[image_palette[pixel_level]];  //here we store 4 2bbp pixels per byte for next step (png upscaler)
           }
           BMP_bytes_counter = BMP_bytes_counter + 16;         //jumps to the next tile in byte
           offset_x = offset_x + 8;                            //jumps to the next tile in pixels
@@ -251,44 +249,45 @@ void loop()  //core 1 loop written by Raphaël BOICHOT, november 2024
     LED_WS2812_state(SD_card_access_Color, 1);
 
     if (NEWFILE_flag == 1) {
-      sprintf(bmp_storage_file_name, "/%05d/%07d.bmp", Next_dir, Next_ID);
+      sprintf(tmp_storage_file_name, "/%05d/%07d.tmp", Next_dir, Next_ID);
       sprintf(png_storage_file_name, "/%05d/%07d.png", Next_dir, Next_ID);
       Serial.print("Core 1 -> Burning new file: ");
-      Serial.println(bmp_storage_file_name);
+      Serial.println(tmp_storage_file_name);
       NEWFILE_flag = 0;
-      Pre_allocate_bmp_header(0, 0);  //creates a dummy BMP header
-      File Datafile = SD.open(bmp_storage_file_name, FILE_WRITE);
-      Datafile.write(BMP_header_generic, 54);     //writes the dummy BMP header
-      Datafile.write(BMP_indexed_palette, 1024);  //indexed RGB palette
-      Datafile.close();
+      // Pre_allocate_bmp_header(0, 0);  //creates a dummy BMP header
+      // File Datafile = SD.open(bmp_storage_file_name, FILE_WRITE);
+      // Datafile.write(BMP_header_generic, 54);     //writes the dummy BMP header
+      // Datafile.write(BMP_indexed_palette, 1024);  //indexed RGB palette
+      // Datafile.close();
     }
 
     //Serial.println("Writing new packets to BMP file");
-    File Datafile = SD.open(bmp_storage_file_name, FILE_WRITE);
+    File Datafile = SD.open(tmp_storage_file_name, FILE_WRITE);
     Datafile.write(BMP_image_color, 160 * 16 * DATA_packet_to_print);  //writes the data to SD card
     Datafile.close();
     lines_in_bmp_file = lines_in_bmp_file + 16 * DATA_packet_to_print;
-    Serial.print("Core 1 -> Current lines in BMP file: ");
+    Serial.print("Core 1 -> Current lines in temp file: ");
     Serial.println(lines_in_bmp_file, DEC);
     DATA_packet_to_print = 0;
 
-    if ((inner_lower_margin > 0) & (TEAR_mode == 0)) {                                  //the printer asks to feed paper, end of file, except in TEAR mode
+    if ((inner_lower_margin > 0) & (TEAR_mode == 0)) {  //the printer asks to feed paper, end of file, except in TEAR mode
       //Serial.println("Core 1 -> Closing an existing BMP file, finalising BMP header");  // now updating the BMP header
-      Pre_allocate_bmp_header(160, lines_in_bmp_file);                                  //number of lines will be updated now
-      File Datafile = SD.open(bmp_storage_file_name, FILE_WRITE);
-      Datafile.seek(0);                        //goes to the beginning of the file
-      Datafile.write(BMP_header_generic, 54);  //fixed header fixed with correct lenght
-      Datafile.close();
-      lines_in_bmp_file = 0;
+      // Pre_allocate_bmp_header(160, lines_in_bmp_file);                                  //number of lines will be updated now
+      // File Datafile = SD.open(bmp_storage_file_name, FILE_WRITE);
+      // Datafile.seek(0);                        //goes to the beginning of the file
+      // Datafile.write(BMP_header_generic, 54);  //fixed header fixed with correct lenght
+      // Datafile.close();
+      // lines_in_bmp_file = 0;
       Next_ID++;  //increment file number
       store_next_ID("/tiny.sys", Next_ID, Next_dir);
       NEWFILE_flag = 1;
+      lines_in_png_file = lines_in_bmp_file;
       lines_in_bmp_file = 0;
 #ifdef PNG_OUTPUT
       LED_WS2812_state(PNG_decoder_color, 1);
       //Serial.println("Core 1 -> Creating a PNG file from BMP file");
-      png_upscaler(bmp_storage_file_name, png_storage_file_name, PNG_upscaling_factor, PNG_palette);
-      SD.remove(bmp_storage_file_name);
+      png_upscaler(tmp_storage_file_name, png_storage_file_name, PNG_upscaling_factor, PNG_palette, lines_in_png_file);
+      SD.remove(tmp_storage_file_name);
 #endif
     }
     LED_WS2812_state(SD_card_access_Color, 0);
@@ -298,22 +297,23 @@ void loop()  //core 1 loop written by Raphaël BOICHOT, november 2024
   //in TEAR mode, a file is never closed unless you push a button
   if ((TEAR_mode == 1) & (digitalRead(BTN_PUSH)) & (lines_in_bmp_file > 0)) {  //in tear mode, a button push only can close file, whatever the printer (non empty) state
     LED_WS2812_state(SD_card_access_Color, 1);
-    Serial.println("Core 1 -> Closing an existing file, finalising BMP header");  // now updating the BMP header
-    Pre_allocate_bmp_header(160, lines_in_bmp_file);                              //number of lines will be updated now
-    File Datafile = SD.open(bmp_storage_file_name, FILE_WRITE);
-    Datafile.seek(0);                        //go to the beginning of the file
-    Datafile.write(BMP_header_generic, 54);  //fixed header fixed with correct lenght
-    Datafile.close();
-    lines_in_bmp_file = 0;
+    // Serial.println("Core 1 -> Closing an existing file, finalising BMP header");  // now updating the BMP header
+    // Pre_allocate_bmp_header(160, lines_in_bmp_file);                              //number of lines will be updated now
+    // File Datafile = SD.open(bmp_storage_file_name, FILE_WRITE);
+    // Datafile.seek(0);                        //go to the beginning of the file
+    // Datafile.write(BMP_header_generic, 54);  //fixed header fixed with correct lenght
+    // Datafile.close();
+    // lines_in_bmp_file = 0;
     Next_ID++;  //increment file number
     store_next_ID("/tiny.sys", Next_ID, Next_dir);
     NEWFILE_flag = 1;
+    lines_in_png_file = lines_in_bmp_file;
     lines_in_bmp_file = 0;
 #ifdef PNG_OUTPUT
     LED_WS2812_state(PNG_decoder_color, 1);
     //Serial.println("Core 1 -> Creating a PNG file from BMP file");
-    png_upscaler(bmp_storage_file_name, png_storage_file_name, PNG_upscaling_factor, PNG_palette);
-    SD.remove(bmp_storage_file_name);
+    png_upscaler(tmp_storage_file_name, png_storage_file_name, PNG_upscaling_factor, PNG_palette, lines_in_png_file);
+    SD.remove(tmp_storage_file_name);
 #endif
     LED_WS2812_state(SD_card_access_Color, 0);
   }
@@ -325,11 +325,11 @@ inline void gbp_parse_packet_loop(void) {
   for (int i = 0; i < gbp_serial_io_dataBuff_getByteCount(); i++) {
     if (gbp_pkt_processByte(&gbp_pktState, (const uint8_t)gbp_serial_io_dataBuff_getByte(), gbp_pktbuff, &gbp_pktbuffSize, sizeof(gbp_pktbuff))) {
       if (gbp_pktState.received == GBP_REC_GOT_PACKET) {
-        // Serial.print("Core 0 -> ");
-        // Serial.print((char)'{');
-        // Serial.print("\"command\":\"");
-        // Serial.print(gbpCommand_toStr(gbp_pktState.command));
-        // Serial.print("\"");
+        Serial.print("Core 0 -> ");
+        Serial.print((char)'{');
+        Serial.print("\"command\":\"");
+        Serial.print(gbpCommand_toStr(gbp_pktState.command));
+        Serial.print("\"");
 #ifdef CORE_0_VERBOSE
         if (gbp_pktState.command == GBP_COMMAND_INQUIRY) {
           Serial.print(", \"status\":{");
@@ -353,34 +353,34 @@ inline void gbp_parse_packet_loop(void) {
         }
 #endif
         if (gbp_pktState.command == GBP_COMMAND_PRINT) {
-          // Serial.print(", \"sheets\":");
-          // Serial.print(gbp_pkt_printInstruction_num_of_sheets(gbp_pktbuff));
-          // Serial.print(", \"margin_upper\":");
-          // Serial.print(gbp_pkt_printInstruction_num_of_linefeed_before_print(gbp_pktbuff));
-          // Serial.print(", \"margin_lower\":");
-          // Serial.print(gbp_pkt_printInstruction_num_of_linefeed_after_print(gbp_pktbuff));
-          // Serial.print(", \"pallet\":");
-          // Serial.print(gbp_pkt_printInstruction_palette_value(gbp_pktbuff));
-          // Serial.print(", \"density\":");
-          // Serial.print(gbp_pkt_printInstruction_print_density(gbp_pktbuff));
+          Serial.print(", \"sheets\":");
+          Serial.print(gbp_pkt_printInstruction_num_of_sheets(gbp_pktbuff));
+          Serial.print(", \"margin_upper\":");
+          Serial.print(gbp_pkt_printInstruction_num_of_linefeed_before_print(gbp_pktbuff));
+          Serial.print(", \"margin_lower\":");
+          Serial.print(gbp_pkt_printInstruction_num_of_linefeed_after_print(gbp_pktbuff));
+          Serial.print(", \"pallet\":");
+          Serial.print(gbp_pkt_printInstruction_palette_value(gbp_pktbuff));
+          Serial.print(", \"density\":");
+          Serial.print(gbp_pkt_printInstruction_print_density(gbp_pktbuff));
 
           ///////////////////////specific to the TinyGB Printer////////////////////////
-          PRINT_flag = 1;           //triggers stuff on core 1, from now core 1 have plenty of time to convert image
+          PRINT_flag = 1;  //triggers stuff on core 1, from now core 1 have plenty of time to convert image
           ///////////////////////specific to the TinyGB Printer////////////////////////
         }
         if (gbp_pktState.command == GBP_COMMAND_DATA) {
           //!{"command":"DATA", "compressed":0, "more":0}
 #ifdef GBP_FEATURE_PARSE_PACKET_USE_DECOMPRESSOR
-          //Serial.print(", \"compressed\":0");  // Already decompressed by us, so no need to do so
+          Serial.print(", \"compressed\":0");  // Already decompressed by us, so no need to do so
 #else
-          //Serial.print(", \"compressed\":");
-          //Serial.print(gbp_pktState.compression);
+          Serial.print(", \"compressed\":");
+          Serial.print(gbp_pktState.compression);
 #endif
-          //Serial.print(", \"more\":");
-          //Serial.print((gbp_pktState.dataLength != 0) ? '1' : '0');
+          Serial.print(", \"more\":");
+          Serial.print((gbp_pktState.dataLength != 0) ? '1' : '0');
         }
-        //Serial.println((char)'}');
-        //Serial.flush();
+        Serial.println((char)'}');
+        Serial.flush();
       } else {
 #ifdef GBP_FEATURE_PARSE_PACKET_USE_DECOMPRESSOR
         // Required for more complex games with compression support
@@ -410,7 +410,7 @@ inline void gbp_parse_packet_loop(void) {
               ///////////////////////specific to the TinyGB Printer////////////////////////
             }
             LED_WS2812_state(WS2812_Color, 0);
-            //Serial.flush();
+            Serial.flush();
           }
         }
 #else  //GBP_FEATURE_PARSE_PACKET_USE_DECOMPRESSOR \
