@@ -172,8 +172,8 @@ All known homebrews to date are compatible with the automatic mode (like Photo!)
 Want to know more about these games ? Want hints and custom saves to unlock all printing features ? Follow the [link](https://github.com/Raphael-Boichot/GameboyPrinterPaperSimulation).
 
 ## known issues
-- Hamster Club always report a bad connection during first print attempt, then works. No idea why.
-- Photo! can only be used with the normal printing mode. Other mode are too fast and the PNG encoder cannot catch up data flux.
+- Hamster Club always reports a bad connection during first print attempt, then works. No idea why. No interest of solving this.
+- Photo! can only be used with the normal printing mode. Other mode are too fast and the PNG encoder cannot catch up data flux. Further code optimisation will maybe solve that.
 
 ## Kind warning
 The code and current design come as it. If you're not happy with the current hardware, the PCB EasyEDA design or the Arduino IDE, create your own, the licence allows it ! Pull request with tested and working improvements are of course still welcomed. Feel free to design and share a 3D printed case, I won't make one.
