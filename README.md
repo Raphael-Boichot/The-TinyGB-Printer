@@ -48,7 +48,7 @@ All the parts used here are cheap and easy to find on Aliexpress. You probably y
 - Solder the battery box terminals and stuck the PCB on it with double sided tape for example (or hot glue).
 - You're ready to print !
 
-The device draws between 90 mA (printing @133 MHz) and 210 mA (peak when accessing SD card @250 MHz), so couple of AAA batteries should last on average more than 2 hours of continuous printing and AA more than 5 hours, pessimsitic estimate.
+The device draws between 90 mA (printing @133 MHz) and 210 mA (peak when accessing SD card @250 MHz), so couple of AAA batteries should last on average more than 2 hours of continuous printing and AA more than 5 hours, pessimistic estimate. More than batteries on a modded Game Boy anyway.
 
 **Troubleshooting**
 - Last image is not written ? You've probably switched the device off while the led was still on or you forgot to tear paper with the pushbutton in tear mode.
