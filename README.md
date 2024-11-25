@@ -52,7 +52,7 @@ All the parts used here are cheap and easy to find on Aliexpress. You probably y
 - Last image is not written ? You've probably switched the device off while the led was still on or you forgot to tear paper with the pushbutton in tear mode.
 - Last batch of images is incomplete (empty folder or just first images recorded with a multi-print) ? The batteries are out of juice, recharge them.
 
-## 100% compatible with all known games using the Game Boy Printer
+## Compatible with all games using the Game Boy Printer
 In *Italics* game working fine in automatic mode, in **bold** games requiring the pushbutton to tear paper, or tear mode. 
 All known homebrews to date are compatible with the automatic mode.
 
@@ -170,7 +170,7 @@ All known homebrews to date are compatible with the automatic mode.
 Want to know more about these games ? Want hints and custom saves to unlock all printing features ? Follow the [link](https://github.com/Raphael-Boichot/GameboyPrinterPaperSimulation).
 
 ## Known issues
-- Photo! can only be used with the normal printing mode at the moment (no double speed, no transfer). Multi-print of course works.
+- Photo! can only be used with the normal printing mode at the moment (no double speed, no transfer). Multi-print of course works. This issue may or may not be solve one day.
 
 ## Kind warning
 The code and current design come as it. If you're not happy with the current hardware, the PCB EasyEDA design or the Arduino IDE, create your own, the licence allows it ! Pull request with tested and working improvements are of course still welcomed. Feel free to design and share a 3D printed case, I won't make one.
