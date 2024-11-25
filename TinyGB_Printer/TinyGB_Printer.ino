@@ -178,8 +178,10 @@ void setup(void) {
   Serial.begin(115200);
 
   // Wait for Serial to be ready
-  while (!Serial) { ; }
-
+/////////////Specific to TinyGB Printer//////////////
+  //while (!Serial) { ; }
+/////////////Specific to TinyGB Printer//////////////
+  
   Connect_to_printer();  //makes an attempt to switch in printer mode
 
   /////////////Specific to TinyGB Printer//////////////
