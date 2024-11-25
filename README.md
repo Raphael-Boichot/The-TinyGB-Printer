@@ -9,7 +9,7 @@ The TinyGB Printer is the simplest possible Game Boy printer emulator storing im
 This printer emulator does not require any additional converter, it contains its own. The goal is to provide an easy way to get images out of your precious saves without the hassle of installing / configuring / maintaining / running a decoder on a diversity of OS. Here everything is simple: build the device, drop the compiled binary to it, print and publish immediately your images direct from the SD card. Only skill required is very basic knowldege in soldering.
 
 ## What's inside / how does it work ?
-The code is basically the [Arduino Game Boy Printer emulator](https://github.com/mofosyne/arduino-gameboy-printer-emulator) (with a bit of modifications) running on core 0 and a custom image decoder running on core 1 in parallel. Core 0 politely asks core 1 to convert data at certain times with a flag. Core 0 is quite busy with interrupts while core 1 is pretty idle and has a ton of free time to create images.
+The code is basically the [Arduino Game Boy Printer emulator](https://github.com/mofosyne/arduino-gameboy-printer-emulator) (with a bit of modifications) running on core 0 and a custom image decoder running on core 1 in parallel. Core 0 politely asks core 1 to convert data at certain times with a flag. Core 0 is quite busy with interrupts while core 1 is pretty idle and has a ton of free time to create images. Good timing between the two cores is however critical (and required tons of tests) as core 0 cannot miss any interrupt.
 
 Why not starting from another emulator yet made for a Pi Pico ? Because I have tested / debugged / pimped this particular one during months / years with more than 100 games and I'm sure of its compatibility. It was also easier to restart from fresh than to adapt the NeoGB Printer code very polished for the ESP32.
 
@@ -171,7 +171,7 @@ All known homebrews to date are compatible with the automatic mode.
 Want to know more about these games ? Want hints and custom saves to unlock all printing features ? Follow the [link](https://github.com/Raphael-Boichot/GameboyPrinterPaperSimulation).
 
 ## Known issues
-- [Photo!](https://github.com/untoxa/gb-photo) requires the device to be overclocked @250 MHz to fully support the double speed mode. Regular build (@133 MHz) only support the normal mode. Fast Printing and Tranfer are not supported.
+- [Photo!](https://github.com/untoxa/gb-photo) requires the device to be overclocked @250 MHz to fully support the double speed mode. Regular build (@133 MHz) only supports the normal mode. Fast Printing and Tranfer are not supported (and won't). If these features are very important for you, better use a [Pico GB Printer](https://github.com/untoxa/pico-gb-printer).
 - Printing with Hamster Club (What a stupid game !) may crash without any reason but very rarely.
 
 ## Kind warning
