@@ -421,6 +421,7 @@ inline void gbp_parse_packet_loop(void) {
         }
         if (gbp_pktState.command == GBP_COMMAND_DATA) {
           //!{"command":"DATA", "compressed":0, "more":0}
+          LED_WS2812_state(WS2812_Color, 1);
 #ifdef GBP_FEATURE_PARSE_PACKET_USE_DECOMPRESSOR
           Serial.print(", \"compressed\":0");  // Already decompressed by us, so no need to do so
 #else
@@ -429,6 +430,7 @@ inline void gbp_parse_packet_loop(void) {
 #endif
           Serial.print(", \"more\":");
           Serial.print((gbp_pktState.dataLength != 0) ? '1' : '0');
+          LED_WS2812_state(WS2812_Color, 0);
         }
         Serial.println((char)'}');
         Serial.flush();
@@ -578,7 +580,7 @@ char printing(char byte_sent)  // this function prints bytes to the serial
     bit_sent = bitRead(byte_sent, 7 - i);
     digitalWrite(GBP_SC_PIN, LOW);
     digitalWrite(GBP_SI_PIN, bit_sent);  //GBP_SI_PIN is SOUT for the printer
-    /LED_WS2812_state(WS2812_Color, bit_sent);
+    / LED_WS2812_state(WS2812_Color, bit_sent);
     delayMicroseconds(30);  //double speed mode
     digitalWrite(GBP_SC_PIN, HIGH);
     bit_read = (digitalRead(GBP_SO_PIN));  //GBP_SO_PIN is SIN for the printer
