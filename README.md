@@ -170,14 +170,14 @@ All known homebrews to date are compatible with the automatic mode.
 Want to know more about these games ? Want hints and custom saves to unlock all printing features ? Follow the [link](https://github.com/Raphael-Boichot/GameboyPrinterPaperSimulation).
 
 ## Known issues
-- Photo! requires the device to be overclocked at 250 MHz to fully support the double speed mode. Regular build (@133 MHz) only support the normal mode. Fast Printing and Tranfer are not supported.
-- Printing with Hamster Club (What a stupid game) may crash without any reason but very rarely.
+- [Photo!](https://github.com/untoxa/gb-photo) requires the device to be overclocked @250 MHz to fully support the double speed mode. Regular build (@133 MHz) only support the normal mode. Fast Printing and Tranfer are not supported.
+- Printing with Hamster Club (What a stupid game !) may crash without any reason but very rarely.
 
 ## Kind warning
 The code and current design come as it. If you're not happy with the current hardware, the PCB EasyEDA design or the Arduino IDE, create your own, the licence allows it ! Pull request with tested and working improvements are of course still welcomed. Feel free to design and share a 3D printed case, I won't make one.
 
 ## Dev notes
-- The Pi Pico zero was not able to power the SD card (in writing mode) and keep track of the interrupts with the serial port at the same time, so the separate 3.3V regulator for the SD shied. The 5V step-up converter itself is rather noisy, so extra caps are necessary.
+- The Pi Pico zero is not able to power the SD card (in writing mode) and keep track of the interrupts with the serial port at the same time, so the separate 3.3V regulator for the SD shied. The 5V step-up converter itself is rather noisy, so extra caps are necessary.
 - The 5 volts line is mandatory for the level shifter so I found easier to power everything from it but it's a design choice. It also eases powering the device with a powerbank or an OTG cable from USB. In brief it is more versatile.
 - The PNGenc library uses very little memory by default (which is cool) but there is no dynamic memory allocation when dealing with big images. I had to increase a lot the size of some buffer to make it work reliably (see [notes](/TinyGB_Printer/Upscalerlib.h#L1) in the upscaler library).
 - Feel free to make a lithium battery powered design of your dream. Lithium batteries are not recycled and always end as [spicy pillows](https://www.reddit.com/r/spicypillows/) so I don't like them.
