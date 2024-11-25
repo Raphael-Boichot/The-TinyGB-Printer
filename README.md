@@ -33,10 +33,10 @@ All the parts used here are cheap and easy to find on Aliexpress. You probably y
 - [A bare MicroSD shield](https://fr.aliexpress.com/item/1005005302035188.html) without internal power converter and pin header. The most simple.
 - [A 4 gates level shifter](https://fr.aliexpress.com/item/1005004560297038.html). The Pi Pico pins are not 5V rated, so the need for a level shifter.
 - [A 5V DC-DC step-up converter](https://fr.aliexpress.com/item/32809095271.html), 0.9-5V (input) to 5V (output). I know, it does not look impressive but it does prefectly the job.
-- [Pin headers](https://fr.aliexpress.com/item/1005007324368709.html) with 2.54 mm spacing.
+- [Pin headers](https://fr.aliexpress.com/item/1005007324368709.html) with 2.54 mm spacing, whatever the pin lenght, you will trim them anyway.
 - [A GBA/GBC Game Boy serial slot](https://fr.aliexpress.com/item/1005006361884480.html). They can be cheap or not depending on the seller, do not hesitate to change.
-- [A 6x6 mm pushbutton](https://fr.aliexpress.com/item/1005003938244847.html), whatever height. The softer the better.
-- [3x22 µF caps with a 1206](https://fr.aliexpress.com/item/1005006022131059.html) (10 to 50 µF is OK if you have spares).
+- [A 6x6 mm pushbutton](https://fr.aliexpress.com/item/1005003938244847.html), whatever height. The softer the better if you have the choice.
+- [3 x 22 µF caps with a 1206 footprint](https://fr.aliexpress.com/item/1005006022131059.html) (10 to 50 µF is OK if you have spares).
 - [An AMS1117-3.3V converter](https://fr.aliexpress.com/item/4001104149446.html). The SD card is powered independently by this converter as the Pi Pico puny onboard converter is not powerfull enough.
 - A [2xAA](https://fr.aliexpress.com/item/4000980371784.html) or [2xAAA](https://fr.aliexpress.com/item/1005004195965365.html) battery box with switch. Single AA battery is a bit too weak to power the device reliably (it can work or not).
 
