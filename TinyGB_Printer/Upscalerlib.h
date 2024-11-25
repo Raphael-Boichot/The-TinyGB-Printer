@@ -26,22 +26,19 @@ int32_t mySeek(PNGFILE *handle, int32_t position) {
 }
 
 //Upscaling factor MUST be 4 for the moment
-void png_upscaler(char BMP_input[], char PNG_output[], unsigned int upscaling_factor, unsigned char PNG_palette[], unsigned long lines_in_bmp_file) {
+void png_upscaler(char DATA_input[], char PNG_output[], unsigned int upscaling_factor, unsigned char PNG_palette[], unsigned long lines_in_DATA_file) {
   unsigned long myTime;
   bool skip = 0;
-  File BMP_file = SD.open(BMP_input);
-  if (!BMP_file) {
-    bool skip = 1;
-    Serial.println("Core 1 -> This BMP file does not exist, skipping png fabrication");
+  File DATA_file = SD.open(DATA_input);
+  if (!DATA_file) {
+    bool skip = 1;  //file not found, skip next step
   }
 
   if (skip == 0) {
-    //Serial.print("Core 1 -> Creating ");
-    //Serial.println(PNG_output);
     myTime = millis();
     int rc, iDataSize;
     unsigned int PNG_width = 160 * upscaling_factor;
-    unsigned int PNG_height = lines_in_bmp_file * upscaling_factor;
+    unsigned int PNG_height = lines_in_DATA_file * upscaling_factor;
     //We choose to encode an indexed png, palette is 3*0xFF long, this is the default mode here
     //It's possible to pass colors but it's easier to use another software then
     uint8_t PNG_Palette[768] = { PNG_palette[0], PNG_palette[0], PNG_palette[0],
@@ -58,15 +55,15 @@ void png_upscaler(char BMP_input[], char PNG_output[], unsigned int upscaling_fa
     rc = png.encodeBegin(PNG_width, PNG_height, PNG_PIXEL_INDEXED, bits_per_pixel, PNG_Palette, Compression_level);
     //format per se, documentation here: https://github.com/bitbank2/PNGenc/wiki/API
     //png.setAlphaPalette(ucAlphaPal);                                                    //left empty
-    for (unsigned int y = 0; y < lines_in_bmp_file; y++) {  //treats a line
+    for (unsigned int y = 0; y < lines_in_DATA_file; y++) {  //treats a line
       //each line in BMP image is yet a full 4x line in 2bbp
-      BMP_file.read(PNG_Line, 160);
+      DATA_file.read(PNG_Line, 160);
 
       for (unsigned int j = 0; j < upscaling_factor; j++) {  //stacks n identical lines for upscaling
         rc = png.addLine(PNG_Line);                          //the library is made to work line by line, which is cool regarding memory management
       }
     }
-    BMP_file.close();         //closes BMP file
+    DATA_file.close();        //closes BMP file
     iDataSize = png.close();  //closes PNG file
     //Serial.print("Core 1 -> PNG closed, encoding time (ms): ");
     //Serial.println(millis() - myTime, DEC);
