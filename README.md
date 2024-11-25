@@ -51,6 +51,7 @@ All the parts used here are cheap and easy to find on Aliexpress. You probably y
 **Troubleshooting**
 - Last image is not written ? You've probably switched the device off while the led was still on or you forgot to tear paper with the pushbutton in tear mode.
 - Last batch of images is incomplete (empty folder or just first images recorded with a multi-print) ? The batteries are out of juice, recharge them.
+- Some image are half black/white ? See [notes](/TinyGB_Printer/Upscalerlib.h#L1) in the upscaler library.
 
 ## Compatible with all games using the Game Boy Printer
 In *Italics* game working fine in automatic mode, in **bold** games requiring the pushbutton to tear paper, or tear mode. 
