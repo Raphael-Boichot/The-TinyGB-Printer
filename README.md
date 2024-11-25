@@ -57,10 +57,10 @@ The device draws between 90 mA (printing @133 MHz) and 210 mA (peak when accessi
 
 ## Examples of use
 
-**Infinite timelapse with photo**
+### Infinite timelapse with photo
 ![](/Images/Showcase_1.gif)
 
-**Saving your achievements**
+### Saving your achievements
 ![](/Images/Game_examples.png)
 
 ## Compatible with all games using the Game Boy Printer
