@@ -175,7 +175,7 @@ All known homebrews to date are compatible with the automatic mode (like Photo!)
 Want to know more about these games ? Want hints and custom saves to unlock all printing features ? Follow the [link](https://github.com/Raphael-Boichot/GameboyPrinterPaperSimulation).
 
 ## Known issues
-- Photo! can only be used with the normal printing mode (no double speed, no transfer). I cannot pass buffer fast enough between core 0 and core 1 to support fast modes at the moment.
+- Photo! can only be used with the normal printing mode at the moment (no double speed, no transfer). Multi-print of course works.
 
 ## Kind warning
 The code and current design come as it. If you're not happy with the current hardware, the PCB EasyEDA design or the Arduino IDE, create your own, the licence allows it ! Pull request with tested and working improvements are of course still welcomed. Feel free to design and share a 3D printed case, I won't make one.
