@@ -42,10 +42,10 @@ All the parts used here are cheap and easy to find on Aliexpress. You probably y
 
 **How to make it:**
 - Solder the pin headers on the Pi Pico, the SD shield, the level shifter and the step-up converter. Beware of which side you solder the pin header. Check if you can drop the uf2 file to the Pico, it must blink red on and off, it's normal.
-- Solder the caps and the 3.3V converter first. They are surface mount components but big enough to be soldered easily. Don't be afraid by their size. They are not tiny, trust me.
-- Solder all parts with minimal the clearance possible against the PCB.
+- Solder the caps and the 3.3V converter first. They are surface mount components but big enough to be soldered easily. Don't be afraid by their size. They are not tiny, you're just too far.
+- Solder all parts with the minimal clearance possible against the PCB.
 - Trim and reflow all pins on the back side to get a clean finish. I personally trim pins as short as possible before soldering but there is a risk of scratching the solder mask, so be carefull.
-- Solder the battery box terminals and stuck the PCB on it with double sided tape for example (or hot glue).
+- Solder the battery box terminals and stuck the PCB on it with double sided tape for example (or hot glue if you're addicted to hot snot like me).
 - You're ready to print !
 
 The device draws between 90 mA (printing @133 MHz) and 210 mA (peak when accessing SD card @250 MHz), so couple of AAA batteries should last on average more than 2 hours of continuous printing and AA more than 5 hours, pessimistic estimate. More than batteries on a modded Game Boy anyway.
