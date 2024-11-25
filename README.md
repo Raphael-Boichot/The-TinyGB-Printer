@@ -55,7 +55,7 @@ The device draws between 90 mA (printing @133 MHz) and 210 mA (peak when accessi
 - Last batch of images is incomplete (empty folder or just first images recorded with a multi-print) ? The batteries are out of juice, recharge them.
 - Some image are half black/white ? See [notes](/TinyGB_Printer/Upscalerlib.h#L1) in the upscaler library.
 
-## Unleash your creativity !
+## Examples of use
 
 ![](/Images/Showcase_1.gif)
 
