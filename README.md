@@ -188,6 +188,7 @@ The code and current design come as it. If you're not happy with the current har
 - The 5 volts line is mandatory for the level shifter so I found easier to power everything from it but it's a design choice. It also eases powering the device with a powerbank or an OTG cable from USB. In brief it is more versatile.
 - The PNGenc library uses very little memory by default (which is cool) but there is no dynamic memory allocation when dealing with big images. I had to increase a lot the size of some buffer to make it work reliably (see [notes](/TinyGB_Printer/Upscalerlib.h#L1) in the upscaler library).
 - Feel free to make a lithium battery powered design of your dream. Lithium batteries are not recycled and always end as [spicy pillows](https://www.reddit.com/r/spicypillows/) so I don't like them.
+- The RP2040 for Arduino IDE takes both the Pico SDK or the Arduino commands when there is an equivalence. Here this is not rocket science either so Arduino commands are well enough.
 
 ## Aknowledgements
 - [Rafael Zenaro](https://github.com/zenaro147) for the idea and because I uses chunks of code from the [NeoGB Printer project](https://github.com/zenaro147/NeoGB-Printer). This project is basically a demake and a way to get rid of the embarassing ESP32 platform.
