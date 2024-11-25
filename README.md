@@ -59,6 +59,8 @@ The device draws between 90 mA (printing @133 MHz) and 210 mA (peak when accessi
 
 ![](/Images/Showcase_1.gif)
 
+![](/Images/Game_examples.gif)
+
 ## Compatible with all games using the Game Boy Printer
 In *Italics* game working fine in automatic mode, in **bold** games requiring the pushbutton to tear paper, or tear mode. 
 All known homebrews to date are compatible with the automatic mode.
