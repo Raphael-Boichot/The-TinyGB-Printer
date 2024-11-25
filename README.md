@@ -57,7 +57,7 @@ The device draws between 90 mA (printing @133 MHz) and 210 mA (peak when accessi
 
 ## Examples of use
 
-### Infinite timelapse with photo
+### Infinite timelapse with [photo!](https://github.com/untoxa/gb-photo)
 ![](/Images/Showcase_1.gif)
 
 ### Saving your achievements
