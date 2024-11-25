@@ -184,3 +184,4 @@ The code and current design come as it. If you're not happy with the current har
 ## Aknowledgements
 - [Rafael Zenaro](https://github.com/zenaro147) for the idea and because I uses chunks of code from the [NeoGB Printer project](https://github.com/zenaro147/NeoGB-Printer). This project is basically a demake and a way to get rid of the embarassing ESP32 platform.
 - [Brian Khuu](https://github.com/mofosyne) for the emulator code I have butchered until it accepted to talk to my janky core 1 loop.
+- [Toxa](https://github.com/untoxa) for helping me understand the PNG format subtilities.
