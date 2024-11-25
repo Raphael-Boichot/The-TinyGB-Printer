@@ -22,7 +22,7 @@ Why not starting from another emulator yet made for a Pi Pico ? Because I have t
 - Switch the device on while pressing the pushbutton : the LED flashes blue, all images are stacked together in a single file until you press the pushbutton to "cut paper", it's the **tear mode**. Some rare games require this (see compatibility list).
 - Switch the device on and the LED blinks red on and off in cycle: SD card not connected or not formatted in FAT32. SD card can be inserted during this step, the device will then boot normally.
 
-A new folder is created at each boot. Each image file has a unique ID. Flashes during printing indicate packet transmission. Color of flashes indicates the mode (green for automatic mode, blue for tear mode). **Do not switch off while the led is on, images are being processed.**
+A new folder is created at each boot. Each image file has a unique ID. Flashes during printing indicate access to SD card. Color of flashes indicates the mode (green for automatic mode, blue for tear mode). **Do not switch off while the led is on, images are being processed, you will loose some.**
 
 ## Easy to fabricate
 All the parts used here are cheap and easy to find on Aliexpress. You probably yet have some leftovers from other projects. The total price is probably well below 30€, shipping of parts included, and you will have extra parts to gift some to your nerdy friends.
