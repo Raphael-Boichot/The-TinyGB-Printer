@@ -1,6 +1,6 @@
 # The TinyGB Printer - A portable Game Boy Printer emulator
 
-The TinyGB Printer is the simplest possible Game Boy printer emulator storing images on SD card made with common parts and easy to assemble. It is basically a demake of the [NeoGB printer](https://github.com/zenaro147/NeoGB-Printer). The device is compatible with all known GB/GBC games, homebrews included. It stores the printed images in pixel perfect 4x PNG format by default. It is meant to be powered by double AA or AAA batteries, like the Game Boy Color / Pocket, so that you can recharge them at the same time. It is of course fully open source.
+The TinyGB Printer is the simplest possible Game Boy printer emulator storing images on SD card made with common parts and easy to assemble. It is basically a demake of the [NeoGB printer](https://github.com/zenaro147/NeoGB-Printer). The device is compatible with all known GB/GBC games, homebrews included. It stores the printed images in pixel perfect 4x PNG format by default. It is meant to be powered by double AA or AAA batteries, like the Game Boy Color / Pocket, so that you can recharge them with the same equipement. It is of course fully open source.
 
 ## Showcase (prototype)
 ![](/Images/Tiny_GB_Printer.jpg)
