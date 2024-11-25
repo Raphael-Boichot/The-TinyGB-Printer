@@ -59,16 +59,16 @@ The device draws between 90 mA (printing @133 MHz) and 210 mA (peak when accessi
 In *Italics* game working fine in automatic mode, in **bold** games requiring the pushbutton to tear paper, or tear mode. 
 All known homebrews to date are compatible with the automatic mode.
 
-- *1942 (never released in Japan)*
-- *Alice in Wonderland (never released in Japan)*
+- *1942*
+- *Alice in Wonderland (US version only, Euro version not printer compatible)*
 - *Animal Breeder 3 (あにまるぶりーだー3)*
 - *Animal Breeder 4 (あにまるぶり〜だ〜4)*
 - *Aqualife (アクアライフ)*
-- *Asteroids (never released in Japan)*
-- *Austin Powers: Oh, Behave! (never released in Japan)*
-- *Austin Powers: Welcome to My Underground Lair! (never released in Japan)*
-- *Austin Power Episode 3 - Yeah Baby Yeah (unreleased, rom CGBBA3P0.3)*
-- *Austin Power Episode 4 - Why Make Millions (unreleased, rom CGBBA4P0.0)*
+- *Asteroids*
+- *Austin Powers: Oh, Behave!*
+- *Austin Powers: Welcome to My Underground Lair!*
+- *Austin Power Episode 3 - Yeah Baby Yeah (leaked, rom CGBBA3P0.3)*
+- *Austin Power Episode 4 - Why Make Millions (leaked, rom CGBBA4P0.0)*
 - *Cardcaptor Sakura: Itsumo Sakura-chan to Issho! (カードキャプターさくら 〜いつもさくらちゃんと一緒〜)*
 - *Cardcaptor Sakura: Tomoe Shōgakkō Daiundōkai (カードキャプターさくら 〜友枝小学校大運動会〜)*
 - *Chee-Chai Alien (ちっちゃいエイリアン)*
@@ -80,7 +80,7 @@ All known homebrews to date are compatible with the automatic mode.
 - *Dejiko no Mahjong Party (でじこの麻雀パーティー)*
 - *Densha de GO! 2 (電車でGO!2)*
 - *Dino Breeder 3 - Gaia Fukkatsu (ディノブリーダー3 〜ガイア復活〜)*
-- *Disney's Dinosaur (never released in Japan)*
+- *Disney's Dinosaur*
 - *Disney's Tarzan (ディズニーズ ターザン)*
 - *Donkey Kong Country (ドンキーコング2001)*
 - *Doraemon Kart 2 (ドラえもんカート2)*
@@ -88,9 +88,9 @@ All known homebrews to date are compatible with the automatic mode.
 - *Doraemon no Game Boy de Asobouyo Deluxe 10 (ドラえもんのGBであそぼうよ デラックス10)*
 - *Doraemon no Quiz Boy (ドラえもんのクイズボーイ)*
 - *Dungeon Savior (ダンジョンセイバー)*
-- **E.T.: Digital Companion (never released in Japan)**
+- **E.T.: Digital Companion**
 - *Fairy Kitty no Kaiun Jiten: Yousei no Kuni no Uranai Shugyou (フェアリーキティの開運辞典 妖精の国の占い修行)*
-- *Fisher-Price Rescue Heroes: Fire Frenzy (never released in Japan)*
+- *Fisher-Price Rescue Heroes: Fire Frenzy*
 - *Game Boy Camera or Pocket Camera (ポケットカメラ)*
 - *Golf Ou: The King of Golf (ゴルフ王)*
 - *Hamster Club (ハムスター倶楽部)*
@@ -99,7 +99,7 @@ All known homebrews to date are compatible with the automatic mode.
 - *Harvest Moon 2 (牧場物語GB2)*
 - *Hello Kitty no Beads Koubou (ハローキティのビーズ工房)*
 - **Hello Kitty no Magical Museum (ハローキティのマジカルミュージアム)**
-- *Hello Kitty Pocket Camera (ハローキティのポケットカメラ, unreleased, rom GBDHKAJ0.2)*
+- *Hello Kitty Pocket Camera (ハローキティのポケットカメラ, leaked, rom GBDHKAJ0.2)*
 - *Jinsei Game Tomodachi takusan Tsukurou Yo! (人生ゲーム 友達たくさんつくろうよ!)*
 - *Kakurenbo Battle Monster Tactics (モンスタータクティクス)*
 - *Kanji Boy (漢字BOY)*
@@ -109,17 +109,17 @@ All known homebrews to date are compatible with the automatic mode.
 - *Kettou Transformers Beast Wars - Beast Senshi Saikyou Ketteisen (決闘トランスフォーマービーストウォーズ ビースト戦士最強決定戦)*
 - *Kidou Senkan Nadesico - Ruri Ruri Mahjong (機動戦艦ナデシコ ルリルリ麻雀)*
 - *Kisekae Monogatari (きせかえ物語)*
-- *Klax (never released in Japan)*
+- *Klax*
 - *Konchuu Hakase 2 (昆虫博士2)*
-- *Little Nicky (never released in Japan)*
-- *Logical (never released in Japan)*
+- *Little Nicky*
+- *Logical*
 - *Love Hina Pocket (ラブ ひな)*
-- *Magical Drop (never released in Japan)*
-- **Mary-Kate and Ashley Pocket Planner (never released in Japan)**
+- *Magical Drop*
+- **Mary-Kate and Ashley Pocket Planner**
 - **McDonald's Monogatari : Honobono Tenchou Ikusei Game (マクドナルド物語)**
-- *Mickey's Racing Adventure (never released in Japan)*
-- *Mickey's Speedway USA (never released in Japan)*
-- *Mission: Impossible (never released in Japan)*
+- *Mickey's Racing Adventure*
+- *Mickey's Speedway USA*
+- *Mission: Impossible*
 - *Monster ★ Race 2 (もんすたあ★レース2)*
 - *Monster ★ Race Okawari (もんすたあ★レース おかわり)*
 - *Nakayoshi Cooking Series 1 - Oishii Cake-ya-san (なかよしクッキングシリーズ1 おいしいケーキ屋さん)*
@@ -130,31 +130,31 @@ All known homebrews to date are compatible with the automatic mode.
 - *Nakayoshi Pet Series 1: Kawaii Hamster (なかよしペットシリーズ1 かわいいハムスタ)*
 - *Nakayoshi Pet Series 2: Kawaii Usagi (なかよしペットシリーズ2 かわいいウサギ)*
 - *Nakayoshi Pet Series 3: Kawaii koinu (なかよしペットシリーズ3 かわいい仔犬)*
-- *NFL Blitz (never released in Japan)*
+- *NFL Blitz*
 - **Nintama Rantarou GB: Eawase Challenge Puzzle (忍たま乱太郎GB えあわせチャレンジパズル)**
 - *Ojarumaru: Mitsunegai Jinja no Ennichi de Ojaru! (おじゃる丸 〜満願神社は縁日でおじゃる!)*
 - *Pachinko Data Card - Chou Ataru-kun (Pachinko Data Card ちょ〜あたる君〜)*
-- *Perfect Dark (never released in Japan)*
+- *Perfect Dark*
 - *Pocket Family 2 (ポケットファミリーGB2)*
 - *Pocket Kanjirou (ポケット漢字郎)*
 - *Pocket Puyo Puyo-n (ぽけっとぷよぷよ〜ん)*
 - *Pokémon Card GB2: Great Rocket-Dan Sanjō! (ポケモンカードGB2 GR団参上!)*
 - *Pokémon Crystal (ポケットモンスター クリスタルバージョン)*
 - *Pokémon Gold (ポケットモンスター 金)*
-- *Pokémon Picross (ポケモンピクロス, unreleased, rom DMGAKVJ0.1)*
+- *Pokémon Picross (ポケモンピクロス, leaked, rom DMGAKVJ0.1)*
 - *Pokémon Pinball (ポケモンピンボール)*
 - *Pokémon Silver (ポケットモンスター 銀)*
 - *Pokémon Trading Card Game (ポケモンカードGB)*
 - *Pokémon Yellow: Special Pikachu Edition (ポケットモンスター ピカチュウ)*
 - *Pro Mahjong Tsuwamono GB (プロ麻雀兵 GB)*
 - *Purikura Pocket 3 - Talent Debut Daisakusen (プリクラポケット3 〜タレントデビュー大作戦〜)*
-- *Puzzled (never released in Japan)*
-- *Quest for Camelot (never released in Japan)*
-- *Roadsters Trophy (never released in Japan)*
+- *Puzzled*
+- *Quest for Camelot*
+- *Roadsters Trophy*
 - *Sanrio Timenet: Kako Hen (サンリオタイムネット 過去編)*
 - *Sanrio Timenet: Mirai Hen (サンリオタイムネット 未来編)*
 - *Shinseiki Evangelion Mahjong Hokan Keikaku (新世紀エヴァンゲリオン 麻雀補完計画)*
-- *SMARTCOM (never released in Japan)*
+- *SMARTCOM (requires a hack to bypass boot sequence)*
 - *Sōko-ban Densetsu: Hikari to Yami no Kuni (倉庫番伝説 光と闇の国)*
 - *Super Black Bass Pocket 3 (スーパーブラックバスポケット3)*
 - *Super Mario Bros. Deluxe (スーパーマリオブラザーズデラックス)*
@@ -164,11 +164,11 @@ All known homebrews to date are compatible with the automatic mode.
 - *Sylvanian Families 3 - Hoshi Furu Yoru no Sunadokei (シルバニアファミリー３　星ふる夜のすなどけい)*
 - *Tales of Phantasia: Nakiri's Dungeon (テイルズ オブ ファンタジア なりきりダンジョン)*
 - *The Legend of Zelda: Link's Awakening DX (ゼルダの伝説 夢をみる島DX)*
-- *The Little Mermaid 2: Pinball Frenzy (never released in Japan)*
-- *Tony Hawk's Pro Skater 2 (never released in Japan)*
+- *The Little Mermaid 2: Pinball Frenzy*
+- *Tony Hawk's Pro Skater 2*
 - *Trade & Battle: Card Hero (トレード&バトル カードヒーロー)*
 - *Tsuri Sensei 2 (釣り先生2)*
-- *VS Lemmings (VS.レミングス)*
+- *VS Lemmings (VS.レミングス) - Lemmings US version does not have print feature*
 
 Want to know more about these games ? Want hints and custom saves to unlock all printing features ? Follow the [link](https://github.com/Raphael-Boichot/GameboyPrinterPaperSimulation).
 
