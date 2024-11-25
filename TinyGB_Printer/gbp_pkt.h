@@ -29,7 +29,8 @@
 
 #define GBP_PKT_PAYLOAD_BUFF_SIZE_IN_BYTE GBP_TILE_SIZE_IN_BYTE
 
-typedef enum {
+typedef enum
+{
   GBP_REC_NONE,
   GBP_REC_GOT_PACKET,
   /* Streaming Packet */
@@ -76,22 +77,27 @@ bool gbp_pkt_tileAccu_tileReadyCheck(gbp_pkt_tileAcc_t *tileBuff);
  * Print Instruction
 *******************************************************************************/
 
-static inline int gbp_pkt_printInstruction_num_of_sheets(uint8_t payloadBuff[GBP_PRINT_INSTRUCT_PAYLOAD_SIZE]) {
+static inline int gbp_pkt_printInstruction_num_of_sheets(uint8_t payloadBuff[GBP_PRINT_INSTRUCT_PAYLOAD_SIZE])
+{
   return (payloadBuff[GBP_PRINT_INSTRUCT_INDEX_NUM_OF_SHEETS]);
 }
 
-static inline int gbp_pkt_printInstruction_num_of_linefeed_before_print(uint8_t payloadBuff[GBP_PRINT_INSTRUCT_PAYLOAD_SIZE]) {
+static inline int gbp_pkt_printInstruction_num_of_linefeed_before_print(uint8_t payloadBuff[GBP_PRINT_INSTRUCT_PAYLOAD_SIZE])
+{
   return (payloadBuff[GBP_PRINT_INSTRUCT_INDEX_NUM_OF_LINEFEED] >> 4) & 0x0F;
 }
 
-static inline int gbp_pkt_printInstruction_num_of_linefeed_after_print(uint8_t payloadBuff[GBP_PRINT_INSTRUCT_PAYLOAD_SIZE]) {
+static inline int gbp_pkt_printInstruction_num_of_linefeed_after_print(uint8_t payloadBuff[GBP_PRINT_INSTRUCT_PAYLOAD_SIZE])
+{
   return (payloadBuff[GBP_PRINT_INSTRUCT_INDEX_NUM_OF_LINEFEED]) & 0x0F;
 }
 
-static inline int gbp_pkt_printInstruction_palette_value(uint8_t payloadBuff[GBP_PRINT_INSTRUCT_PAYLOAD_SIZE]) {
+static inline int gbp_pkt_printInstruction_palette_value(uint8_t payloadBuff[GBP_PRINT_INSTRUCT_PAYLOAD_SIZE])
+{
   return (payloadBuff[GBP_PRINT_INSTRUCT_INDEX_PALETTE_VALUE]);
 }
 
-static inline int gbp_pkt_printInstruction_print_density(uint8_t payloadBuff[GBP_PRINT_INSTRUCT_PAYLOAD_SIZE]) {
+static inline int gbp_pkt_printInstruction_print_density(uint8_t payloadBuff[GBP_PRINT_INSTRUCT_PAYLOAD_SIZE])
+{
   return (payloadBuff[GBP_PRINT_INSTRUCT_INDEX_PRINT_DENSITY]);
 }
