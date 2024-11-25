@@ -171,7 +171,7 @@ Want to know more about these games ? Want hints and custom saves to unlock all 
 
 ## Known issues
 - Photo! requires the device to be overclocked at 250 MHz to fully support the double speed mode. Regular build (@133 MHz) only support the normal mode. Fast Printing and Tranfer are not supported.
-- Printing with Hamster Club may crash without any reason but very rarely.
+- Printing with Hamster Club (What a stupid game) may crash without any reason but very rarely.
 
 ## Kind warning
 The code and current design come as it. If you're not happy with the current hardware, the PCB EasyEDA design or the Arduino IDE, create your own, the licence allows it ! Pull request with tested and working improvements are of course still welcomed. Feel free to design and share a 3D printed case, I won't make one.
