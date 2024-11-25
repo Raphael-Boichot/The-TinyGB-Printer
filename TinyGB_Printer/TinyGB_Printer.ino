@@ -178,10 +178,10 @@ void setup(void) {
   Serial.begin(115200);
 
   // Wait for Serial to be ready
-/////////////Specific to TinyGB Printer//////////////
+  /////////////Specific to TinyGB Printer//////////////
   //while (!Serial) { ; }
-/////////////Specific to TinyGB Printer//////////////
-  
+  /////////////Specific to TinyGB Printer//////////////
+
   Connect_to_printer();  //makes an attempt to switch in printer mode
 
   /////////////Specific to TinyGB Printer//////////////
@@ -308,32 +308,32 @@ void loop1()  //core 1 loop deals with images, written by Raphaël BOICHOT, nove
     image_palette[3] = bitRead(inner_palette, 6) + 2 * bitRead(inner_palette, 7);
 
     //All the meat to decode the 2bpp Game Boy Tile Format is explained here (among other sources): https://www.huderlem.com/demos/gameboy2bpp.html
-    //the bmp data are a simple one dimensional array because there is no gain to have a 2D array, in particular when burning data to SD card
-    BMP_bytes_counter = 0;
+    //the image data are a simple one dimensional array because there is no gain to have a 2D array, in particular when burning data to SD card
+    IMAGE_bytes_counter = 0;
     pixel_line = 0;
     int max_tile_line = DATA_packet_to_print * 2;
     int max_pixel_line = DATA_packet_to_print * 16;
     for (tile_line = 0; tile_line < max_tile_line; tile_line++) {  // This part fills 8 lines of pixels
-      BMP_bytes_counter = 16 * 20 * tile_line;
+      IMAGE_bytes_counter = 16 * 20 * tile_line;
       for (int i = 0; i < 8; i++) {  // This part fills a line of pixels
         offset_x = pixel_line * 160;
         for (tile_column = 0; tile_column < 20; tile_column++) {  //we progress along 20 column tiles
-          local_byte_LSB = printer_memory_buffer_core_1[BMP_bytes_counter];
-          local_byte_MSB = printer_memory_buffer_core_1[BMP_bytes_counter + 1];
+          local_byte_LSB = printer_memory_buffer_core_1[IMAGE_bytes_counter];
+          local_byte_MSB = printer_memory_buffer_core_1[IMAGE_bytes_counter + 1];
           for (int posx = 0; posx < 8; posx++) {
             pixel_level = bitRead(local_byte_LSB, 7 - posx) + 2 * bitRead(local_byte_MSB, 7 - posx);
-            BMP_image_color[offset_x + posx] = PNG_compress_4x[image_palette[pixel_level]];  //here we store 4 2bbp pixels per byte for next step (png upscaler)
+            PNG_image_color[offset_x + posx] = PNG_compress_4x[image_palette[pixel_level]];  //here we store 4 2bbp pixels per byte for next step (png upscaler)
           }
-          BMP_bytes_counter = BMP_bytes_counter + 16;         //jumps to the next tile in byte
-          offset_x = offset_x + 8;                            //jumps to the next tile in pixels
-        }                                                     //This part fills a line of pixels
-        BMP_bytes_counter = BMP_bytes_counter - 16 * 20 + 2;  //shifts to the next two bytes among 16 per tile, so the next line of pixels in a tile
-        pixel_line = pixel_line + 1;                          //jumps to the next line
-      }                                                       //This part fills 8 lines of pixels
-    }                                                         //this part fills the entire image
+          IMAGE_bytes_counter = IMAGE_bytes_counter + 16;         //jumps to the next tile in byte
+          offset_x = offset_x + 8;                                //jumps to the next tile in pixels
+        }                                                         //This part fills a line of pixels
+        IMAGE_bytes_counter = IMAGE_bytes_counter - 16 * 20 + 2;  //shifts to the next two bytes among 16 per tile, so the next line of pixels in a tile
+        pixel_line = pixel_line + 1;                              //jumps to the next line
+      }                                                           //This part fills 8 lines of pixels
+    }                                                             //this part fills the entire image
 
     File Datafile = SD.open(tmp_storage_file_name, FILE_WRITE);
-    Datafile.write(BMP_image_color, 160 * 16 * DATA_packet_to_print);  //writes the data to SD card
+    Datafile.write(PNG_image_color, 160 * 16 * DATA_packet_to_print);  //writes the data to SD card
     Datafile.close();
     lines_in_image_file = lines_in_image_file + 16 * DATA_packet_to_print;
     DATA_packet_to_print = 0;
@@ -578,7 +578,7 @@ char printing(char byte_sent)  // this function prints bytes to the serial
     bit_sent = bitRead(byte_sent, 7 - i);
     digitalWrite(GBP_SC_PIN, LOW);
     digitalWrite(GBP_SI_PIN, bit_sent);  //GBP_SI_PIN is SOUT for the printer
-    //digitalWrite(LED_STATUS_PIN, bit_sent);
+    /LED_WS2812_state(WS2812_Color, bit_sent);
     delayMicroseconds(30);  //double speed mode
     digitalWrite(GBP_SC_PIN, HIGH);
     bit_read = (digitalRead(GBP_SO_PIN));  //GBP_SO_PIN is SIN for the printer

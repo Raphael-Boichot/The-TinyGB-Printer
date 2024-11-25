@@ -52,7 +52,7 @@ void png_upscaler(char BMP_input[], char PNG_output[], unsigned int upscaling_fa
     uint8_t pixel_gray_level;
     uint8_t color_index;
     uint8_t Compression_level = 3;  //1 least=fast, 9 most=slow
-    uint8_t bits_per_pixel = 2;  //assuming an upscaling factor of 4, 4 pixels are stored for each byte;
+    uint8_t bits_per_pixel = 2;     //assuming an upscaling factor of 4, 4 pixels are stored for each byte;
     unsigned long index;
     rc = png.open(PNG_output, myOpen, myClose, myRead, myWrite, mySeek);  //mandatory call
     rc = png.encodeBegin(PNG_width, PNG_height, PNG_PIXEL_INDEXED, bits_per_pixel, PNG_Palette, Compression_level);
