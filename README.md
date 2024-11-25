@@ -1,33 +1,30 @@
 # The TinyGB Printer - A portable Game Boy Printer emulator
 
-The TinyGB Printer is the tiniest possible Game Boy printer emulator storing images on SD card made with common parts and easy to assemble. It is basically a demake of the quite convoluted [NeoGB printer](https://github.com/zenaro147/NeoGB-Printer) or a reboot of the way too expensive [BitBoy](https://gameboyphoto.bigcartel.com/product/bitboy). The device has 100% compatibility with all known GB/GBC games, homebrews included. It stores the printed images in pixel perfect 4x PNG format by default. It is of course fully open source.
+The TinyGB Printer is the tiniest possible Game Boy printer emulator storing images on SD card made with common parts and easy to assemble. It is basically a demake of the [NeoGB printer](https://github.com/zenaro147/NeoGB-Printer). The device is compatible with all known GB/GBC games, homebrews included. It stores the printed images in pixel perfect 4x PNG format by default. It is meant to be powered by double AA or AAA batteries, like the Game Boy Color / Pocket, so that you can recharge them at the same time. It is of course fully open source.
 
 ## Showcase (prototype)
 ![](/Images/Tiny_GB_Printer.jpg)
 
 ## Yet another printer emulator ?! What's different ?
-This printer emulator does not require any additional converter, it contains its own. The goal is to provide an easy way to get images out of your precious saves without the hassle of installing / configuring / maintain / running a decoder on a diversity of OS. Here everything is simple: build the device, drop the compiled binary to it, print and publish immediately your images direct from the SD card. Only skill required is very basic knowldege in soldering.
-
-This is basically the Game Boy printer of my dreams: an open source and cheap BitBoy without the crashes, with a decent output format and two printing modes.
+This printer emulator does not require any additional converter, it contains its own. The goal is to provide an easy way to get images out of your precious saves without the hassle of installing / configuring / maintaining / running a decoder on a diversity of OS. Here everything is simple: build the device, drop the compiled binary to it, print and publish immediately your images direct from the SD card. Only skill required is very basic knowldege in soldering.
 
 ## What's inside / how does it work ?
-The code is basically the [Arduino Game Boy Printer emulator](https://github.com/mofosyne/arduino-gameboy-printer-emulator) (with a bit of butchering to adapt it) running on core 0 and a custom image decoder running on core 1 in parallel. Core 0 politely asks core 1 to convert data at certain times with a flag. Core 0 is ultra busy with interrupts while core 1 is pretty idle and has a ton of free time to create images. The device uses a 1xBMP indexed image as temporary storage container to avoid memory overflow (images have no limitation in height, only in width) and converts it to 4x PNG at the end, like the NeoGB Printer.
+The code is basically the [Arduino Game Boy Printer emulator](https://github.com/mofosyne/arduino-gameboy-printer-emulator) (with a bit of modifications) running on core 0 and a custom image decoder running on core 1 in parallel. Core 0 politely asks core 1 to convert data at certain times with a flag. Core 0 is quite busy with interrupts while core 1 is pretty idle and has a ton of free time to create images.
 
-Why not starting from another emulator yet made for a Pi Pico ? Because I have tested / debugged / pimped this particular one during months / years with more than 100 games and I'm sure it is 100% compatible even with homebrews. On the other hand, it was easier to restart from fresh than to adapt the NeoGB Printer code very polished for the ESP32.
+Why not starting from another emulator yet made for a Pi Pico ? Because I have tested / debugged / pimped this particular one during months / years with more than 100 games and I'm sure of its compatibility. It was also easier to restart from fresh than to adapt the NeoGB Printer code very polished for the ESP32.
 
 ## Easy to install
 - After soldering everything, connect the Raspberry Pi Pico with a USB cable to your computer while pressing BOOT, drop the [uf2 file](/Builds) to the USB folder poping out and enjoy your device. If it makes smoke, check for shorts with a multimeter.
 - If you want to modify the code and compile it, use the [Arduino IDE](https://www.arduino.cc/en/software) equipped with the [RP2040 core for Arduino IDE](https://github.com/earlephilhower/arduino-pico). Then from the Arduino library manager install the [PNGEnc library](https://github.com/bitbank2/PNGenc) (read the dev notes) and the [Adafruit Neopixel for Arduino IDE](https://github.com/adafruit/Adafruit_NeoPixel), choose the Waveshare RP2040 PiZero and compile/upload with the default options.
 
 ## Easy to use
-- Switch the device on without touching anything, the LED flashes green, images are recorded automatically. This is perfect for the Game Boy Camera for example. Multi-prints is of course supported.
-- Switch the device on while pressing the pushbutton : the LED flashes blue, all images are stacked together in a single file until you press the pushbutton to "tear paper". Some rare games require this (see compatibility list).
+- Switch the device on without touching anything, the LED flashes green, images are recorded automatically, this is the **automatic mode**. This is perfect for the Game Boy Camera for example. Multi-prints is of course supported.
+- Switch the device on while pressing the pushbutton : the LED flashes blue, all images are stacked together in a single file until you press the pushbutton to "cut paper", it's the **tear mode**. Some rare games require this (see compatibility list).
 - Switch the device on and the LED blinks red on and off in cycle: SD card not connected or not formatted in FAT32. SD card can be inserted during this step, the device will then boot normally.
 
-A new folder is created at each boot. Each image file has a unique ID. Flashes during printing indicate packet transmission. Color of flashes indicates the mode (green for automatic, blue for tear mode). **Do not switch off while the led is on, images are being processed.**
+A new folder is created at each boot. Each image file has a unique ID. Flashes during printing indicate packet transmission. Color of flashes indicates the mode (green for automatic mode, blue for tear mode). **Do not switch off while the led is on, images are being processed.**
 
 ## Easy to fabricate
-
 All the parts used here are cheap and easy to find on Aliexpress. You probably yet have some leftovers from other projects. The total price is probably well below 30€, shipping of parts included, and you will have extra parts to gift some to your nerdy friends.
 
 **Parts to order:**
@@ -52,14 +49,12 @@ All the parts used here are cheap and easy to find on Aliexpress. You probably y
 - You're ready to print !
 
 **Troubleshooting**
-- Last image is not written, unreadable or in BMP format ? You've probably switched the device off while the led was still on or you forgot to tear paper with the pushbutton in tear mode.
+- Last image is not written ? You've probably switched the device off while the led was still on or you forgot to tear paper with the pushbutton in tear mode.
 - Last batch of images is incomplete (empty folder or just first images recorded with a multi-print) ? The batteries are out of juice, recharge them.
-- Your PNG images are sometimes incomplete when you compile the code by yourself before flashing the Pi Pico Zero ? RTFM.
-
 
 ## 100% compatible with all known games using the Game Boy Printer
 In *Italics* game working fine in automatic mode, in **bold** games requiring the pushbutton to tear paper, or tear mode. 
-All known homebrews to date are compatible with the automatic mode (like Photo!).
+All known homebrews to date are compatible with the automatic mode.
 
 - *1942 (never released in Japan)*
 - *Alice in Wonderland (never released in Japan)*
@@ -183,8 +178,8 @@ The code and current design come as it. If you're not happy with the current har
 ## Dev notes
 - The Pi Pico zero was not able to power the SD card (in writing mode) and keep track of the interrupts with the serial port at the same time, so the separate 3.3V regulator for the SD shied. The 5V step-up converter itself is rather noisy, so extra caps are necessary.
 - The 5 volts line is mandatory for the level shifter so I found easier to power everything from it but it's a design choice. It also eases powering the device with a powerbank or an OTG cable from USB. In brief it is more versatile.
-- The PNGenc library uses very little memory by default (which is cool) but there is no dynamic memory allocation when dealing with big images. I had to increase a lot the size of some buffer to make it work reliably (see [notes](/TinyGB_Printer/Upscalerlib.h#L1) in the upscaler library). This is not the first time I see and report bugs in this library but the author is, let's say, busy.
-- Feel free to propose a lithium powered design if you wish. Lithium batteries are not recycled and always end as [spicy pillows](https://www.reddit.com/r/spicypillows/). I don't want to store that nasty stuff in my house, even less so with video games that have survived over 30 years without a scratch.
+- The PNGenc library uses very little memory by default (which is cool) but there is no dynamic memory allocation when dealing with big images. I had to increase a lot the size of some buffer to make it work reliably (see [notes](/TinyGB_Printer/Upscalerlib.h#L1) in the upscaler library).
+- Feel free to make a lithium battery powered design of your dream. Lithium batteries are not recycled and always end as [spicy pillows](https://www.reddit.com/r/spicypillows/) so I don't like them.
 
 ## Aknowledgements
 - [Rafael Zenaro](https://github.com/zenaro147) for the idea and because I uses chunks of code from the [NeoGB Printer project](https://github.com/zenaro147/NeoGB-Printer). This project is basically a demake and a way to get rid of the embarassing ESP32 platform.
