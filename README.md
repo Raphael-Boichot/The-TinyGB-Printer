@@ -176,7 +176,7 @@ Want to know more about these games ? Want hints and custom saves to unlock all 
 
 ## Known non critical issues
 - Hamster Club always reports a bad connection during first print attempt, then works. No idea why.
-- Photo! can only be used with the normal printing mode. Other mode are too fast and the PNG encoder cannot catch up data flux. Further code optimisation will maybe solve that.
+- Photo! can only be used with the normal printing mode in multi-prints. Double speed mode works reliably only for one shot printing. I do not know if this is easily fixable or not at the moment.
 
 ## Kind warning
 The code and current design come as it. If you're not happy with the current hardware, the PCB EasyEDA design or the Arduino IDE, create your own, the licence allows it ! Pull request with tested and working improvements are of course still welcomed. Feel free to design and share a 3D printed case, I won't make one.
