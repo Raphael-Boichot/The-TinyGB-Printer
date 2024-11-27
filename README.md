@@ -183,7 +183,7 @@ All known homebrews to date are compatible with the automatic mode.
 Want to know more about these games ? Want hints and custom saves to unlock all printing features ? Follow the [link](https://github.com/Raphael-Boichot/GameboyPrinterPaperSimulation).
 
 ## Known issues
-- [Photo!](https://github.com/untoxa/gb-photo) requires the device to be overclocked @250 MHz to fully support the double speed mode. Regular build (@133 MHz) only supports the standard printing mode. Fast Printing and Tranfer are not supported (and won't, too fast !). If these features are very important for you, better use a [Pico GB Printer](https://github.com/untoxa/pico-gb-printer) (same platform, but top programmer).
+- [Photo!](https://github.com/untoxa/gb-photo) requires the device to be overclocked @250 MHz to fully support the double speed mode. Regular build (@133 MHz) only supports the standard printing mode. Fast Printing and Tranfer are not supported (and won't, too fast !). If these features are very important for you, better use a [Pico GB Printer](https://github.com/untoxa/pico-gb-printer) (same platform, but top programmer). Technically, the issue comes from the PNGenc library: even idle, PNG converter part makes core 0 stalling sometimes, I have to fix that or rewrite my own.
 - Printing with Hamster Club (what a stupid game !) may crash without any reason but very rarely.
 
 ## Kind warning
