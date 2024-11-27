@@ -50,11 +50,11 @@ All the parts used here are cheap and easy to find on Aliexpress. You probably y
 - Solder the battery box terminals and stuck the PCB on it with double sided tape for example (or hot glue if you're addicted to hot snot like me).
 - You're ready to print !
 
-The device draws between 90 mA (printing @133 MHz) and 210 mA (peak when accessing SD card @250 MHz), so couple of AAA batteries should last on average more than 2 hours of continuous printing and AA more than 5 hours, pessimistic estimate. More than batteries on a modded Game Boy anyway.
+The device draws about 150 mA, so couple of AAA batteries should last on average something like 5 hours of continuous printing and AA more than 20 hours. More than batteries on a modded Game Boy anyway.
 
 **Troubleshooting**
 - Last image is not written ? You've probably switched the device off while the led was still on or you forgot to tear paper with the pushbutton in tear mode.
-- Last batch of images is incomplete (empty folder or just first images recorded with a multi-print) ? The batteries are out of juice, recharge them.
+- Last batch of images is incomplete (empty folder or just first images recorded with a multi-print) ? The batteries are completely out of juice, recharge them.
 - Some image are half black/white ? See [notes](/TinyGB_Printer/Upscalerlib.h#L1) in the upscaler library.
 
 ## Examples of use
