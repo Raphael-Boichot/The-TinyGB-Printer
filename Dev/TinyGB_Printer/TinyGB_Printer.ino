@@ -32,24 +32,24 @@ WebUSB WebUSBSerial(1, "herrzatacke.github.io/gb-printer-web/#/webusb");
 #define Serial WebUSBSerial
 #endif
 
-//Dev notes Raphaël BOICHOT 2024/11/28
-//The Game boy Printer emulator runs on core 0 in parse mode with decompression by default, with Printer feature disabled. These mode are still available, I've removed nothing
-//I've tried to modify as little as possible the emulator part in order to allow easy update with the emulator, just in case. The TinyGB printer justs needs small chunks of code on core 0.
-//Surprisingly, the only necessary step to make it compile on the RP2040 Arduino core is... nothing. The while (!Serial) must be commented to make it work without serial
-//Compared to Arduino, the RP2040 "hard resets" the USB port, so any serial based converter will probably have minor connection issues with this version.
-//The Printer interface part is still working with GNU Octave as well as the Matlab decoder, but not the Android interface.
-//The Tiny Printer runs on core 0. It assumes an upscaling factor of 4 by default. This allows me to store compressed 2bbp data as soon as the decoder step, very easily with a lookup table.
-//Temporary data are stored on the SD card as image length can be in theory infinite. I only store in ram at maximum 9 packets od 40 tiles (9*16*40 bytes).
-//Packets are written on SD card only when a print command is received because the palette is sent last. This means that storing data on SD card every packet makes no sense.
-//Games uses a 2 bpp palette, 0xE4 in 80% of the case but not always. A palette can be different for each packet of 40 tiles within an image and use less than 4 colors on purpose.
-//I never saw packets with other than 40 tiles (height of the printer head) but it is in theory possible. Images are always 160 pixels width (20 tiles).
-//I initially used a BMP output for images in order to debug but I rapidely switched to indexed PNG. The storage container file on SD card contains preformatted data for the PNG decoder.
-//I use the PNGenc library because it works. It requires some not-that-obvious memory settings and you're basically alone to configure it. It is used in the NeoGB printer too.
-//This library creates micro-stallings on core 0 for unknown reason (it runs on core 1 !), so the need for overclocking the device to support double speed mode in Photo!
-//Best would be to rewrite a custom PNG encoder (like with zero compression to ease the thing) and downclock back the device to 133 MHz, maybe one day.
-//As every project of mine, this will be a code of theseus so stay tuned.
-//That said, enjoy the device !
-
+/*Dev notes Raphaël BOICHOT 2024/11/28
+The Game boy Printer emulator runs on core 0 in parse mode with decompression by default, with Printer feature disabled. These mode are still available, I've removed nothing
+I've tried to modify as little as possible the emulator part in order to allow easy update with the emulator, just in case. The TinyGB printer justs needs small chunks of code on core 0.
+Surprisingly, the only necessary step to make it compile on the RP2040 Arduino core is... nothing. The while (!Serial) must be commented to make it work without serial
+Compared to Arduino, the RP2040 "hard resets" the USB port, so any serial based converter will probably have minor connection issues with this version.
+The Printer interface part is still working with GNU Octave as well as the Matlab decoder, but not the Android interface.
+The Tiny Printer runs on core 1. It assumes an upscaling factor of 4 by default. This allows me to store compressed 2bbp data as soon as the decoder step, very easily with a lookup table.
+Temporary data are stored on the SD card as image length can be in theory infinite. I only store in ram at maximum 9 packets of 40 tiles (9*16*40 bytes).
+Packets are written on SD card only when a print command is received because the palette is sent last. This means that storing data on SD card every packet makes no sense.
+Games uses a 2 bpp palette, 0xE4 in 80% of the case but not always. A palette can be different for each packet of 40 tiles within an image and use less than 4 colors on purpose.
+I never saw packets with other than 40 tiles (height of the printer head) but it is in theory possible. Images are always 160 pixels width (20 tiles).
+I initially used a BMP output for images in order to debug but I rapidely switched to indexed PNG. The storage container file on SD card contains preformatted data for the PNG decoder.
+I use the PNGenc library because it works. It requires some not-that-obvious memory settings and you're basically alone to configure it. It is used in the NeoGB printer too.
+This library creates micro-stallings on core 0 for unknown reason (it runs on core 1 !), so the need for overclocking the device to support double speed mode in Photo!
+Best would be to rewrite a custom PNG encoder (like with zero compression to ease the thing) and downclock back the device to 133 MHz, maybe one day.
+As every project of mine, this will be a code of theseus so stay tuned.
+That said, enjoy the device !
+*/
 
 #define GAME_BOY_PRINTER_MODE false      // to use with https://github.com/Mraulio/GBCamera-Android-Manager and https://github.com/Raphael-Boichot/PC-to-Game-Boy-Printer-interface
 #define GBP_OUTPUT_RAW_PACKETS false     // by default, packets are parsed. if enabled, output will change to raw data packets for parsing and decompressing later
