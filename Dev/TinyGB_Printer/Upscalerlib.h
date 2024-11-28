@@ -49,12 +49,13 @@ void png_upscaler(char DATA_input[], char PNG_output[], unsigned char PNG_palett
     uint8_t Compression_level = 3;  //1 least=fast, 9 most=slow
     uint8_t bits_per_pixel = 2;     //assuming an upscaling factor of 4, 4 pixels are stored for each byte. In 8 bpp, each byte is an entry in the index table (can be 2, 4 or 8)
     unsigned long index;
-    rc = png.open(PNG_output, myOpen, myClose, myRead, myWrite, mySeek);  //mandatory call
-                                                                          // PNG_PIXEL_GRAYSCALE - 8-bpp grayscale - No palette needed
-                                                                          // PNG_PIXEL_TRUECOLOR - 24-bpp (8x3) RGB triplets - No palette needed
-                                                                          // PNG_PIXEL_INDEXED - 1 to 8-bpp palette color - a palette of RGB triplets must be provided and needs to be the full length even if only a few colors are used
-                                                                          // PNG_PIXEL_GRAY_ALPHA - 16-bpp (8-bit gray + 8-bit alpha) - No palette needed
-                                                                          // PNG_PIXEL_TRUECOLOR_ALPHA - 32-bpp (RGB8888) - No palette needed
+    rc = png.open(PNG_output, myOpen, myClose, myRead, myWrite, mySeek);
+    // PNG_PIXEL_GRAYSCALE - 8-bpp grayscale - No palette needed
+    // PNG_PIXEL_TRUECOLOR - 24-bpp (8x3) RGB triplets - No palette needed
+    // PNG_PIXEL_INDEXED - 1 to 8-bpp palette color - a palette of RGB triplets must be provided and needs to be the full length even if only a few colors are used
+    // beware, the palette is BGR by default for indexed images, it must be a bug of the library !!!
+    // PNG_PIXEL_GRAY_ALPHA - 16-bpp (8-bit gray + 8-bit alpha) - No palette needed
+    // PNG_PIXEL_TRUECOLOR_ALPHA - 32-bpp (RGB8888) - No palette needed
     rc = png.encodeBegin(PNG_width, PNG_height, PNG_PIXEL_INDEXED, bits_per_pixel, PNG_palette, Compression_level);
     //format per se, documentation here: https://github.com/bitbank2/PNGenc/wiki/API
     //png.setAlphaPalette(ucAlphaPal);                                                    //left empty
@@ -68,7 +69,5 @@ void png_upscaler(char DATA_input[], char PNG_output[], unsigned char PNG_palett
     }
     DATA_file.close();        //closes BMP file
     iDataSize = png.close();  //closes PNG file
-    //Serial.print("Core 1 -> PNG closed, encoding time (ms): ");
-    //Serial.println(millis() - myTime, DEC);
   }
 }

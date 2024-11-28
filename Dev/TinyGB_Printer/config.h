@@ -30,8 +30,9 @@ unsigned char inner_palette;                          //inner palette to use for
 unsigned char inner_lower_margin;                     //inner margin to use for core 1
 //This array contains preformated pixels for 2bbp png mode, 4 pixels per bytes, assuming a 4x upscaling factor and so 4 consecutive pixels identical stored per bytes
 unsigned char PNG_compress_4x[4] = { 0b00000000, 0b01010101, 0b10101010, 0b11111111 };                        //lookup table for PNG 2 bpp format. 1 byte = 4 identical pixels on a line
-unsigned char PNG_palette[768] = { 0xFF, 0xFF, 0xFF, 0xAA, 0xAA, 0xAA, 0x55, 0x55, 0x55, 0x00, 0x00, 0x00 };  //colors as they will appear in the PNG file (RGB)
-//[768] because the PNG upscaler requires a full 3*0xFF RGB palette. This allows to pass colors for future or to reuse the library more easily for color images
+unsigned char PNG_palette[768] = { 0xFF, 0xFF, 0xFF, 0xAA, 0xAA, 0xAA, 0x55, 0x55, 0x55, 0x00, 0x00, 0x00 };  //colors as they will appear in the PNG file
+//[768] because the PNG upscaler requires a full 3*0xFF BGR palette. This allows to pass colors for future or to reuse the library more easily for color images
+//beware, the palette is BGR by default for indexed images, it must be a bug of the library !!!
 unsigned char image_palette[4];                       //2 bpp local color palette sent by the Game Boy
 unsigned char DATA_packet_counter = 0;                //counter for packets transmitted
 unsigned char DATA_packet_to_print = 0;               //counter for packets transmitted for core 1
@@ -45,6 +46,7 @@ unsigned int offset_x = 0;                            //local variable for decod
 unsigned int max_tile_line = 0;                       //local variable for decoder
 unsigned int max_pixel_line = 0;                      //local variable for decoder
 unsigned long lines_in_image_file = 0;                //to keep tack of image file length
+unsigned long myTime;                                 //timer for PNG encoder
 uint8_t intensity = 30;                               //WS2812 intensity 255 is a death ray, 10 to 15 is normal
 uint32_t SD_card_access_Color;                        //mandatory structure for the WS2812 LED
 bool SDcard_READY = 0;                                //self explanatory
