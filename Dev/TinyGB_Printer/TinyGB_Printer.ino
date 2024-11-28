@@ -706,6 +706,7 @@ void Tiny_printer_preparation() {
   Next_dir = get_next_dir("/tiny.sys");  //get the folder/session number on SD card
   Next_dir++;
   sprintf(tmp_storage_file_name, "/buffer.tmp");
+  SD.remove(tmp_storage_file_name);  //remove any previous failed attempt
   store_next_ID("/tiny.sys", Next_ID, Next_dir);  //store next folder #immediately
 }
 
