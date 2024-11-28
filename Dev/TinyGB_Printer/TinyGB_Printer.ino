@@ -283,13 +283,7 @@ void loop() {
       Serial.println("B)");
       Serial.flush();
       ///////////////////////specific to the TinyGB Printer////////////////////////
-      //digitalWrite(LED_STATUS_PIN, LOW);
-      SD.remove(tmp_storage_file_name);  //remove any previous failed attempt
-      lines_in_image_file = 0;           //resets the number of lines
-      DATA_bytes_counter = 0;            //counter for data bytes
-      DATA_packet_counter = 0;
-      DATA_packet_to_print = 0;
-      Serial.print("Core 0 -> Reset of all converter variables");
+      // digitalWrite(LED_STATUS_PIN, LOW);
       ///////////////////////specific to the TinyGB Printer////////////////////////
 
 #ifdef GBP_FEATURE_PARSE_PACKET_MODE
@@ -329,77 +323,86 @@ void loop1()  //core 1 loop deals with images, written by Raphaël BOICHOT, nove
 {
   if (PRINT_flag == 1) {
     PRINT_flag = 0;
-    memcpy(printer_memory_buffer_core_1, printer_memory_buffer_core_0, 640 * DATA_packet_to_print);  //this can also be done by core 0
-    LED_WS2812_state(WS2812_Color, 1);
-    if (inner_palette == 0x00) {
-      inner_palette = 0xE4;  //see Game Boy Programming manual, palette 0x00 is a default palette interpreted as 0xE4 or 0b11100100
-    }
-    //0xE4 = 0b11100100 = 3-2-1-0 intensity of colors for printer (3 = black, 0 = white), for Game Boy pixel encoded values 0-1-2-3
-    image_palette[0] = bitRead(inner_palette, 0) + 2 * bitRead(inner_palette, 1);
-    image_palette[1] = bitRead(inner_palette, 2) + 2 * bitRead(inner_palette, 3);
-    image_palette[2] = bitRead(inner_palette, 4) + 2 * bitRead(inner_palette, 5);
-    image_palette[3] = bitRead(inner_palette, 6) + 2 * bitRead(inner_palette, 7);
-
-    Serial.print("Core 1 -> I received ");
-    Serial.print(DATA_packet_to_print, DEC);
-    Serial.print(" packets to print with palette ");
-    Serial.print(inner_palette, HEX);
-    Serial.print(" and ");
-    Serial.print(inner_lower_margin, DEC);
-    Serial.println(" after margin");
-
-    //All the meat to decode the 2bpp Game Boy Tile Format is explained here (among other sources): https://www.huderlem.com/demos/gameboy2bpp.html
-    //the image data are a simple one dimensional array because there is no gain to have a 2D array, in particular when burning data to SD card
-    //the issue here is to transform a tile-based system (8*8 pixels) to a pixel-based system in lines/columns.
-    IMAGE_bytes_counter = 0;
-    pixel_line = 0;
-    offset_x = 0;
-    max_tile_line = DATA_packet_to_print * 2;                                      //a DATA packet is 2 tiles high
-    max_pixel_line = DATA_packet_to_print * 16;                                    //a DATA packet is 16 pixel high
-    for (tile_line = 0; tile_line < max_tile_line; tile_line++) {                  //this part fills 8 lines of pixels
-      IMAGE_bytes_counter = 16 * 20 * tile_line;                                   //a tile is 16 bytes, a line screen is 20 tiles (160 pixels width)
-      for (int i = 0; i < 8; i++) {                                                // This part fills a line of pixels
-        offset_x = pixel_line * 160;                                               //x stands for the position in the image vector containing compressed data
-        for (tile_column = 0; tile_column < 20; tile_column++) {                   //we progress along 20 column tiles
-          local_byte_LSB = printer_memory_buffer_core_1[IMAGE_bytes_counter];      //here we get data for a line of 8 pixels (2 bytes)
-          local_byte_MSB = printer_memory_buffer_core_1[IMAGE_bytes_counter + 1];  //here we get data for a line of 8 pixels
-          for (int posx = 0; posx < 8; posx++) {
-            pixel_level = bitRead(local_byte_LSB, 7 - posx) + 2 * bitRead(local_byte_MSB, 7 - posx);  //here we get pixel value along 8 pixels horizontally
-            PNG_image_color[offset_x + posx] = PNG_compress_4x[image_palette[pixel_level]];           //here we store 4 2bbp pixels per byte for next step (png upscaler)
-          }                                                                                           //this is a bit aggressive as pixel decoder and PNG compression is within the same line of code, but efficient
-          IMAGE_bytes_counter = IMAGE_bytes_counter + 16;                                             //jumps to the next tile in byte
-          offset_x = offset_x + 8;                                                                    //jumps to the next tile in pixels
-        }                                                                                             //This part fills a line of pixels
-        IMAGE_bytes_counter = IMAGE_bytes_counter - 16 * 20 + 2;                                      //shifts to the next two bytes among 16 per tile, so the next line of pixels in a tile
-        pixel_line = pixel_line + 1;                                                                  //jumps to the next line
-      }                                                                                               //This part fills 8 lines of pixels
-    }                                                                                                 //this part fills the entire image
-
-    File Datafile = SD.open(tmp_storage_file_name, FILE_WRITE);        //in any case, if PRINT is received, write to a file (yet existing or not)
-    Datafile.write(PNG_image_color, 160 * 16 * DATA_packet_to_print);  //writes the data to SD card
-    Datafile.close();
-    lines_in_image_file = lines_in_image_file + 16 * DATA_packet_to_print;  //keep track of the number of lines stored
-    DATA_packet_to_print = 0;
-
-    if ((inner_lower_margin > 0) & (TEAR_mode == 0)) {  //the printer asks to feed paper, end of file, except in TEAR mode
-      Next_ID++;                                        //increment file number
-      store_next_ID("/tiny.sys", Next_ID, Next_dir);
-      sprintf(png_storage_file_name, "/%05d/%07d.png", Next_dir, Next_ID);
-      Serial.print("Core 1 -> Encoding ");
-      Serial.print(png_storage_file_name);
-      Serial.print(" due to feed paper signal, with ");
-      Serial.print(lines_in_image_file, DEC);
-      Serial.println(" lines in image file");
-      myTime = millis();
-      png_upscaler(tmp_storage_file_name, png_storage_file_name, PNG_palette, lines_in_image_file);
-      Serial.print("Core 1 -> PNG file closed, encoding time (ms): ");
-      Serial.println(millis() - myTime, DEC);
+    if (DATA_packet_to_print > 9) {
+      Serial.println("");
+      Serial.println("Core 1 -> I received too many packets, skipping image !");
+      SD.remove(tmp_storage_file_name);  //remove any previous failed attempt
       lines_in_image_file = 0;           //resets the number of lines
-      SD.remove(tmp_storage_file_name);  //a bit aggressive and maybe not optmal but I'm sure the old data disappears
-    }
-    LED_WS2812_state(WS2812_Color, 0);
-  }
+      DATA_bytes_counter = 0;            //counter for data bytes
+      DATA_packet_counter = 0;
+      DATA_packet_to_print = 0;
+    } else {                                                                                           //we're all good, or near !
+      memcpy(printer_memory_buffer_core_1, printer_memory_buffer_core_0, 640 * DATA_packet_to_print);  //this can also be done by core 0
+      LED_WS2812_state(WS2812_Color, 1);
+      if (inner_palette == 0x00) {
+        inner_palette = 0xE4;  //see Game Boy Programming manual, palette 0x00 is a default palette interpreted as 0xE4 or 0b11100100
+      }
+      //0xE4 = 0b11100100 = 3-2-1-0 intensity of colors for printer (3 = black, 0 = white), for Game Boy pixel encoded values 0-1-2-3
+      image_palette[0] = bitRead(inner_palette, 0) + 2 * bitRead(inner_palette, 1);
+      image_palette[1] = bitRead(inner_palette, 2) + 2 * bitRead(inner_palette, 3);
+      image_palette[2] = bitRead(inner_palette, 4) + 2 * bitRead(inner_palette, 5);
+      image_palette[3] = bitRead(inner_palette, 6) + 2 * bitRead(inner_palette, 7);
 
+      Serial.print("Core 1 -> I received ");
+      Serial.print(DATA_packet_to_print, DEC);
+      Serial.print(" packets to print with palette ");
+      Serial.print(inner_palette, HEX);
+      Serial.print(" and ");
+      Serial.print(inner_lower_margin, DEC);
+      Serial.println(" after margin");
+
+      //All the meat to decode the 2bpp Game Boy Tile Format is explained here (among other sources): https://www.huderlem.com/demos/gameboy2bpp.html
+      //the image data are a simple one dimensional array because there is no gain to have a 2D array, in particular when burning data to SD card
+      //the issue here is to transform a tile-based system (8*8 pixels) to a pixel-based system in lines/columns.
+      IMAGE_bytes_counter = 0;
+      pixel_line = 0;
+      offset_x = 0;
+      max_tile_line = DATA_packet_to_print * 2;                                      //a DATA packet is 2 tiles high
+      max_pixel_line = DATA_packet_to_print * 16;                                    //a DATA packet is 16 pixel high
+      for (tile_line = 0; tile_line < max_tile_line; tile_line++) {                  //this part fills 8 lines of pixels
+        IMAGE_bytes_counter = 16 * 20 * tile_line;                                   //a tile is 16 bytes, a line screen is 20 tiles (160 pixels width)
+        for (int i = 0; i < 8; i++) {                                                // This part fills a line of pixels
+          offset_x = pixel_line * 160;                                               //x stands for the position in the image vector containing compressed data
+          for (tile_column = 0; tile_column < 20; tile_column++) {                   //we progress along 20 column tiles
+            local_byte_LSB = printer_memory_buffer_core_1[IMAGE_bytes_counter];      //here we get data for a line of 8 pixels (2 bytes)
+            local_byte_MSB = printer_memory_buffer_core_1[IMAGE_bytes_counter + 1];  //here we get data for a line of 8 pixels
+            for (int posx = 0; posx < 8; posx++) {
+              pixel_level = bitRead(local_byte_LSB, 7 - posx) + 2 * bitRead(local_byte_MSB, 7 - posx);  //here we get pixel value along 8 pixels horizontally
+              PNG_image_color[offset_x + posx] = PNG_compress_4x[image_palette[pixel_level]];           //here we store 4 2bbp pixels per byte for next step (png upscaler)
+            }                                                                                           //this is a bit aggressive as pixel decoder and PNG compression is within the same line of code, but efficient
+            IMAGE_bytes_counter = IMAGE_bytes_counter + 16;                                             //jumps to the next tile in byte
+            offset_x = offset_x + 8;                                                                    //jumps to the next tile in pixels
+          }                                                                                             //This part fills a line of pixels
+          IMAGE_bytes_counter = IMAGE_bytes_counter - 16 * 20 + 2;                                      //shifts to the next two bytes among 16 per tile, so the next line of pixels in a tile
+          pixel_line = pixel_line + 1;                                                                  //jumps to the next line
+        }                                                                                               //This part fills 8 lines of pixels
+      }                                                                                                 //this part fills the entire image
+
+      File Datafile = SD.open(tmp_storage_file_name, FILE_WRITE);        //in any case, if PRINT is received, write to a file (yet existing or not)
+      Datafile.write(PNG_image_color, 160 * 16 * DATA_packet_to_print);  //writes the data to SD card
+      Datafile.close();
+      lines_in_image_file = lines_in_image_file + 16 * DATA_packet_to_print;  //keep track of the number of lines stored
+      DATA_packet_to_print = 0;
+
+      if ((inner_lower_margin > 0) & (TEAR_mode == 0)) {  //the printer asks to feed paper, end of file, except in TEAR mode
+        Next_ID++;                                        //increment file number
+        store_next_ID("/tiny.sys", Next_ID, Next_dir);
+        sprintf(png_storage_file_name, "/%05d/%07d.png", Next_dir, Next_ID);
+        Serial.print("Core 1 -> Encoding ");
+        Serial.print(png_storage_file_name);
+        Serial.print(" due to feed paper signal, with ");
+        Serial.print(lines_in_image_file, DEC);
+        Serial.println(" lines in image file");
+        myTime = millis();
+        png_upscaler(tmp_storage_file_name, png_storage_file_name, PNG_palette, lines_in_image_file);
+        Serial.print("Core 1 -> PNG file closed, encoding time (ms): ");
+        Serial.println(millis() - myTime, DEC);
+        lines_in_image_file = 0;           //resets the number of lines
+        SD.remove(tmp_storage_file_name);  //a bit aggressive and maybe not optmal but I'm sure the old data disappears
+      }
+      LED_WS2812_state(WS2812_Color, 0);
+    }
+  }
   //in TEAR mode, a file is never closed unless you push a button
   if ((TEAR_mode == 1) & (digitalRead(BTN_PUSH)) & (lines_in_image_file > 0)) {  //in tear mode, a button push only can close file, whatever the printer (non empty) state
     LED_WS2812_state(WS2812_Color, 1);
@@ -461,6 +464,7 @@ inline void gbp_parse_packet_loop(void) {
             Serial.print((char)'}');
           }
         }  /////////////Specific to TinyGB Printer//////////////
+
         if (gbp_pktState.command == GBP_COMMAND_PRINT) {
           //!{"command":"PRNT","sheets":1,"margin_upper":1,"margin_lower":3,"pallet":228,"density":64 }
           Serial.print(", \"sheets\":");
