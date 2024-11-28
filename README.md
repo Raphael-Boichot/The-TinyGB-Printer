@@ -4,7 +4,7 @@ The TinyGB Printer is the simplest possible Game Boy printer emulator storing im
 
 It's basically like a [BitBoy](https://gameboyphoto.bigcartel.com/product/bitboy) but outputting upscaled PNG images and with more functions (see next), but most of all, it's open source. You can copy, modify, sell or improve it as you want. Just respect the license and the dedication of the authors (in very brief, don't forget to cite Brian KHUU and Raphaël BOICHOT).
 
-Please report an issue like minor glitches or some particular mode of some particular game not giving a satisfactory print. I'll try my best to fix it.
+Please report any issue like image glitches (even minor) or some particular mode of some particular game not giving a satisfactory result. I'll try my best to find a solution.
 
 ## That's it !
 ![](/Images/Tiny_GB_Printer.jpg)
