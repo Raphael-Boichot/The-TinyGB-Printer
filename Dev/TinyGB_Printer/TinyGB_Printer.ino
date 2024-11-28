@@ -55,8 +55,8 @@ WebUSB WebUSBSerial(1, "herrzatacke.github.io/gb-printer-web/#/webusb");
 #define GBP_OUTPUT_RAW_PACKETS false     // by default, packets are parsed. if enabled, output will change to raw data packets for parsing and decompressing later
 #define GBP_USE_PARSE_DECOMPRESSOR true  // embedded decompressor can be enabled for use with parse mode but it requires fast hardware (SAMD21, SAMD51, ESP8266, ESP32)
 
-#include <stdint.h>  
-#include <stddef.h>  
+#include <stdint.h>
+#include <stddef.h>
 #include "gameboy_printer_protocol.h"
 #include "gbp_serial_io.h"
 
@@ -284,10 +284,16 @@ void loop() {
       Serial.flush();
       ///////////////////////specific to the TinyGB Printer////////////////////////
       //digitalWrite(LED_STATUS_PIN, LOW);
+      SD.remove(tmp_storage_file_name);  //remove any previous failed attempt
+      lines_in_image_file = 0;           //resets the number of lines
+      DATA_bytes_counter = 0;            //counter for data bytes
+      DATA_packet_counter = 0;
+      DATA_packet_to_print = 
+      Serial.print("Core 0 -> Reset of all converter variables");
       ///////////////////////specific to the TinyGB Printer////////////////////////
 
 #ifdef GBP_FEATURE_PARSE_PACKET_MODE
-      gbp_pkt_reset(&gbp_pktState);
+        gbp_pkt_reset(&gbp_pktState);
 #ifdef GBP_FEATURE_PARSE_PACKET_USE_DECOMPRESSOR
       tileBuff.count = 0;
 #endif
@@ -706,7 +712,7 @@ void Tiny_printer_preparation() {
   Next_dir = get_next_dir("/tiny.sys");  //get the folder/session number on SD card
   Next_dir++;
   sprintf(tmp_storage_file_name, "/buffer.tmp");
-  SD.remove(tmp_storage_file_name);  //remove any previous failed attempt
+  SD.remove(tmp_storage_file_name);               //remove any previous failed attempt
   store_next_ID("/tiny.sys", Next_ID, Next_dir);  //store next folder #immediately
 }
 
