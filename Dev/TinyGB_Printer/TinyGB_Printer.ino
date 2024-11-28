@@ -288,12 +288,12 @@ void loop() {
       lines_in_image_file = 0;           //resets the number of lines
       DATA_bytes_counter = 0;            //counter for data bytes
       DATA_packet_counter = 0;
-      DATA_packet_to_print = 
+      DATA_packet_to_print = 0;
       Serial.print("Core 0 -> Reset of all converter variables");
       ///////////////////////specific to the TinyGB Printer////////////////////////
 
 #ifdef GBP_FEATURE_PARSE_PACKET_MODE
-        gbp_pkt_reset(&gbp_pktState);
+      gbp_pkt_reset(&gbp_pktState);
 #ifdef GBP_FEATURE_PARSE_PACKET_USE_DECOMPRESSOR
       tileBuff.count = 0;
 #endif
