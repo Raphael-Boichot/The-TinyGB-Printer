@@ -190,6 +190,7 @@ Want to know more about these games ? Want hints and custom saves to unlock all 
 ## Known issues
 - [Photo!](https://github.com/untoxa/gb-photo) standard printing (normal speed and double speed) is the only mode supported to date. Fast Printing and Transfer modes are only supported by the [Pico GB Printer](https://github.com/untoxa/pico-gb-printer), a very good dedicated printer emulator. Fast printing is much too fast for this Arduino derived emulator (we gave up trying to support it after many tests, it requires PIO or deep code modifications) while Transfer is a special protocol not implemented here (with the same issues than Fast printing anyway).
 - Printing with Hamster Club (what a stupid game !) may crash without any reason but very rarely.
+- The break command (pressing B while printing to abort) is only partially supported and may lead to glitches in the next image to print (or no image at all). Just reboot after an abort and everything will be fine.
 
 ## Kind warning
 The code and current design come as it. If you're not happy with the current hardware, the PCB EasyEDA design or the Arduino IDE, create your own, the licence allows it ! Pull request with tested and working improvements are of course still welcomed. Feel free to design and share a 3D printed case, I won't make one.
