@@ -66,7 +66,7 @@ The device draws about 150 mA, so couple of AAA batteries should last on average
 ## Examples of use
 
 ### Infinite timelapse with [photo!](https://github.com/untoxa/gb-photo)
-![](/Images/Showcase_1.gif)
+![](/Images/Showcase_2.gif)
 
 ### Saving your achievements
 ![](/Images/Game_examples.png)
