@@ -52,6 +52,7 @@ uint32_t SD_card_access_Color;                        //mandatory structure for 
 bool SDcard_READY = 0;                                //self explanatory
 bool PRINT_flag = 0;                                  //self explanatory
 bool TEAR_mode = 0;                                   //self explanatory
+bool BREAK_flag = 0;                                  //detects a broken packet, suicides the whole print
 bool skip_byte_on_display = 1;                        //renders the serial less verbose
 //////////////////////////////////////////////SD stuff///////////////////////////////////////////////////////////////////////////////////////////
 void ID_file_creator(const char* path) {  //from fresh SD, device needs a "secret" binary storage file

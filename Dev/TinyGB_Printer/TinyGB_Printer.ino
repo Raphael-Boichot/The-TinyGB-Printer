@@ -323,14 +323,17 @@ void loop1()  //core 1 loop deals with images, written by Raphaël BOICHOT, nove
 {
   if (PRINT_flag == 1) {
     PRINT_flag = 0;
-    if (DATA_packet_to_print > 9) { //this happens if you print again after a BREAK, and it creates an overflow that the Pico does not like at all
-      Serial.println(""); //The emulator does not take the BREAK command so it's a temporary fix
-      Serial.println("Core 1 -> I received too many packets, skipping image !");
+    if ((DATA_packet_to_print > 9) | (BREAK_flag == 1)) {  //this happens if you print again after a BREAK, and it creates an overflow that the Pico does not like at all
+      Serial.println("");                                  //The emulator does not take the BREAK command so it's a temporary fix
+      Serial.println("Core 1 -> I have received too many packets or a broken packet, suicide image !");
       SD.remove(tmp_storage_file_name);  //remove any previous failed attempt
       lines_in_image_file = 0;           //resets the number of lines
       DATA_bytes_counter = 0;            //counter for data bytes
       DATA_packet_counter = 0;
       DATA_packet_to_print = 0;
+      if (inner_lower_margin > 0){
+        BREAK_flag = 0;  //reset the BREAK only after a print command with margin
+    }
     } else {                                                                                           //we're all good, or near !
       memcpy(printer_memory_buffer_core_1, printer_memory_buffer_core_0, 640 * DATA_packet_to_print);  //this can also be done by core 0
       LED_WS2812_state(WS2812_Color, 1);
@@ -422,6 +425,13 @@ void loop1()  //core 1 loop deals with images, written by Raphaël BOICHOT, nove
     SD.remove(tmp_storage_file_name);  //a bit aggressive and maybe not optmal but I'm sure the old data disappears
     LED_WS2812_state(WS2812_Color, 0);
   }
+
+if (digitalRead(BTN_PUSH)){
+  BREAK_flag = 0;  //reset the BREAK only after a print command with margin
+  Serial.println("Core 1 -> Resetting suicide mode");
+  delay(500);
+}
+
 }  // loop1()
 /////////////Specific to TinyGB Printer//////////////
 
@@ -482,9 +492,12 @@ inline void gbp_parse_packet_loop(void) {
           DATA_packet_to_print = DATA_packet_counter;                                              //counter for packets transmitted to be transmitted to core 1
           inner_palette = gbp_pkt_printInstruction_palette_value(gbp_pktbuff);                     //this can also be done by core 1
           inner_lower_margin = gbp_pkt_printInstruction_num_of_linefeed_after_print(gbp_pktbuff);  //this can also be done by core 1
-          DATA_bytes_counter = 0;                                                                  //counter for data bytes
-          DATA_packet_counter = 0;                                                                 //counter for packets transmitted
-          PRINT_flag = 1;                                                                          //triggers stuff on core 1, from now core 1 have plenty of time to convert image
+          if (!(DATA_bytes_counter % 640 == 0)) {                                                  //we count the data packets here (16 bytes*40 tiles)
+            BREAK_flag = 1;                                                                        //the print is broken due to abort command, suicide the print
+          }
+          DATA_bytes_counter = 0;   //counter for data bytes
+          DATA_packet_counter = 0;  //counter for packets transmitted
+          PRINT_flag = 1;           //triggers stuff on core 1, from now core 1 have plenty of time to convert image
           ///////////////////////specific to the TinyGB Printer////////////////////////
         }
         if (gbp_pktState.command == GBP_COMMAND_DATA) {
