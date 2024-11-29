@@ -2,7 +2,7 @@
 
 The TinyGB Printer is the simplest possible Game Boy printer emulator storing images directly on SD card. It is basically a demake of the ESP32 based [NeoGB printer](https://github.com/zenaro147/NeoGB-Printer) for the Raspberry Pi Pico. The device is compatible with all known GB/GBC games, homebrews included. It stores the printed images in pixel perfect 4x PNG format by default. It is meant to be powered by double AA or AAA batteries, like the Game Boy Color / Pocket, so that you can recharge them with the same equipment. All parts are cheap and easy to gather online and assembly is meant to be simplistic.
 
-It's basically like a [BitBoy](https://gameboyphoto.bigcartel.com/product/bitboy) but outputting pixel perfect upscaled PNG images, with more functions (see next), without the need to travel with a needle in case of crash, and most of all, it's open source. You can copy, modify, sell or improve it as you want. Just respect the license and the dedication of the authors (in very brief, don't forget to cite Brian KHUU and Raphaël BOICHOT).
+It's basically like a [BitBoy](https://gameboyphoto.bigcartel.com/product/bitboy) but outputting pixel perfect upscaled PNG images, with more functions (see next), without the need to find a needle in case of crash to reboot the device, and most of all, it's open source. You can copy, modify, sell or improve it as you want. Just respect the license and the dedication of the authors (in very brief, don't forget to cite Brian KHUU and Raphaël BOICHOT).
 
 Please report any issue like image glitches (even minor) or some particular mode of some particular game not giving a satisfactory result. I'll try my best to find a solution.
 
@@ -25,8 +25,9 @@ Why not starting from another emulator yet made for a Pi Pico ? Because I have t
 - Switch the device on without touching anything, the LED flashes green, images are recorded automatically, this is the **automatic mode**. This is perfect for the Game Boy Camera for example. Multi-prints is of course supported.
 - Switch the device on while pressing the pushbutton : the LED flashes blue, all images are stacked together in a single file until you press the pushbutton to "cut paper", it's the **tear mode**. Some rare games require this (see compatibility list).
 - Switch the device on and the LED blinks red on and off in cycle: SD card not connected or not formatted in FAT32. SD card can be inserted during this step, the device will then boot normally.
+- Cycling the power switch on the battery box or using the RESET button on the board has the same effect.
 
-A new folder is created at each boot. Each image file has a unique ID. Flashes during printing indicate flux of data and access to SD card. Color of flashes indicates the mode (green for automatic mode, blue for tear mode). **Do not switch off while the led is on, images are being processed, you will loose some.**
+A new folder is created at each boot/RESET. Each image file has a unique ID. Flashes during printing indicate flux of data and access to SD card. Color of flashes indicates the mode (green for automatic mode, blue for tear mode). **Do not switch off while the led is on, images are being processed, you will loose some.**
 
 ## Easy to fabricate
 All the parts used here are cheap and easy to find on Aliexpress. You probably yet have some leftovers from other projects. The total price is probably well below 30€, shipping of parts included, and you will have extra parts to gift some to your nerdy friends.
@@ -191,7 +192,8 @@ Want to know more about these games ? Want hints and custom saves to unlock all 
 - [Photo!](https://github.com/untoxa/gb-photo) standard printing (normal speed and double speed) is the only mode supported to date. Fast Printing and Transfer modes are only supported by the [Pico GB Printer](https://github.com/untoxa/pico-gb-printer), a very good dedicated printer emulator. Fast printing is much too fast for this Arduino derived emulator (we gave up trying to support it after many tests, it requires PIO or deep code modifications) while Transfer is a special protocol not implemented here (with the same issues than Fast printing anyway).
 - Printing with Hamster Club (what a stupid game !) may crash without any reason but very rarely. Just print again and it will be fine.
 - The break command (pressing B while printing to abort) is only minimally supported and may lead to glitches in the next image to print (or no image at all). Just reboot after an abort and everything will be fine (same after an incidental cable connection loss by the way, better to reboot to restart from fresh state).
-- As better is the ennemy of good, as there is a 99% chance that you will never have to face these issues (who plays Hamster Club on Earth right now apart me ?), they will probably stay like this in the future.
+- The device does not keep track of date/time, it's normal.
+- As better is the ennemy of good, as there is a 99% chance that these issues are not issues for you (who plays Hamster Club on Earth right now apart me ?), they will probably stay like this in the future.
 
 ## Kind warning
 The code and current design come as it. If you're not happy with the current hardware, the PCB EasyEDA design or the Arduino IDE, create your own, the licence allows it ! Pull request with tested and working improvements are of course still welcomed. Feel free to design and share a 3D printed case, I won't make one.
