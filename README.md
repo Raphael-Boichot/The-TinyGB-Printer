@@ -27,7 +27,7 @@ Why not starting from another emulator yet made for a Pi Pico ? Because I have t
 - Switch the device on and the LED blinks red on and off in cycle: SD card not connected or not formatted in FAT32. SD card can be inserted during this step, the device will then boot normally.
 - Cycling the power switch on the battery box or using the RESET button on the board has the same effect.
 
-A new folder is created at each boot/RESET. Each image file has a unique ID. Flashes during printing indicate flux of data and access to SD card. Color of flashes indicates the mode (green for automatic mode, blue for tear mode). **Do not switch off while the led is on, images are being processed, you will loose some.**
+A new folder is created at each boot/RESET. Each image file has a unique ID. Flashes during printing indicate flux of data and access to SD card. Color of flashes indicates the mode (green for automatic mode, blue for tear mode).
 
 **Are you nostalgic of the Arduino version coupled to your good old converter ? Flash it and it will work too, pinout is the same !**
 
