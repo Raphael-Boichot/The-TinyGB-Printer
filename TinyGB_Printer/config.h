@@ -45,8 +45,10 @@ unsigned int tile_column, tile_line, pixel_line = 0;  //storage variables for co
 unsigned int offset_x = 0;                            //local variable for decoder
 unsigned int max_tile_line = 0;                       //local variable for decoder
 unsigned int max_pixel_line = 0;                      //local variable for decoder
+unsigned int max_files_per_folder = 1024;             //FAT32 limits the number of entries, so better be carefull
 unsigned long lines_in_image_file = 0;                //to keep tack of image file length
 unsigned long myTime;                                 //timer for PNG encoder
+unsigned long FILE_number = 0;                        //counter of file per session
 uint8_t intensity = 30;                               //WS2812 intensity 255 is a death ray, 10 to 15 is normal
 uint32_t SD_card_access_Color;                        //mandatory structure for the WS2812 LED
 bool SDcard_READY = 0;                                //self explanatory

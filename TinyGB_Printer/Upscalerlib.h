@@ -52,8 +52,7 @@ void png_upscaler(char DATA_input[], char PNG_output[], unsigned char PNG_palett
     rc = png.open(PNG_output, myOpen, myClose, myRead, myWrite, mySeek);
     // PNG_PIXEL_GRAYSCALE - 8-bpp grayscale - No palette needed
     // PNG_PIXEL_TRUECOLOR - 24-bpp (8x3) RGB triplets - No palette needed
-    // PNG_PIXEL_INDEXED - 1 to 8-bpp palette color - a palette of RGB triplets must be provided and needs to be the full length even if only a few colors are used
-    // beware, the palette is BGR by default for indexed images, it must be a bug of the library !!!
+    // PNG_PIXEL_INDEXED - 1 to 8-bpp palette color - a palette of BGR triplets, not RGB !!!
     // PNG_PIXEL_GRAY_ALPHA - 16-bpp (8-bit gray + 8-bit alpha) - No palette needed
     // PNG_PIXEL_TRUECOLOR_ALPHA - 32-bpp (RGB8888) - No palette needed
     rc = png.encodeBegin(PNG_width, PNG_height, PNG_PIXEL_INDEXED, bits_per_pixel, PNG_palette, Compression_level);

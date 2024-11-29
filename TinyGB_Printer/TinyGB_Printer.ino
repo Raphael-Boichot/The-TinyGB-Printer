@@ -401,6 +401,13 @@ void loop1()  //core 1 loop deals with images, written by Raphaël BOICHOT, nove
         png_upscaler(tmp_storage_file_name, png_storage_file_name, PNG_palette, lines_in_image_file);
         Serial.print("Core 1 -> PNG file closed, encoding time (ms): ");
         Serial.println(millis() - myTime, DEC);
+        FILE_number = FILE_number + 1;
+        Serial.print("Core 1 -> Number of file for this session: ");
+        Serial.println(FILE_number, DEC);
+        if (FILE_number % max_files_per_folder == 0) {
+          Next_dir++;
+          store_next_ID("/tiny.sys", Next_ID, Next_dir);  //store next folder #immediately
+        }
         lines_in_image_file = 0;           //resets the number of lines
         SD.remove(tmp_storage_file_name);  //a bit aggressive and maybe not optmal but I'm sure the old data disappears
       }
@@ -422,6 +429,13 @@ void loop1()  //core 1 loop deals with images, written by Raphaël BOICHOT, nove
     png_upscaler(tmp_storage_file_name, png_storage_file_name, PNG_palette, lines_in_image_file);
     Serial.print("Core 1 -> PNG file closed, encoding time (ms): ");
     Serial.println(millis() - myTime, DEC);
+    FILE_number = FILE_number + 1;
+    Serial.print("Core 1 -> Number of file for this session: ");
+    Serial.println(FILE_number, DEC);
+    if (FILE_number % max_files_per_folder == 0) {
+      Next_dir++;
+      store_next_ID("/tiny.sys", Next_ID, Next_dir);  //store next folder #immediately
+    }
     lines_in_image_file = 0;           //resets the number of lines
     SD.remove(tmp_storage_file_name);  //a bit aggressive and maybe not optmal but I'm sure the old data disappears
     LED_WS2812_state(WS2812_Color, 0);
