@@ -323,8 +323,8 @@ void loop1()  //core 1 loop deals with images, written by Raphaël BOICHOT, nove
 {
   if (PRINT_flag == 1) {
     PRINT_flag = 0;
-    if (DATA_packet_to_print > 9) {
-      Serial.println("");
+    if (DATA_packet_to_print > 9) { //this happens if you print again after a BREAK, and it creates an overflow that the Pico does not like at all
+      Serial.println(""); //The emulator does not take the BREAK command so it's a temporary fix
       Serial.println("Core 1 -> I received too many packets, skipping image !");
       SD.remove(tmp_storage_file_name);  //remove any previous failed attempt
       lines_in_image_file = 0;           //resets the number of lines
