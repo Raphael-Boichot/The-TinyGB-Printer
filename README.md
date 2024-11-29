@@ -191,7 +191,7 @@ All known homebrews to date are compatible with the automatic mode.
 Want to know more about these games ? Want hints and custom saves to unlock all printing features ? Follow the [link](https://github.com/Raphael-Boichot/GameboyPrinterPaperSimulation).
 
 ## Documented issues
-- [Photo!](https://github.com/untoxa/gb-photo) standard printing (normal speed and double speed) is the only mode supported to date. Fast Printing and Transfer modes are only supported by the [Pico GB Printer](https://github.com/untoxa/pico-gb-printer), a very good dedicated printer emulator (just change the pins, recompile and it is compatible !). Fast printing is much too fast for this Arduino derived emulator (we gave up trying to support it after many tests, it requires PIO or deep code modifications) while Transfer is a special protocol not implemented here (with the same issues than Fast printing anyway).
+- [Photo!](https://github.com/untoxa/gb-photo) standard printing (normal speed and double speed) is the only mode supported to date. Fast Printing and Transfer modes are only supported by the [Pico GB Printer](https://github.com/untoxa/pico-gb-printer), a very good dedicated printer emulator (just change the pins, recompile and it is compatible with this project !). Fast printing is much too fast for this Arduino derived emulator (we gave up trying to support it after many tests, it requires PIO or deep code modifications) while Transfer is a special protocol not implemented here (with the same issues than Fast printing anyway).
 - Printing with Hamster Club (what a stupid game !) may crash without any reason but very rarely. Just print again and it will be fine.
 
 ## Kind warning
