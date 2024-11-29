@@ -29,7 +29,7 @@ int32_t mySeek(PNGFILE *handle, int32_t position) {
 
 //Upscaling factor MUST be 4 for the moment, it is let as variable but it is not. I think this is the perfect value
 //In any case, do not modify
-void png_upscaler(char DATA_input[], char PNG_output[], unsigned char PNG_palette[], unsigned long lines_in_DATA_file) {
+void png_upscaler(char DATA_input[], char PNG_output[], unsigned char PNG_palette_RGB[], unsigned long lines_in_DATA_file) {
   unsigned long myTime;
   bool skip = 0;
   File DATA_file = SD.open(DATA_input);
@@ -49,13 +49,19 @@ void png_upscaler(char DATA_input[], char PNG_output[], unsigned char PNG_palett
     uint8_t Compression_level = 3;  //1 least=fast, 9 most=slow
     uint8_t bits_per_pixel = 2;     //assuming an upscaling factor of 4, 4 pixels are stored for each byte. In 8 bpp, each byte is an entry in the index table (can be 2, 4 or 8)
     unsigned long index;
+    // palette is BGR for indexed image (and maybe other, who knows...). This library lacks deep debugging...
+    //[768] in PNGenc because the PNG upscaler requires a full 3*0xFF BGR palette.
+    unsigned char PNG_palette_BGR[768] = { PNG_palette_RGB[2], PNG_palette_RGB[1], PNG_palette_RGB[0],      //White
+                                           PNG_palette_RGB[5], PNG_palette_RGB[4], PNG_palette_RGB[3],      //Light gray
+                                           PNG_palette_RGB[8], PNG_palette_RGB[7], PNG_palette_RGB[6],      //Dark gray
+                                           PNG_palette_RGB[11], PNG_palette_RGB[10], PNG_palette_RGB[9] };  //black
     rc = png.open(PNG_output, myOpen, myClose, myRead, myWrite, mySeek);
     // PNG_PIXEL_GRAYSCALE - 8-bpp grayscale - No palette needed
     // PNG_PIXEL_TRUECOLOR - 24-bpp (8x3) RGB triplets - No palette needed
     // PNG_PIXEL_INDEXED - 1 to 8-bpp palette color - a palette of BGR triplets, not RGB !!!
     // PNG_PIXEL_GRAY_ALPHA - 16-bpp (8-bit gray + 8-bit alpha) - No palette needed
     // PNG_PIXEL_TRUECOLOR_ALPHA - 32-bpp (RGB8888) - No palette needed
-    rc = png.encodeBegin(PNG_width, PNG_height, PNG_PIXEL_INDEXED, bits_per_pixel, PNG_palette, Compression_level);
+    rc = png.encodeBegin(PNG_width, PNG_height, PNG_PIXEL_INDEXED, bits_per_pixel, PNG_palette_BGR, Compression_level);
     //format per se, documentation here: https://github.com/bitbank2/PNGenc/wiki/API
     //png.setAlphaPalette(ucAlphaPal);                                                    //left empty
     for (unsigned int y = 0; y < lines_in_DATA_file; y++) {  //treats a line

@@ -398,7 +398,7 @@ void loop1()  //core 1 loop deals with images, written by Raphaël BOICHOT, nove
         Serial.print(lines_in_image_file, DEC);
         Serial.println(" lines in image file");
         myTime = millis();
-        png_upscaler(tmp_storage_file_name, png_storage_file_name, PNG_palette, lines_in_image_file);
+        png_upscaler(tmp_storage_file_name, png_storage_file_name, PNG_palette_RGB, lines_in_image_file);
         Serial.print("Core 1 -> PNG file closed, encoding time (ms): ");
         Serial.println(millis() - myTime, DEC);
         FILE_number = FILE_number + 1;
@@ -426,7 +426,7 @@ void loop1()  //core 1 loop deals with images, written by Raphaël BOICHOT, nove
     Serial.print(lines_in_image_file, DEC);
     Serial.println(" lines in image file");
     myTime = millis();
-    png_upscaler(tmp_storage_file_name, png_storage_file_name, PNG_palette, lines_in_image_file);
+    png_upscaler(tmp_storage_file_name, png_storage_file_name, PNG_palette_RGB, lines_in_image_file);
     Serial.print("Core 1 -> PNG file closed, encoding time (ms): ");
     Serial.println(millis() - myTime, DEC);
     FILE_number = FILE_number + 1;
