@@ -4,6 +4,7 @@
 PNG png;             // static instance of the PNG encoder class
 File myfile;
 
+//All this part must be kept intact ! I would like to get rid of it eventually
 void *myOpen(const char *filename) {
   myfile = SD.open(filename, O_READ | O_WRITE | O_CREAT);
   return &myfile;
@@ -25,8 +26,10 @@ int32_t mySeek(PNGFILE *handle, int32_t position) {
   return f->seek(position);
 }
 
-//Upscaling factor MUST be 4 for the moment
-void png_upscaler(char DATA_input[], char PNG_output[], unsigned int upscaling_factor, unsigned char PNG_palette[], unsigned long lines_in_DATA_file) {
+
+//Upscaling factor MUST be 4 for the moment, it is let as variable but it is not. I think this is the perfect value
+//In any case, do not modify
+void png_upscaler(char DATA_input[], char PNG_output[], unsigned char PNG_palette[], unsigned long lines_in_DATA_file) {
   unsigned long myTime;
   bool skip = 0;
   File DATA_file = SD.open(DATA_input);
@@ -37,35 +40,34 @@ void png_upscaler(char DATA_input[], char PNG_output[], unsigned int upscaling_f
   if (skip == 0) {
     myTime = millis();
     int rc, iDataSize;
-    unsigned int PNG_width = 160 * upscaling_factor;
+    unsigned int upscaling_factor = 4;
+    unsigned int PNG_width = 160 * upscaling_factor;  // images have fixed width, pratical
     unsigned int PNG_height = lines_in_DATA_file * upscaling_factor;
-    //We choose to encode an indexed png, palette is 3*0xFF long, this is the default mode here
-    //It's possible to pass colors but it's easier to use another software then
-    uint8_t PNG_Palette[768] = { PNG_palette[0], PNG_palette[0], PNG_palette[0],
-                                 PNG_palette[1], PNG_palette[1], PNG_palette[1],
-                                 PNG_palette[2], PNG_palette[2], PNG_palette[2],
-                                 PNG_palette[3], PNG_palette[3], PNG_palette[3] };  // palette entered by RGB triplets
     uint8_t PNG_Line[PNG_width];
     uint8_t pixel_gray_level;
     uint8_t color_index;
     uint8_t Compression_level = 3;  //1 least=fast, 9 most=slow
-    uint8_t bits_per_pixel = 2;     //assuming an upscaling factor of 4, 4 pixels are stored for each byte;
+    uint8_t bits_per_pixel = 2;     //assuming an upscaling factor of 4, 4 pixels are stored for each byte. In 8 bpp, each byte is an entry in the index table (can be 2, 4 or 8)
     unsigned long index;
-    rc = png.open(PNG_output, myOpen, myClose, myRead, myWrite, mySeek);  //mandatory call
-    rc = png.encodeBegin(PNG_width, PNG_height, PNG_PIXEL_INDEXED, bits_per_pixel, PNG_Palette, Compression_level);
+    rc = png.open(PNG_output, myOpen, myClose, myRead, myWrite, mySeek);
+    // PNG_PIXEL_GRAYSCALE - 8-bpp grayscale - No palette needed
+    // PNG_PIXEL_TRUECOLOR - 24-bpp (8x3) RGB triplets - No palette needed
+    // PNG_PIXEL_INDEXED - 1 to 8-bpp palette color - a palette of RGB triplets must be provided and needs to be the full length even if only a few colors are used
+    // beware, the palette is BGR by default for indexed images, it must be a bug of the library !!!
+    // PNG_PIXEL_GRAY_ALPHA - 16-bpp (8-bit gray + 8-bit alpha) - No palette needed
+    // PNG_PIXEL_TRUECOLOR_ALPHA - 32-bpp (RGB8888) - No palette needed
+    rc = png.encodeBegin(PNG_width, PNG_height, PNG_PIXEL_INDEXED, bits_per_pixel, PNG_palette, Compression_level);
     //format per se, documentation here: https://github.com/bitbank2/PNGenc/wiki/API
     //png.setAlphaPalette(ucAlphaPal);                                                    //left empty
     for (unsigned int y = 0; y < lines_in_DATA_file; y++) {  //treats a line
-      //each line in BMP image is yet a full 4x line in 2bbp
+      //each line in stored data is yet a full 4x pixels line in 2bbp, so no upscaling factor here
       DATA_file.read(PNG_Line, 160);
-
-      for (unsigned int j = 0; j < upscaling_factor; j++) {  //stacks n identical lines for upscaling
+      //in the data buffer file, each series of 160 bytes is a pixel line 4x upscaled
+      for (unsigned int j = 0; j < upscaling_factor; j++) {  //stacks 4 identical lines for upscaling
         rc = png.addLine(PNG_Line);                          //the library is made to work line by line, which is cool regarding memory management
       }
     }
     DATA_file.close();        //closes BMP file
     iDataSize = png.close();  //closes PNG file
-    //Serial.print("Core 1 -> PNG closed, encoding time (ms): ");
-    //Serial.println(millis() - myTime, DEC);
   }
 }
