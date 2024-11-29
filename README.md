@@ -29,7 +29,7 @@ Why not starting from another emulator yet made for a Pi Pico ? Because I have t
 
 A new folder is created at each boot/RESET. Each image file has a unique ID. Flashes during printing indicate flux of data and access to SD card. Color of flashes indicates the mode (green for automatic mode, blue for tear mode). **Do not switch off while the led is on, images are being processed, you will loose some.**
 
-**Are you nostalgic of the Arduino version coupled to your good old converter ? Flash it and it will work too !**
+**Are you nostalgic of the Arduino version coupled to your good old converter ? Flash it and it will work too, pinout is the same !**
 
 ## Easy to fabricate
 All the parts used here are cheap and easy to find on Aliexpress. You probably yet have some leftovers from other projects. The total price is probably well below 30€, shipping of parts included, and you will have extra parts to gift some to your nerdy friends.
