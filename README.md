@@ -5,7 +5,6 @@ The TinyGB Printer is the simplest possible Game Boy printer emulator storing im
 It's basically like a [BitBoy](https://gameboyphoto.bigcartel.com/product/bitboy) but outputting pixel perfect upscaled PNG images, with more functions (see next), without the need to find a needle in case of crash to reboot the device, and most of all, it's open source. You can copy, modify, sell or improve it as you want. Just respect the license and the dedication of the authors (in very brief, don't forget to cite Brian KHUU and Raphaël BOICHOT).
 
 ## That's it !
-
 Nothing to configure, nothing to install, it just works.
 ![](/Images/Tiny_GB_Printer.jpg)
 
@@ -195,9 +194,6 @@ Want to know more about these games ? Want hints and custom saves to unlock all 
 - [Photo!](https://github.com/untoxa/gb-photo) standard printing (normal speed and double speed) is the only mode supported to date. Fast Printing and Transfer modes are only supported by the [Pico GB Printer](https://github.com/untoxa/pico-gb-printer), a very good dedicated printer emulator (just change the pins, recompile and it is compatible with this project !). Fast printing is much too fast for this Arduino derived emulator (we gave up trying to support it after many tests, it requires PIO or deep code modifications) while Transfer is a special protocol not implemented here (with the same issues than Fast printing anyway).
 - Printing with Hamster Club (what a stupid game !) may crash without any reason but very rarely. Just print again and it will be fine.
 
-## Kind warning
-The code and current design come as it. If you're not happy with the current hardware, the PCB EasyEDA design or the Arduino IDE, create your own, the licence allows it ! Pull request with tested and working improvements are of course still welcomed. Feel free to design and share a 3D printed case, I won't make one.
-
 ## Dev notes
 - The Pi Pico zero is not able to power the SD card (in writing mode) and keep track of the interrupts with the serial port at the same time, so the separate 3.3V regulator for the SD shied. The 5V step-up converter itself is rather noisy, so extra caps are necessary.
 - The 5 volts line is mandatory for the level shifter so I found easier to power everything from it but it's a design choice. It also eases powering the device with a powerbank or an OTG cable from USB. In brief it is more versatile.
@@ -206,6 +202,9 @@ The code and current design come as it. If you're not happy with the current har
 - Feel free to make a lithium battery powered design of your dream. Lithium batteries are not recycled and always end as [spicy pillows](https://www.reddit.com/r/spicypillows/) so I don't like them.
 - The RP2040 core for Arduino IDE takes both the Pico SDK or the Arduino commands when there is an equivalence. Here this is not rocket science either so Arduino commands are well enough.
 - The inspiration came from the experience of co-developping both the hardware and software of the NeoGB Printer on ESP32: the default PCB is bulky and difficult to assemble (the random pin placement on the ESP32 dev board does not help), the device consumes a ton of current due to wifi support (which is not that reliable), the attempts to port it to a compact LilyGO board were more or less a fail because **ALL** the boards from this brand have majors issues with their charge/discharge circuit (plus they are horribly expensive for what they are: piece of crap), the dev on ESP32 was a real nightmare (you have to juggle between major hardware flaws and very questionable documentation, things that must be working and just don't work, memory management which is a mess, etc.). The Tiny GB Printer may probably be ported easily on the ESP32 zero, but it won't be by me.
+
+## Kind warning
+The code and current design come as it. If you're not happy with the current hardware, the PCB EasyEDA design or the Arduino IDE, create your own, the licence allows it ! Pull request with tested and working improvements are of course still welcomed. Feel free to design and share a 3D printed case, I won't make one.
 
 ## Aknowledgements
 - [Rafael Zenaro](https://github.com/zenaro147) for the idea and because I uses chunks of code from the [NeoGB Printer project](https://github.com/zenaro147/NeoGB-Printer). This project is basically a demake and a way to get rid of the embarassing ESP32 platform.
