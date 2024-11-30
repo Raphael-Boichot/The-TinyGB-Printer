@@ -7,8 +7,6 @@ It's basically like a [BitBoy](https://gameboyphoto.bigcartel.com/product/bitboy
 ## That's it !
 Nothing to configure, nothing to install, it just works.
 ![](/Images/Tiny_GB_Printer.jpg)
-
-## Yet another printer emulator ?! What's different ?
 This printer emulator does not require any additional converter, it contains its own. The goal is to provide an easy way to get images out of your precious saves without the hassle of installing / configuring / maintaining / running a decoder on a diversity of OS. Here everything is simple: build the device, drop the compiled binary to it, print and publish immediately your images direct from the SD card. Only skill required is very basic knowldege in soldering.
 
 ## What's inside / how does it work ?
