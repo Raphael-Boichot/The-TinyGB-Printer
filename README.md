@@ -4,9 +4,9 @@ The TinyGB Printer is the simplest possible Game Boy printer emulator storing im
 
 It's basically like a [BitBoy](https://gameboyphoto.bigcartel.com/product/bitboy) but outputting pixel perfect upscaled PNG images, with more functions (see next), without the need to find a needle in case of crash to reboot the device, and most of all, it's open source. You can copy, modify, sell or improve it as you want. Just respect the license and the dedication of the authors (in very brief, don't forget to cite Brian KHUU and Raphaël BOICHOT).
 
-Please report any issue like image glitches (even minor) or some particular mode of some particular game not giving a satisfactory result. I'll try my best to find a solution.
-
 ## That's it !
+
+Nothing to configure, nothing to install, it just works.
 ![](/Images/Tiny_GB_Printer.jpg)
 
 ## Yet another printer emulator ?! What's different ?
@@ -64,6 +64,7 @@ The device draws about 150 mA, so couple of AAA batteries should last on average
 - Last image is not written ? You've probably switched the device off while the led was still on or you forgot to tear paper with the pushbutton in tear mode.
 - Last batch of images is incomplete (empty folder or just first images recorded with a multi-print) ? The batteries are completely out of juice, recharge them.
 - Some image are half black/white ? See [notes](/TinyGB_Printer/Upscalerlib.h#L1) in the upscaler library.
+- Any SD card must work out of the box. If the printer is reluctant to recognize yours (it can happen, rarely), use a [low level formatting tool](https://www.sdcard.org/downloads/formatter/) or low level formatting commands like diskpart on Windows. Filesystem must be FAT32.
 
 ## Examples of use
 
