@@ -442,7 +442,7 @@ void loop1()  //core 1 loop deals with images, written by Raphaël BOICHOT, nove
   }
 
   if (digitalRead(BTN_PUSH)) {
-    BREAK_flag = 0;  //reset the BREAK only after a print command with margin
+    BREAK_flag = 0;  //reset the BREAK manually for my own use only, not supposed to be documented
     Serial.println("Core 1 -> Manual reset from suicide mode");
     delay(500);
   }
