@@ -5,9 +5,8 @@ The TinyGB Printer is the simplest possible Game Boy printer emulator storing im
 It's basically like a [BitBoy](https://gameboyphoto.bigcartel.com/product/bitboy) but outputting pixel perfect upscaled PNG images, with more functions (see next), without the need to find a needle in case of crash to reboot the device, and most of all, it's open source. You can copy, modify, sell or improve it as you want. Just respect the license and the dedication of the authors (in very brief, don't forget to cite Brian KHUU and Raphaël BOICHOT).
 
 ## That's it !
-Nothing to configure, nothing to install, it just works.
+**Nothing to configure, nothing to install, it just works.**
 ![](/Images/Tiny_GB_Printer.jpg)
-This printer emulator does not require any additional converter, it contains its own. The goal is to provide an easy way to get images out of your precious saves without the hassle of installing / configuring / maintaining / running a decoder on a diversity of OS. Here everything is simple: build the device, drop the compiled binary to it, print and publish immediately your images direct from the SD card. Only skill required is very basic knowldege in soldering.
 
 ## What's inside / how does it work ?
 The code is basically the [Arduino Game Boy Printer emulator](https://github.com/mofosyne/arduino-gameboy-printer-emulator) (with a bit of modifications to handle the RP2040 specificities) running on core 0 and a custom image decoder running on core 1 in parallel. Core 0 politely asks core 1 to convert data at certain times with a flag. Core 0 is quite busy with interrupts while core 1 is more or less idle depending on tasks asked by core 0. Good timing between the two cores is critical (and required quite an optimisation) as core 0 cannot miss any interrupt and core 1 must fullfill all its tasks on time with a good safety margin.
