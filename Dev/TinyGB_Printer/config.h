@@ -18,7 +18,6 @@
 #define SD_SCK 10    // SD card SPI1
 #define SD_MOSI 11   // SD card SPI1
 #define BTN_PUSH 12  // Define a PushButton to use to Force a new file in idle mode ///BOICHOT
-#define NUMPIXELS 1  // NeoPixel ring size (just internal LED here)
 
 /* Gameboy Link Cable Mapping to Arduino Pin */
 // Note: Serial Clock Pin must be attached to an interrupt pin of the arduino
@@ -30,8 +29,10 @@
 #define GBP_SI_PIN 3       // Pin 3            : Serial INPUT
 #define GBP_SC_PIN 2       // Pin 5            : Serial Clock (Interrupt)
 #define LED_STATUS_PIN 16  // Internal LED blink on packet reception
-
-#define GBP_BUFFER_SIZE 650  //maximal size of data buffer 640 bytes + commands
+#define NUMPIXELS 1        // NeoPixel ring size (just internal LED here)
+Adafruit_NeoPixel pixels(NUMPIXELS, LED_STATUS_PIN, NEO_RGB);
+uint8_t intensity = 30;                                 //WS2812 intensity 255 is a death ray, 10 to 15 is normal
+uint32_t WS2812_Color = pixels.Color(0, intensity, 0);  //RGB triplet, default is green
 
 unsigned int Next_ID, Next_dir;                       //for directories and filenames
 unsigned char printer_memory_buffer_core_0[9 * 640];  //Game Boy printer buffer of 9*640 bytes (maximum possible), core 0
@@ -63,7 +64,6 @@ unsigned int max_files_per_folder = 1024;                                       
 unsigned long lines_in_image_file = 0;                                                                           //to keep tack of image file length
 unsigned long myTime;                                                                                            //timer for PNG encoder
 unsigned long FILE_number = 0;                                                                                   //counter of file per session
-uint8_t intensity = 30;                                                                                          //WS2812 intensity 255 is a death ray, 10 to 15 is normal
 uint32_t SD_card_access_Color;                                                                                   //mandatory structure for the WS2812 LED
 bool SDcard_READY = 0;                                                                                           //self explanatory
 bool PRINT_flag = 0;                                                                                             //self explanatory

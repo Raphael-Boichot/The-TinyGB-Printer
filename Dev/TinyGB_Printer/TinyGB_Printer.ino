@@ -38,18 +38,13 @@
 #include "config.h"
 /////////////Specific to TinyGB Printer//////////////
 
+#define GBP_BUFFER_SIZE 650  //maximal size of data buffer 640 bytes + commands
 #define GBP_FEATURE_PARSE_PACKET_MODE
 #define GBP_FEATURE_PARSE_PACKET_USE_DECOMPRESSOR
 #include "gbp_pkt.h"
 
 /*******************************************************************************
 *******************************************************************************/
-
-/////////////Specific to TinyGB Printer//////////////
-Adafruit_NeoPixel pixels(NUMPIXELS, LED_STATUS_PIN, NEO_RGB);
-uint32_t WS2812_Color = pixels.Color(0, intensity, 0);  //RGB triplet
-/////////////Specific to TinyGB Printer//////////////
-
 /* Serial IO */
 // This circular buffer contains a stream of raw packets from the gameboy
 uint8_t gbp_serialIO_raw_buffer[GBP_BUFFER_SIZE] = { 0 };
@@ -72,7 +67,7 @@ inline void gbp_parse_packet_loop();
   Utility Functions
 *******************************************************************************/
 
-const char *gbpCommand_toStr(int val) {
+const char* gbpCommand_toStr(int val) {
   switch (val) {
     case GBP_COMMAND_INIT: return "INIT";
     case GBP_COMMAND_PRINT: return "PRNT";
@@ -97,21 +92,16 @@ void serialClock_ISR(void) {
   digitalWrite(GBP_SI_PIN, txBit ? HIGH : LOW);
 }
 
-
 /*******************************************************************************
   Main Setup and Loop
 *******************************************************************************/
 
 void setup(void) {
 
-  /////////////Specific to TinyGB Printer//////////////
   Tiny_printer_preparation();  //switches in Tiny Printer mode
-  /////////////Specific to TinyGB Printer//////////////
-
   pinMode(GBP_SC_PIN, INPUT);
   pinMode(GBP_SO_PIN, INPUT);
   pinMode(GBP_SI_PIN, OUTPUT);
-    /* Default link serial out pin state */
   digitalWrite(GBP_SI_PIN, LOW);
 
   /* Setup */
@@ -131,15 +121,8 @@ void setup(void) {
 
 #define VERSION_STRING "V3.2.1 (Copyright (C) 2022 Brian Khuu)"
 #define TINY_VERSION_STRING "V0.9 (Copyright (C) 2024 Raphaël BOICHOT)"
-
-  Serial.println(F("// GAMEBOY PRINTER Emulator " VERSION_STRING));
-  Serial.println(F("// TINYGB PRINTER Converter " TINY_VERSION_STRING));
-  Serial.println(F("// Note: Each hex encoded line is a gameboy tile"));
-  Serial.println(F("// --- GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 ---"));
-  Serial.println(F("// This program comes with ABSOLUTELY NO WARRANTY;"));
-  Serial.println(F("// This is free software, and you are welcome to redistribute it"));
-  Serial.println(F("// under certain conditions. Refer to LICENSE file for detail."));
-  Serial.println(F("// ---"));
+  Serial.println(F("// Game Boy Printer Emulator for Arduino " VERSION_STRING));
+  Serial.println(F("// TinyGB Printer converter add-on " TINY_VERSION_STRING));
   Serial.flush();
 }  // setup()
 
@@ -169,14 +152,9 @@ void loop() {
     }
   }
   last_millis = curr_millis;
-
 }  // loop()
 
 /////////////Specific to TinyGB Printer//////////////
-//with the RP2040 Arduino core, the two loops runs in parallel independantly on each core and you deal with that
-//they share variables and memory, which is simple and practical but requires a mental gymnastics.
-//you can still use the Pico SDK commands for multicore if you wish
-//core 1 could more stable for heavy duty tasks as it does not have to deal with internal interrupts like timers
 void loop1()  //core 1 loop deals with images, written by Raphaël BOICHOT, november 2024
 {
   if (PRINT_flag == 1) {
@@ -319,9 +297,8 @@ inline void gbp_parse_packet_loop(void) {
         Serial.print("\"command\":\"");
         Serial.print(gbpCommand_toStr(gbp_pktState.command));
         Serial.print("\"");
-        if (!skip_byte_on_display) {  /////////////Specific to TinyGB Printer//////////////
+        if (!skip_byte_on_display) {
           if (gbp_pktState.command == GBP_COMMAND_INQUIRY) {
-            // !{"command":"INQY","status":{"lowbatt":0,"jam":0,"err":0,"pkterr":0,"unproc":1,"full":0,"bsy":0,"chk_err":0}}
             Serial.print(", \"status\":{");
             Serial.print("\"LowBat\":");
             Serial.print(gpb_status_bit_getbit_low_battery(gbp_pktState.status) ? '1' : '0');
@@ -341,7 +318,7 @@ inline void gbp_parse_packet_loop(void) {
             Serial.print(gpb_status_bit_getbit_checksum_error(gbp_pktState.status) ? '1' : '0');
             Serial.print((char)'}');
           }
-        }  /////////////Specific to TinyGB Printer//////////////
+        }
 
         if (gbp_pktState.command == GBP_COMMAND_PRINT) {
           //!{"command":"PRNT","sheets":1,"margin_upper":1,"margin_lower":3,"pallet":228,"density":64 }
@@ -369,10 +346,8 @@ inline void gbp_parse_packet_loop(void) {
           ///////////////////////specific to the TinyGB Printer////////////////////////
         }
         if (gbp_pktState.command == GBP_COMMAND_DATA) {
-          //!{"command":"DATA", "compressed":0, "more":0}
-          ///////////////////////specific to the TinyGB Printer////////////////////////
           LED_WS2812_state(WS2812_Color, 1);
-///////////////////////specific to the TinyGB Printer////////////////////////
+
 #ifdef GBP_FEATURE_PARSE_PACKET_USE_DECOMPRESSOR
           Serial.print(", \"compressed\":0");  // Already decompressed by us, so no need to do so
 #else
@@ -381,9 +356,7 @@ inline void gbp_parse_packet_loop(void) {
 #endif
           Serial.print(", \"more\":");
           Serial.print((gbp_pktState.dataLength != 0) ? '1' : '0');
-          ///////////////////////specific to the TinyGB Printer////////////////////////
           LED_WS2812_state(WS2812_Color, 0);
-          ///////////////////////specific to the TinyGB Printer////////////////////////
         }
         Serial.println((char)'}');
         Serial.flush();
@@ -396,7 +369,7 @@ inline void gbp_parse_packet_loop(void) {
             for (int i = 0; i < GBP_TILE_SIZE_IN_BYTE; i++) {
               const uint8_t data_8bit = tileBuff.tile[i];
 
-              if (!skip_byte_on_display) {  /////////////Specific to TinyGB Printer//////////////
+              if (!skip_byte_on_display) {
                 if (i == GBP_TILE_SIZE_IN_BYTE - 1) {
                   Serial.print((char)nibbleToCharLUT[(data_8bit >> 4) & 0xF]);
                   Serial.println((char)nibbleToCharLUT[(data_8bit >> 0) & 0xF]);  // use println on last byte to reduce serial calls
@@ -405,7 +378,7 @@ inline void gbp_parse_packet_loop(void) {
                   Serial.print((char)nibbleToCharLUT[(data_8bit >> 0) & 0xF]);
                   Serial.print((char)' ');
                 }
-              }  /////////////Specific to TinyGB Printer//////////////
+              }
 
               ///////////////////////specific to the TinyGB Printer////////////////////////
               printer_memory_buffer_core_0[DATA_bytes_counter] = data_8bit;  //we get the graphic data here
@@ -428,7 +401,7 @@ void Tiny_printer_preparation() {
   Serial.begin(115200);
   delay(1000);
   if (digitalRead(BTN_PUSH)) {
-    WS2812_Color = pixels.Color(0, 0, intensity);  //RGB triplet
+    WS2812_Color = pixels.Color(0, 0, intensity);  //RGB triplet, turn to blue
     TEAR_mode = 1;                                 //idle mode with tear paper
     Serial.println("// Tear mode, push button to close an image (tear paper)");
   } else {
@@ -436,7 +409,7 @@ void Tiny_printer_preparation() {
     Serial.println("// Margin mode, images will be closed automatically");
   }
   // Ensure the SPI pinout the SD card is connected to / is configured properly
-  SPI1.setRX(SD_MISO);
+  SPI1.setRX(SD_MISO);  //see config.h to see SPI groups
   SPI1.setTX(SD_MOSI);
   SPI1.setSCK(SD_SCK);
   if (SD.begin(SD_CS, SPI1)) {  //SD.begin(SD_CS) for SPI0, SPI.setRX, etc. because...
@@ -444,7 +417,7 @@ void Tiny_printer_preparation() {
     Serial.println("// SD card detected, now switch to emulator mode");
   } else {
     SDcard_READY = 0;
-    uint32_t WS2812_SD_crash = pixels.Color(intensity, 0, 0);  //RGB triplet
+    uint32_t WS2812_SD_crash = pixels.Color(intensity, 0, 0);  //RGB triplet, turn to red
     Serial.println("// SD card not detected, images will not be stored. SD card can still be inserted now");
     while (!SD.begin(SD_CS, SPI1)) {
       LED_WS2812_state(WS2812_SD_crash, 1);
@@ -477,7 +450,6 @@ void LED_WS2812_state(uint32_t WS2812_Color, bool state) {
   }
 }
 
-//////////////////////////////////////////////SD stuff///////////////////////////////////////////////////////////////////////////////////////////
 void ID_file_creator(const char* path) {  //from fresh SD, device needs a "secret" binary storage file
                                           //this file may never be erased and is accessed frequently as it counts all images recorded with a unique ID
   uint8_t buf[8] = { 0, 0, 0, 0, 0, 0, 0, 0 };
@@ -526,15 +498,12 @@ void store_next_ID(const char* path, unsigned long Next_ID, unsigned long Next_d
   Datafile.write(buf, 4);
   Datafile.close();
 }
-//////////////////////////////////////////////SD stuff///////////////////////////////////////////////////////////////////////////////////////////
-
 
 /*Dev notes Raphaël BOICHOT 2024/11/28
   The Game boy Printer emulator runs on core 0 in parse mode with decompression by default, with Printer feature disabled. These mode are still available, I've removed nothing
   I've tried to modify as little as possible the emulator part in order to allow easy update with the emulator, just in case. The TinyGB printer justs needs small chunks of code on core 0.
   Surprisingly, the only necessary step to make it compile on the RP2040 Arduino core is... nothing. The while (!Serial) must be commented to make it work without serial
   Compared to Arduino, the RP2040 "hard resets" the USB port, so any serial based converter will probably have minor connection issues with this version.
-  The Printer interface part is still working with GNU Octave as well as the Matlab decoder, but not the Android interface.
   The Tiny Printer runs on core 1. It assumes an upscaling factor of 4 by default. This allows me to store compressed 2bbp data as soon as the decoder step, very easily with a lookup table.
   Temporary data are stored on the SD card as image length can be in theory infinite. I only store in ram at maximum 9 packets of 40 tiles (9*16*40 bytes).
   Packets are written on SD card only when a print command is received because the palette is sent last. This means that storing data on SD card every packet makes no sense.
@@ -544,6 +513,5 @@ void store_next_ID(const char* path, unsigned long Next_ID, unsigned long Next_d
   I use the PNGenc library because it works. It requires some not-that-obvious memory settings and you're basically alone to configure it. It is used in the NeoGB printer too.
   This library creates micro-stallings on core 0 for unknown reason (it runs on core 1 !), so the need for overclocking the device to support double speed mode in Photo!
   Best would be to rewrite a custom PNG encoder (like with zero compression to ease the thing) and downclock back the device to 133 MHz, maybe one day.
-  As every project of mine, this will be a code of theseus so stay tuned.
   That said, enjoy the device !
 */
