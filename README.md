@@ -64,10 +64,10 @@ The device draws about 150 mA, so couple of AAA batteries should last on average
 
 ## Examples of use
 
-### Infinite timelapse with [photo!](https://github.com/untoxa/gb-photo)
+### Making timelapse with [photo!](https://github.com/untoxa/gb-photo)
 ![](/Images/Showcase_2.gif)
 
-### Saving your achievements
+### Saving your achievements and diploma
 ![](/Images/Game_examples.png)
 
 ## Compatible with all games using the Game Boy Printer
