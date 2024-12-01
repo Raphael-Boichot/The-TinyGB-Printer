@@ -75,7 +75,7 @@ The device draws about 150 mA, so couple of AAA batteries should last on average
 In *Italics* game working fine in automatic mode, in **bold** games requiring the pushbutton to tear paper, or tear mode. 
 All known homebrews to date are compatible with the automatic mode.
 
-(and yes, for who asks if I'm crazy, I've tested all games in this list)
+(and yes, for who wonder if I'm crazy, I've tested all games in this list and save hacked most of them to access all printing features)
 
 - *1942*
 - *Alice in Wonderland (US version only, Euro version not printer compatible)*
