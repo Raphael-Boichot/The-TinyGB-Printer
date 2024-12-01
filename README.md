@@ -16,6 +16,7 @@ Why not starting from another emulator yet made for a Pi Pico ? Because I have t
 ## Easy to install
 - After soldering everything, connect the Raspberry Pi Pico with a USB cable to your computer while pressing BOOT, drop the [uf2 file](/Builds) to the USB folder poping out and enjoy your device. If it makes smoke, check for shorts with a multimeter.
 - If you want to modify the code and compile it, use the [Arduino IDE](https://www.arduino.cc/en/software) equipped with the [RP2040 core for Arduino IDE](https://github.com/earlephilhower/arduino-pico). Then from the Arduino library manager install the [PNGEnc library](https://github.com/bitbank2/PNGenc) (read dev notes, there are some settings to change) and the [Adafruit Neopixel for Arduino IDE](https://github.com/adafruit/Adafruit_NeoPixel), choose the Waveshare RP2040 PiZero and compile at 200MHz before uploading. I used the Arduino IDE because it gives a very user-friendly access to dev on RP2040 core without too much flaws. And the Earle Philhower RP2040 core is damn good too, it contains everything you need, tons of examples and ultra reactive support.
+- Want to see what's behind the scene ? Just run the device with a serial console connected, the cores are speaking to you.
 
 ## Easy to use
 - Switch the device on without touching anything, the LED flashes green, images are recorded automatically, this is the **automatic mode**. This is perfect for the Game Boy Camera for example. Multi-prints is of course supported.
