@@ -46,7 +46,7 @@ unsigned char inner_lower_margin;                     //inner margin to use for 
 unsigned char PNG_compress_4x[4] = { 0b00000000, 0b01010101, 0b10101010, 0b11111111 };  //lookup table for PNG 2 bpp format. 1 byte = 4 identical pixels on a line
 //unsigned char PNG_palette_RGB[12] = { 123, 129, 16, 89, 121, 66, 73, 90, 40, 46, 69, 54 };//DMG palette
 //unsigned char PNG_palette_RGB[12] = { 197, 202, 165, 140, 146, 107, 105, 108, 90, 24, 24, 24 };//GBpocket palette
-//unsigned char PNG_palette_RGB[12] = { 255, 255, 255, 88, 190, 63, 07, 89, 226, 00, 00, 00 };//GBcolor palette
+//unsigned char PNG_palette_RGB[12] = { 255, 255, 255, 127, 253, 55, 0, 100, 198, 0, 0, 0 };//GBcolor palette
 unsigned char PNG_palette_RGB[12] = { 0xFF, 0xFF, 0xFF, 0xAA, 0xAA, 0xAA, 0x55, 0x55, 0x55, 0x00, 0x00, 0x00 };  //RGB colors as they will appear in the PNG file
 unsigned char image_palette[4];                                                                                  //2 bpp local color palette sent by the Game Boy
 unsigned char DATA_packet_counter = 0;                                                                           //counter for packets transmitted
