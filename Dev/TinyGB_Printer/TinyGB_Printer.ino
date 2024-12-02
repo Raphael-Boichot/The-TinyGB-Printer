@@ -161,12 +161,12 @@ void loop1()  //core 1 loop deals with images, written by Raphaël BOICHOT, nove
     PRINT_flag = 0;
     if (BREAK_flag == 1) {  //wrong packet size or too many packets received !
       Serial.println("");   //The emulator does not take the BREAK/abort command but it behaves the same
-      Serial.println("Core 1 -> I have received too many packets or a broken packet, suicide mode activated !");
-      SD.remove(tmp_storage_file_name);                      //remove any previous failed attempt
-      lines_in_image_file = 0;                               //resets the number of lines
-      DATA_bytes_counter = 0;                                //reset
-      DATA_packet_counter = 0;                               //reset
-      DATA_packet_to_print = 0;                              //reset
+      Serial.println("Core 1 -> I have received too many packets or broken packets, suicide mode activated !");
+      SD.remove(tmp_storage_file_name);  //remove any previous failed attempt
+      lines_in_image_file = 0;           //resets the number of lines
+      DATA_bytes_counter = 0;            //reset
+      DATA_packet_counter = 0;           //reset
+      DATA_packet_to_print = 0;          //reset
       if (inner_lower_margin > 0) {
         BREAK_flag = 0;  //reset the BREAK only after a print command with margin
         Serial.println("Core 1 -> Auto reset from suicide mode due to feed paper");

@@ -31,9 +31,9 @@
 #define LED_STATUS_PIN 16  // Internal LED blink on packet reception
 #define NUMPIXELS 1        // NeoPixel ring size (just internal LED here)
 Adafruit_NeoPixel pixels(NUMPIXELS, LED_STATUS_PIN, NEO_RGB);
-uint8_t intensity = 30;                                         //WS2812 intensity 255 is a death ray, 10 to 15 is normal
-uint32_t WS2812_Color = pixels.Color(0, intensity, 0);          //RGB triplet, default is green, turns to blue in tear mode
-uint32_t WS2812_SD_crash = pixels.Color(intensity, 0, 0);       //RGB triplet, turn to red, issue with SD card
+uint8_t intensity = 30;                                    //WS2812 intensity 255 is a death ray, 10 to 15 is normal
+uint32_t WS2812_Color = pixels.Color(0, intensity, 0);     //RGB triplet, default is green, turns to blue in tear mode
+uint32_t WS2812_SD_crash = pixels.Color(intensity, 0, 0);  //RGB triplet, turn to red, issue with SD card
 
 unsigned int Next_ID, Next_dir;                           //for directories and filenames
 unsigned char printer_memory_buffer_core_0[9 * 640 + 1];  //Game Boy printer buffer of 9*640 bytes (maximum possible + margin in case of buffer overflow), core 0
