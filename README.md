@@ -97,7 +97,7 @@ All known homebrews to date are compatible with the automatic mode.
 - *Densha de GO! 2 (電車でGO!2)*
 - *Dino Breeder 3 - Gaia Fukkatsu (ディノブリーダー3 〜ガイア復活〜)*
 - *Disney's Dinosaur*
-- *Disney's Tarzan (ディズニーズ ターザン)*
+- *Disney's Tarzan (ディズニーズ ターザン) - French version has a palette error*
 - *Donkey Kong Country (ドンキーコング2001)*
 - *Doraemon Kart 2 (ドラえもんカート2)*
 - *Doraemon Memories - Nobita no Omoide Daibouken (ドラえもんメモリーズ のび太の想い出大冒険)*
