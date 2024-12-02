@@ -20,15 +20,9 @@ Why not starting from another emulator yet made for a Pi Pico ? Because I have t
 
 ## Easy to use
 - Power the device without touching anything, the LED flashes green, images are recorded automatically, this is the **automatic mode**. This is perfect for the Game Boy Camera for example. Multi-print is of course supported.
-- Power while pressing the pushbutton : the LED flashes blue, all images are stacked together in a single file until you press the pushbutton to "cut paper", it's the **tear mode**. Some rare games require this (see complete game list). You can also use it freely to stack images. Just be creative !
+- Power while pressing the pushbutton : the LED flashes blue, all images are stacked together in a single file until you press the pushbutton again to "cut paper", it's the **tear mode**. Some rare games require this (see complete game list). You can also use it freely to stack images. Just be creative !
 - Power the device and the LED blinks red on and off in cycle: SD card not connected or not formatted in FAT32. SD card can be inserted during this step, the device will then boot normally.
-- In case you abort a print command in any mode, just use the pushbutton to reset the printer state (it's like feeding paper and remove the failed incomplete print). If the led is yellow during printing, this means that you forgot to reset printer while trying to print again, the current image will be automatically discarded.
 - Cycling the power switch on the battery box or using the RESET button on the board has the same effect (reset printer state and increase folder number).
-
-So the push button has 3 functions depending on the context:
-- At boot, choosing the mode (tear or automatic mode);
-- In tear mode, converting to image file after printing;
-- After an abort (whatever mode), clearing the printer from unfinished printing;
 
 A new folder is created at each boot/RESET. Each image file has a unique ID. Flashes during printing indicate flux of data and access to SD card. Color of flashes indicates the mode (green for automatic mode, blue for tear mode).
 
