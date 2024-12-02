@@ -44,7 +44,7 @@ All the parts used here are cheap and easy to find on Aliexpress. You probably y
 - [A GBA/GBC Game Boy serial slot](https://fr.aliexpress.com/item/1005006361884480.html). They can be cheap or not depending on the seller, do not hesitate to change.
 - [A 6x6 mm pushbutton](https://fr.aliexpress.com/item/1005003938244847.html), whatever height. The softer the better if you have the choice.
 - [3 x 22 µF caps with a 1206 footprint](https://fr.aliexpress.com/item/1005006022131059.html) (22 to 50 µF is OK if you have spares). Take 10V or 16V.
-- [An AMS1117-3.3V converter](https://fr.aliexpress.com/item/4001104149446.html). Do not take the ADJ version but the 3.3. The SD card is powered independently by this converter as the Pi Pico puny onboard converter is not powerfull enough.
+- [An AMS1117-3.3V converter](https://fr.aliexpress.com/item/4001104149446.html). Do not take the ADJ version proposed by default on the link page but the 3.3. The SD card is powered independently by this converter as the Pi Pico puny onboard converter is not powerfull enough.
 - A [2xAA](https://fr.aliexpress.com/item/4000980371784.html) or [2xAAA](https://fr.aliexpress.com/item/1005004195965365.html) battery box with switch. Single AA battery is a bit too weak to power the device reliably (it can work or not).
 
 **How to make it:**
