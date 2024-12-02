@@ -182,7 +182,7 @@ All known homebrews to date are compatible with the automatic mode.
 - *The Legend of Zelda: Link's Awakening DX (ゼルダの伝説 夢をみる島DX)*
 - *The Little Mermaid 2: Pinball Frenzy*
 - *Tony Hawk's Pro Skater 2*
-- *Trade & Battle: Card Hero (トレード&バトル カードヒーロー)*
+- *Trade & Battle: Card Hero (トレード&バトル カードヒーロー) - The game has a palette error*
 - *Tsuri Sensei 2 (釣り先生2)*
 - *VS Lemmings (VS.レミングス) - Lemmings US version does not have print feature*
 
