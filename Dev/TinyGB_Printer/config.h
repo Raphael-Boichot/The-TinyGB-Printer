@@ -31,8 +31,10 @@
 #define LED_STATUS_PIN 16  // Internal LED blink on packet reception
 #define NUMPIXELS 1        // NeoPixel ring size (just internal LED here)
 Adafruit_NeoPixel pixels(NUMPIXELS, LED_STATUS_PIN, NEO_RGB);
-uint8_t intensity = 30;                                 //WS2812 intensity 255 is a death ray, 10 to 15 is normal
-uint32_t WS2812_Color = pixels.Color(0, intensity, 0);  //RGB triplet, default is green
+uint8_t intensity = 30;                                         //WS2812 intensity 255 is a death ray, 10 to 15 is normal
+uint32_t WS2812_Color = pixels.Color(0, intensity, 0);          //RGB triplet, default is green, turns to blue in tear mode
+uint32_t WS2812_reset = pixels.Color(0, intensity, intensity);  //RGB triplet, turn to cyan, manual reset
+uint32_t WS2812_SD_crash = pixels.Color(intensity, 0, 0);       //RGB triplet, turn to red, issue with SD card
 
 unsigned int Next_ID, Next_dir;                           //for directories and filenames
 unsigned char printer_memory_buffer_core_0[9 * 640 + 1];  //Game Boy printer buffer of 9*640 bytes (maximum possible + margin in case of buffer overflow), core 0
@@ -64,7 +66,6 @@ unsigned int max_files_per_folder = 1024;                                       
 unsigned long lines_in_image_file = 0;                                                                           //to keep tack of image file length
 unsigned long myTime;                                                                                            //timer for PNG encoder
 unsigned long FILE_number = 0;                                                                                   //counter of file per session
-uint32_t SD_card_access_Color;                                                                                   //mandatory structure for the WS2812 LED
 bool SDcard_READY = 0;                                                                                           //self explanatory
 bool PRINT_flag = 0;                                                                                             //self explanatory
 bool TEAR_mode = 0;                                                                                              //self explanatory
