@@ -159,14 +159,14 @@ void loop1()  //core 1 loop deals with images, written by Raphaël BOICHOT, nove
 {
   if (PRINT_flag == 1) {
     PRINT_flag = 0;
-    if ((DATA_packet_to_print > 9) | (BREAK_flag == 1)) {  //this happens if you print again after a BREAK, and it creates an overflow that the Pico does not like at all
-      Serial.println("");                                  //The emulator does not take the BREAK command so it's a temporary fix
-      Serial.println("Core 1 -> I have received too many packets or a broken packet, suicide image !");
+    if (BREAK_flag == 1) {  //wrong packet size or too many packets received !
+      Serial.println("");   //The emulator does not take the BREAK/abort command but it behaves the same
+      Serial.println("Core 1 -> I have received too many packets or a broken packet, suicide current image until feed paper !");
       SD.remove(tmp_storage_file_name);  //remove any previous failed attempt
       lines_in_image_file = 0;           //resets the number of lines
-      DATA_bytes_counter = 0;            //counter for data bytes
-      DATA_packet_counter = 0;
-      DATA_packet_to_print = 0;
+      DATA_bytes_counter = 0;            //reset
+      DATA_packet_counter = 0;           //reset
+      DATA_packet_to_print = 0;          //reset
       if (inner_lower_margin > 0) {
         BREAK_flag = 0;  //reset the BREAK only after a print command with margin
         Serial.println("Core 1 -> Auto reset from suicide mode due to feed paper");
@@ -251,7 +251,7 @@ void loop1()  //core 1 loop deals with images, written by Raphaël BOICHOT, nove
     }
   }
   //in TEAR mode, a file is never closed unless you push a button
-  if ((TEAR_mode == 1) & (digitalRead(BTN_PUSH)) & (lines_in_image_file > 0)) {  //in tear mode, a button push only can close file, whatever the printer (non empty) state
+  if ((TEAR_mode == 1) & (digitalRead(BTN_PUSH)) & (lines_in_image_file > 0) & (BREAK_flag == 0)) {  //in tear mode, a button push only can close file, whatever the printer (non empty) state
     LED_WS2812_state(WS2812_Color, 1);
     Next_ID++;  //increment file number
     store_next_ID("/tiny.sys", Next_ID, Next_dir);
@@ -277,12 +277,18 @@ void loop1()  //core 1 loop deals with images, written by Raphaël BOICHOT, nove
     LED_WS2812_state(WS2812_Color, 0);
   }
 
-  if (digitalRead(BTN_PUSH)) {
-    BREAK_flag = 0;  //reset the BREAK manually for my own use only, not supposed to be documented
+  if (digitalRead(BTN_PUSH) & (BREAK_flag == 1)) {// in any mode, you can reset the printer state after an abort command
+    BREAK_flag = 0;  //reset the BREAK manually
     Serial.println("Core 1 -> Manual reset from suicide mode");
-    delay(500);
+    SD.remove(tmp_storage_file_name);  //remove any previous failed attempt
+    lines_in_image_file = 0;           //resets the number of lines
+    DATA_bytes_counter = 0;            //reset
+    DATA_packet_counter = 0;           //reset
+    DATA_packet_to_print = 0;          //reset
+    LED_WS2812_state(WS2812_Color, 1);
+    delay(200);  // rebounce delay and acknowledge signal
+    LED_WS2812_state(WS2812_Color, 0);
   }
-
 }  // loop1()
 /////////////Specific to TinyGB Printer//////////////
 
@@ -337,7 +343,7 @@ inline void gbp_parse_packet_loop(void) {
           DATA_packet_to_print = DATA_packet_counter;                                              //counter for packets transmitted to be transmitted to core 1
           inner_palette = gbp_pkt_printInstruction_palette_value(gbp_pktbuff);                     //this can also be done by core 1
           inner_lower_margin = gbp_pkt_printInstruction_num_of_linefeed_after_print(gbp_pktbuff);  //this can also be done by core 1
-          if (!(DATA_bytes_counter % 640 == 0)) {                                                  //we count the data packets here (16 bytes*40 tiles)
+          if ((!(DATA_bytes_counter % 640 == 0)) | (DATA_packet_to_print > 9)) {                   //more than 9 packets transmitted or incomplete packet: problem !
             BREAK_flag = 1;                                                                        //the print is broken due to abort command, suicide the print
           }
           DATA_bytes_counter = 0;   //counter for data bytes
@@ -385,6 +391,9 @@ inline void gbp_parse_packet_loop(void) {
               DATA_bytes_counter++;
               if (DATA_bytes_counter % 640 == 0) {  //we count the data packets here (16 bytes*40 tiles)
                 DATA_packet_counter++;
+              }
+              if (DATA_bytes_counter >= 9 * 640) {  //this could happen in case of abort and reprint
+                DATA_bytes_counter = 0;             //to avoid buffer overflow, buffer loops to itself but DATA_packet_counter is kept to indicate an issue
               }
               ///////////////////////specific to the TinyGB Printer////////////////////////
             }

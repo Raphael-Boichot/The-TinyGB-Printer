@@ -34,14 +34,14 @@ Adafruit_NeoPixel pixels(NUMPIXELS, LED_STATUS_PIN, NEO_RGB);
 uint8_t intensity = 30;                                 //WS2812 intensity 255 is a death ray, 10 to 15 is normal
 uint32_t WS2812_Color = pixels.Color(0, intensity, 0);  //RGB triplet, default is green
 
-unsigned int Next_ID, Next_dir;                       //for directories and filenames
-unsigned char printer_memory_buffer_core_0[9 * 640];  //Game Boy printer buffer of 9*640 bytes (maximum possible), core 0
-unsigned char printer_memory_buffer_core_1[9 * 640];  //Game Boy printer buffer of 9*640 bytes (maximum possible), core 1
-unsigned char PNG_image_color[144 * 160];             //"color" RGB 2bbp data
-char png_storage_file_name[64];                       //character string to store images
-char tmp_storage_file_name[64];                       //character string to store images
-unsigned char inner_palette;                          //inner palette to use for core 1
-unsigned char inner_lower_margin;                     //inner margin to use for core 1
+unsigned int Next_ID, Next_dir;                           //for directories and filenames
+unsigned char printer_memory_buffer_core_0[9 * 640 + 1];  //Game Boy printer buffer of 9*640 bytes (maximum possible + margin in case of buffer overflow), core 0
+unsigned char printer_memory_buffer_core_1[9 * 640 + 1];  //Game Boy printer buffer of 9*640 bytes (maximum possible + margin in case of buffer overflow), core 1
+unsigned char PNG_image_color[144 * 160];                 //"color" RGB 2bbp data
+char png_storage_file_name[64];                           //character string to store images
+char tmp_storage_file_name[64];                           //character string to store images
+unsigned char inner_palette;                              //inner palette to use for core 1
+unsigned char inner_lower_margin;                         //inner margin to use for core 1
 //This array contains preformated pixels for 2bbp png mode, 4 pixels per bytes, assuming a 4x upscaling factor and so 4 consecutive pixels identical stored per bytes
 unsigned char PNG_compress_4x[4] = { 0b00000000, 0b01010101, 0b10101010, 0b11111111 };  //lookup table for PNG 2 bpp format. 1 byte = 4 identical pixels on a line
 //unsigned char PNG_palette_RGB[12] = { 123, 129, 16, 89, 121, 66, 73, 90, 40, 46, 69, 54 };//DMG palette
