@@ -188,7 +188,7 @@ All known homebrews to date are compatible with the automatic mode.
 - *Tsuri Sensei 2 (釣り先生2)*
 - *VS Lemmings (VS.レミングス) - Lemmings US version does not have print feature*
 
-Want to know more about these games ? Want to know why the [Wikipedia list](https://en.wikipedia.org/wiki/Game_Boy_Printer) misses most of them ? Want hints and custom saves to unlock all printing features ? Follow the [link](https://github.com/Raphael-Boichot/GameboyPrinterPaperSimulation).
+Want to know more about these games ? Want hints and custom saves to unlock all printing features ? Follow the [link](https://github.com/Raphael-Boichot/GameboyPrinterPaperSimulation).
 
 ## Documented limitation
 - [Photo!](https://github.com/untoxa/gb-photo) standard printing (normal speed and double speed) is the only mode supported to date. Fast Printing and Transfer modes are only supported by the [Pico GB Printer](https://github.com/untoxa/pico-gb-printer), a very good dedicated printer emulator. It is also compatible with this board with minor code update (basically just change the GPIOs according to the current schematic).
