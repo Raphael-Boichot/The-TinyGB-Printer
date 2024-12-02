@@ -116,7 +116,7 @@ All known homebrews to date are compatible with the automatic mode.
 - *Hamster Paradise 2 (ハムスターパラダイス2)*
 - *Harvest Moon 2 (牧場物語GB2)*
 - *Hello Kitty no Beads Koubou (ハローキティのビーズ工房)*
-- **Hello Kitty no Magical Museum (ハローキティのマジカルミュージアム)**
+- *Hello Kitty no Magical Museum (ハローキティのマジカルミュージアム)*
 - *Hello Kitty Pocket Camera (ハローキティのポケットカメラ, leaked, rom GBDHKAJ0.2)*
 - *Jinsei Game Tomodachi takusan Tsukurou Yo! (人生ゲーム 友達たくさんつくろうよ!)*
 - *Kakurenbo Battle Monster Tactics (モンスタータクティクス)*
