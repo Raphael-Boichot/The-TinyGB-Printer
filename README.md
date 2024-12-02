@@ -25,6 +25,11 @@ Why not starting from another emulator yet made for a Pi Pico ? Because I have t
 - In case you abort a print command in any mode, just use the pushbutton to reset the printer state (it's like feeding paper and remove the failed incomplete print). If the led is yellow during printing, this means that you forgot to reset printer while trying to print again, the current image will be automatically discarded.
 - Cycling the power switch on the battery box or using the RESET button on the board has the same effect (reset printer state and increase folder number).
 
+So the push button has 3 functions depending on the context:
+- At boot, choosing the mode (tear or automatic mode);
+- In tear mode, converting to image file after printing;
+- After an abort, clearing the printer state;
+
 A new folder is created at each boot/RESET. Each image file has a unique ID. Flashes during printing indicate flux of data and access to SD card. Color of flashes indicates the mode (green for automatic mode, blue for tear mode).
 
 **Are you nostalgic of the Arduino version coupled to your good old converter ? Flash it and it will work too, pinout is the same, RP2040 core is natively compatible with it !**
