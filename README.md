@@ -28,7 +28,7 @@ Why not starting from another emulator yet made for a Pi Pico ? Because I have t
 So the push button has 3 functions depending on the context:
 - At boot, choosing the mode (tear or automatic mode);
 - In tear mode, converting to image file after printing;
-- After an abort, clearing the printer state;
+- After an abort (whatever mode), clearing the printer from unfinished printing;
 
 A new folder is created at each boot/RESET. Each image file has a unique ID. Flashes during printing indicate flux of data and access to SD card. Color of flashes indicates the mode (green for automatic mode, blue for tear mode).
 
