@@ -162,7 +162,6 @@ void loop1()  //core 1 loop deals with images, written by Raphaël BOICHOT, nove
     if (BREAK_flag == 1) {  //wrong packet size or too many packets received !
       Serial.println("");   //The emulator does not take the BREAK/abort command but it behaves the same
       Serial.println("Core 1 -> I have received too many packets or a broken packet, suicide mode activated !");
-      WS2812_Color = pixels.Color(intensity, intensity, 0);  //turns LED to yellow until suicide mode is reset
       SD.remove(tmp_storage_file_name);                      //remove any previous failed attempt
       lines_in_image_file = 0;                               //resets the number of lines
       DATA_bytes_counter = 0;                                //reset
@@ -253,7 +252,7 @@ void loop1()  //core 1 loop deals with images, written by Raphaël BOICHOT, nove
   }
 
   //in TEAR mode, a file is never closed unless you push a button
-  if ((TEAR_mode == 1) & (digitalRead(BTN_PUSH)) & (lines_in_image_file > 0) & (BREAK_flag == 0)) {  //in tear mode, a button push only can close file, whatever the printer (non empty) state
+  if ((TEAR_mode == 1) & (digitalRead(BTN_PUSH)) & (lines_in_image_file > 0)) {  //in tear mode, a button push only can close file, whatever the printer (non empty) state
     LED_WS2812_state(WS2812_Color, 1);
     Next_ID++;  //increment file number
     store_next_ID("/tiny.sys", Next_ID, Next_dir);
@@ -277,24 +276,6 @@ void loop1()  //core 1 loop deals with images, written by Raphaël BOICHOT, nove
     lines_in_image_file = 0;           //resets the number of lines
     SD.remove(tmp_storage_file_name);  //a bit aggressive and maybe not optmal but I'm sure the old data disappears
     LED_WS2812_state(WS2812_Color, 0);
-  }
-
-  if (digitalRead(BTN_PUSH) & (BREAK_flag == 1)) {  // in any mode, you can reset the printer state after an abort command
-    BREAK_flag = 0;                                 //reset the BREAK manually
-    Serial.println("Core 1 -> Manual reset from suicide mode, clears printer state");
-    SD.remove(tmp_storage_file_name);  //remove any previous failed attempt
-    lines_in_image_file = 0;           //resets the number of lines
-    DATA_bytes_counter = 0;            //reset
-    DATA_packet_counter = 0;           //reset
-    DATA_packet_to_print = 0;          //reset
-    LED_WS2812_state(WS2812_reset, 1);
-    delay(200);  // rebounce delay and acknowledge signal
-    LED_WS2812_state(WS2812_reset, 0);
-    if (TEAR_mode == 1) {
-      WS2812_Color = pixels.Color(0, 0, intensity);//tear mode
-    } else {
-      WS2812_Color = pixels.Color(0, intensity, 0);//automatic mode
-    }
   }
 }  // loop1()
 /////////////Specific to TinyGB Printer//////////////

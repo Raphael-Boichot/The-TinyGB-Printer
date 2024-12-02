@@ -33,7 +33,6 @@
 Adafruit_NeoPixel pixels(NUMPIXELS, LED_STATUS_PIN, NEO_RGB);
 uint8_t intensity = 30;                                         //WS2812 intensity 255 is a death ray, 10 to 15 is normal
 uint32_t WS2812_Color = pixels.Color(0, intensity, 0);          //RGB triplet, default is green, turns to blue in tear mode
-uint32_t WS2812_reset = pixels.Color(0, intensity, intensity);  //RGB triplet, turn to cyan, manual reset
 uint32_t WS2812_SD_crash = pixels.Color(intensity, 0, 0);       //RGB triplet, turn to red, issue with SD card
 
 unsigned int Next_ID, Next_dir;                           //for directories and filenames
