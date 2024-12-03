@@ -182,8 +182,17 @@ void loop1()  //core 1 loop deals with images, written by Raphaël BOICHOT, nove
     // } else {                                                                                           //we're all good, or near !
       memcpy(printer_memory_buffer_core_1, printer_memory_buffer_core_0, 640 * DATA_packet_to_print);  //this can also be done by core 0
       LED_WS2812_state(WS2812_Color, 1);
-      if (inner_palette == 0x00) {
+      if (inner_palette == 0x00) {//4 games uses this palette
         inner_palette = 0xE4;  //see Game Boy Programming manual, palette 0x00 is a default palette interpreted as 0xE4 or 0b11100100
+        Serial.print("Core 1 -> Palette 0x00, fixed to 0xE4");
+      }
+      if (inner_palette == 0xE1) {//1 game uses this wrong palette
+        inner_palette = 0xD2;  //palette fix for Disney's Tarzan, inverts DG and LG
+        Serial.print("Core 1 -> Palette 0xE1 (Disney's Tarzan), fixed to 0xD2");
+      }
+      if (inner_palette == 0x2D) {//1 game uses this wrong palette
+        inner_palette = 0x1E;  //palette fix for Trade & Battle: Card Hero, inverts DG and LG
+        Serial.print("Core 1 -> Palette 0x2D (Trade & Battle: Card Hero), fixed to 0xE1");
       }
       //0xE4 = 0b11100100 = 3-2-1-0 intensity of colors for printer (3 = black, 0 = white), for Game Boy pixel encoded values 0-1-2-3
       image_palette[0] = bitRead(inner_palette, 0) + 2 * bitRead(inner_palette, 1);
