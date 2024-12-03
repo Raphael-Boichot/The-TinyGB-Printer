@@ -60,7 +60,7 @@ The device draws about 150 mA, so couple of AAA batteries should last on average
 - Last batch of images is incomplete (empty folder or just first images recorded with a multi-print) ? The batteries are completely out of juice, recharge them.
 - Some image are half black/white or have missing lines / glitches when you compile the code by yourself ? See [notes](/TinyGB_Printer/Upscalerlib.h#L1) in the upscaler library, you have to manually modify some variables in PNGenc.
 - Any SD card must work out of the box. If the printer is reluctant to recognize yours (it can happen, rarely), use a [low level formatting tool](https://www.sdcard.org/downloads/formatter/) or low level formatting commands like diskpart on Windows. Filesystem must be FAT32.
-- The image palette is obviously wrong ? Open an issue and I will rapidely find a solution.
+- The image palette is obviously wrong for a particular game ? Open an issue and I will rapidely find a solution.
 
 ## Examples of use
 
