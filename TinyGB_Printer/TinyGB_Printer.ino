@@ -262,7 +262,7 @@ void loop1()  //core 1 loop deals with images, written by Raphaël BOICHOT, nove
           store_next_ID("/tiny.sys", Next_ID, Next_dir);  //store next folder #immediately
         }
         lines_in_image_file = 0;           //resets the number of lines
-        SD.remove(tmp_storage_file_name);  //a bit aggressive and maybe not optmal but I'm sure the old data disappears
+        SD.remove(tmp_storage_file_name);  //a bit aggressive and maybe not optimal but I'm sure the old data disappears
       }
       LED_WS2812_state(WS2812_Color, 0);
     //}
