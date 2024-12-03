@@ -191,6 +191,7 @@ Want to know more about these games ? Want hints and custom saves to unlock all 
 
 ## Documented limitation
 - [Photo!](https://github.com/untoxa/gb-photo) standard printing (normal speed and double speed) is the only mode supported to date. Fast Printing and Transfer modes are only supported by the [Pico GB Printer](https://github.com/untoxa/pico-gb-printer), a very good dedicated printer emulator. It is also compatible with this board with minor code update (basically just change the GPIOs according to the current schematic).
+- After tens of thousands of images stored, the SD card can become sluggish in terms of access time, leading to unexpected protocol crashes for example. It's probably time to move your precious files on a more suitable medium.
 
 ## Dev notes
 - The Pi Pico zero is not able to power the SD card (in writing mode) and keep track of the interrupts with the serial port at the same time, so the separate 3.3V regulator for the SD shied. The 5V step-up converter itself is rather noisy, so extra caps are necessary.
