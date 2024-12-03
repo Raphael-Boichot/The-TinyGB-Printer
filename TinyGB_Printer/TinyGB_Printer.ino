@@ -97,7 +97,8 @@ void serialClock_ISR(void) {
 *******************************************************************************/
 
 void setup(void) {
-
+  Serial.begin(115200);
+  delay(1000); //wait for the serial to be ready
   Tiny_printer_preparation();  //switches in Tiny Printer mode
   pinMode(GBP_SC_PIN, INPUT);
   pinMode(GBP_SO_PIN, INPUT);
@@ -404,8 +405,6 @@ inline void gbp_parse_packet_loop(void) {
 }
 
 void Tiny_printer_preparation() {
-  Serial.begin(2000000);
-  delay(1000);
   if (digitalRead(BTN_PUSH)) {
     WS2812_Color = pixels.Color(0, 0, intensity);  //RGB triplet, turn to blue
     TEAR_mode = 1;                                 //idle mode with tear paper
