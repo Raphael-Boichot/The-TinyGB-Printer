@@ -146,7 +146,6 @@ void loop() {
       Serial.print("B out of ");
       Serial.print(gbp_serial_io_dataBuff_max());
       Serial.println("B)");
-      Serial.flush();
       gbp_pkt_reset(&gbp_pktState);
       tileBuff.count = 0;
       //incomplete packet due to abort command or transmission stopped inbetween DATA packets
@@ -158,6 +157,7 @@ void loop() {
         DATA_packet_counter = 0;           //reset
         DATA_packet_to_print = 0;          //reset
       }
+      Serial.flush();
     }
   }
   last_millis = curr_millis;
@@ -404,7 +404,7 @@ inline void gbp_parse_packet_loop(void) {
 }
 
 void Tiny_printer_preparation() {
-  Serial.begin(115200);
+  Serial.begin(2000000);
   delay(1000);
   if (digitalRead(BTN_PUSH)) {
     WS2812_Color = pixels.Color(0, 0, intensity);  //RGB triplet, turn to blue
