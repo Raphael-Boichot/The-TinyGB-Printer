@@ -200,6 +200,10 @@ Want to know more about these games ? Want hints and custom saves to unlock all 
 - The RP2040 core for Arduino IDE takes both the Pico SDK or the Arduino commands when there is an equivalence. Here this is not rocket science either so Arduino commands are well enough.
 - The inspiration came from the experience of co-developping both the hardware and software of the NeoGB Printer on ESP32: the default PCB is bulky and difficult to assemble (the random pin placement on the ESP32 dev board does not help), the device consumes a ton of current due to wifi support (which is not that reliable), the attempts to port it to a compact LilyGO board were more or less a fail because **ALL** the boards from this brand have majors issues with their charge/discharge circuit (plus they are horribly expensive for what they are: piece of crap), the dev on ESP32 was a real nightmare (you have to juggle between major hardware flaws and very questionable documentation, things that must be working and just don't work, memory management which is a mess, etc.). The Tiny GB Printer may probably be ported easily on the ESP32 zero, but it won't be by me.
 
+## Funfacts
+- Most games do not implement the BREAK command to abort printing but just stop transmission and relies on the very severe timing of the printer which automatically rejects data with dubious dead times.
+- Two games have an erroneous palette with DG and LG inverted (Disney's Tarzan and Trade & Battle: Card Hero). By chance, they both use on purpose a weird palette not shared by any other game that can be easily detected and fixed automatically by the printer emulator. This palette issue is barely visible with an actual printer but very obvious with a printer emulator (4x pixel perfect upscaling does not lie).
+
 ## Kind warning
 The code and current design come as it. If you're not happy with the current hardware, the PCB EasyEDA design or the Arduino IDE, create your own, the licence allows it ! Pull request with tested and working improvements are of course still welcomed. Feel free to design and share a 3D printed case, I won't make one.
 
