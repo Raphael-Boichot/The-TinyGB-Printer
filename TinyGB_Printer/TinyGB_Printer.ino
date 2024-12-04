@@ -393,6 +393,10 @@ inline void gbp_parse_packet_loop(void) {
               if (DATA_bytes_counter % 640 == 0) {  //we count the data packets here (16 bytes*40 tiles)
                 DATA_packet_counter++;
               }
+              if (DATA_bytes_counter >= 9*640) {  //overflow protection, image will be glitched but device continues to run
+                DATA_bytes_counter=0;
+                DATA_packet_counter=0;
+              }
               ///////////////////////specific to the TinyGB Printer////////////////////////
             }
             Serial.flush();
