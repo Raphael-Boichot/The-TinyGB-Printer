@@ -98,7 +98,7 @@ void serialClock_ISR(void) {
 
 void setup(void) {
   Serial.begin(115200);
-  delay(1000); //wait for the serial to be ready
+  delay(1000);                 //wait for the serial to be ready
   Tiny_printer_preparation();  //switches in Tiny Printer mode
   pinMode(GBP_SC_PIN, INPUT);
   pinMode(GBP_SO_PIN, INPUT);
@@ -180,7 +180,7 @@ void loop1()  //core 1 loop deals with images, written by Raphaël BOICHOT, nove
       Serial.println("Core 1 -> Palette 0xE1 (Disney's Tarzan), fixed to 0xD2");
     }
     if (inner_palette == 0x2D) {  //1 game uses this wrong palette
-      inner_palette = 0x1E;       //palette fix for Trade & Battle: Card Hero, inverts DG and LG
+      inner_palette = 0x1E;       //palette fix for Trade & Battle: Card Hero, inverts DG and LG. Text will become hard to read but at least creatures are well depicted
       Serial.println("Core 1 -> Palette 0x2D (Trade & Battle: Card Hero), fixed to 0xE1");
     }
     //0xE4 = 0b11100100 = 3-2-1-0 intensity of colors for printer (3 = black, 0 = white), for Game Boy pixel encoded values 0-1-2-3
@@ -200,6 +200,7 @@ void loop1()  //core 1 loop deals with images, written by Raphaël BOICHOT, nove
     //All the meat to decode the 2bpp Game Boy Tile Format is explained here (among other sources): https://www.huderlem.com/demos/gameboy2bpp.html
     //the image data are a simple one dimensional array because there is no gain to have a 2D array, in particular when burning data to SD card
     //the issue here is to transform a tile-based system (8*8 pixels) to a pixel-based system in lines/columns.
+    //we convert image as a whole, not packet per packet (no need)
     IMAGE_bytes_counter = 0;
     pixel_line = 0;
     offset_x = 0;
@@ -214,7 +215,7 @@ void loop1()  //core 1 loop deals with images, written by Raphaël BOICHOT, nove
           local_byte_MSB = printer_memory_buffer_core_1[IMAGE_bytes_counter + 1];  //here we get data for a line of 8 pixels
           for (int posx = 0; posx < 8; posx++) {
             pixel_level = bitRead(local_byte_LSB, 7 - posx) + 2 * bitRead(local_byte_MSB, 7 - posx);  //here we get pixel value along 8 pixels horizontally
-            PNG_image_color[offset_x + posx] = PNG_compress_4x[image_palette[pixel_level]];           //here we store 4 2bbp pixels per byte for next step (png upscaler)
+            PNG_image_color[offset_x + posx] = PNG_compress_4x[image_palette[pixel_level]];           //here we store 4 2bbp pixels per byte for next step (2bpp indexed png upscaler)
           }                                                                                           //this is a bit aggressive as pixel decoder and PNG compression is within the same line of code, but efficient
           IMAGE_bytes_counter = IMAGE_bytes_counter + 16;                                             //jumps to the next tile in byte
           offset_x = offset_x + 8;                                                                    //jumps to the next tile in pixels
@@ -393,10 +394,10 @@ inline void gbp_parse_packet_loop(void) {
               if (DATA_bytes_counter % 640 == 0) {  //we count the data packets here (16 bytes*40 tiles)
                 DATA_packet_counter++;
               }
-              if (DATA_bytes_counter >= 9*640) {  //overflow protection, image will be glitched but device continues to run
-                DATA_bytes_counter=0;
-                DATA_packet_counter=0;
-              }
+              if (DATA_bytes_counter >= 9 * 640) {  //overflow protection, image will be glitched at worse but device continues to run.
+                DATA_bytes_counter = 0; //buffer loops on itself
+                DATA_packet_counter = 0; //data are sacrified to avoid crash
+              }  // this overflow can happen with fast protocol (multi-print) when SD card is full like an egg. Commands may be missed. Results becomes unpredictable and the Pico crashes
               ///////////////////////specific to the TinyGB Printer////////////////////////
             }
             Serial.flush();
@@ -506,20 +507,3 @@ void store_next_ID(const char* path, unsigned long Next_ID, unsigned long Next_d
   Datafile.write(buf, 4);
   Datafile.close();
 }
-
-/*Dev notes Raphaël BOICHOT 2024/11/28
-  The Game boy Printer emulator runs on core 0 in parse mode with decompression by default, with Printer feature disabled. These mode are still available, I've removed nothing
-  I've tried to modify as little as possible the emulator part in order to allow easy update with the emulator, just in case. The TinyGB printer justs needs small chunks of code on core 0.
-  Surprisingly, the only necessary step to make it compile on the RP2040 Arduino core is... nothing. The while (!Serial) must be commented to make it work without serial
-  Compared to Arduino, the RP2040 "hard resets" the USB port, so any serial based converter will probably have minor connection issues with this version.
-  The Tiny Printer runs on core 1. It assumes an upscaling factor of 4 by default. This allows me to store compressed 2bbp data as soon as the decoder step, very easily with a lookup table.
-  Temporary data are stored on the SD card as image length can be in theory infinite. I only store in ram at maximum 9 packets of 40 tiles (9*16*40 bytes).
-  Packets are written on SD card only when a print command is received because the palette is sent last. This means that storing data on SD card every packet makes no sense.
-  Games uses a 2 bpp palette, 0xE4 in 80% of the case but not always. A palette can be different for each packet of 40 tiles within an image and use less than 4 colors on purpose.
-  I never saw packets with other than 40 tiles (height of the printer head) but it is in theory possible. Images are always 160 pixels width (20 tiles).
-  I initially used a BMP output for images in order to debug but I rapidely switched to indexed PNG. The storage container file on SD card contains preformatted data for the PNG decoder.
-  I use the PNGenc library because it works. It requires some not-that-obvious memory settings and you're basically alone to configure it. It is used in the NeoGB printer too.
-  This library creates micro-stallings on core 0 for unknown reason (it runs on core 1 !), so the need for overclocking the device to support double speed mode in Photo!
-  Best would be to rewrite a custom PNG encoder (like with zero compression to ease the thing) and downclock back the device to 133 MHz, maybe one day.
-  That said, enjoy the device !
-*/
