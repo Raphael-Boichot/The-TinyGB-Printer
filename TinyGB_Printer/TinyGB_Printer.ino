@@ -395,9 +395,9 @@ inline void gbp_parse_packet_loop(void) {
                 DATA_packet_counter++;
               }
               if (DATA_bytes_counter > 9 * 640) {  //overflow protection, image will be glitched at worse but device continues to run.
-                DATA_bytes_counter = 0; //buffer loops on itself
-                DATA_packet_counter = 0; //data are sacrified to avoid crash
-              }  // this overflow can happen with fast protocol (multi-print) when SD card is full like an egg. Commands may be missed. Results becomes unpredictable and the Pico crashes
+                DATA_bytes_counter = 0;            //buffer loops on itself
+                DATA_packet_counter = 0;           //data are sacrified to avoid crash
+              }                                    // this overflow can happen with fast protocol (multi-print) when SD card is full like an egg. Commands may be missed. Results becomes unpredictable and the Pico crashes
               ///////////////////////specific to the TinyGB Printer////////////////////////
             }
             Serial.flush();
