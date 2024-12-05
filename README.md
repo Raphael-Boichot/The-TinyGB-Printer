@@ -1,4 +1,4 @@
-# //////////WIP, do not assemble for the moment, PCB needs validation///////////////
+# //////////WIP, do not order or assemble for the moment, schematic needs validation///////////////
 
 # The TinyGB Printer - A standalone Game Boy Printer emulator
 
