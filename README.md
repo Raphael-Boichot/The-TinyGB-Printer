@@ -55,6 +55,9 @@ All the parts used here are cheap and easy to find on Aliexpress. You probably y
 
 The device draws about 150 mA, so couple of AAA batteries should last on average something like 5 hours of continuous printing and AA more than 20 hours. More than batteries on a modded Game Boy anyway.
 
+**The TinyGB Pribter assembled with a 2xAAA battery box**
+![](/Images/TinyGB_Printer_assembled.jpg)
+
 **Troubleshooting**
 - Last image is not written ? You've probably switched the device off while the led was still on or you forgot to tear paper with the pushbutton in tear mode.
 - Last batch of images is incomplete (empty folder or just first images recorded with a multi-print) ? The batteries are completely out of juice, recharge them.
