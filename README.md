@@ -58,6 +58,8 @@ The device draws about 150 mA, so couple of AAA batteries should last on average
 **The TinyGB Printer assembled with a 2xAAA battery box**
 ![](/Images/TinyGB_Printer_assembled.jpg)
 
+You can of course attach the wires more conveniently or design a fancy 3D prinred shell.
+
 **Troubleshooting**
 - Last image is not written ? You've probably switched the device off while the led was still on or you forgot to tear paper with the pushbutton in tear mode.
 - Last batch of images is incomplete (empty folder or just first images recorded with a multi-print) ? The batteries are completely out of juice, recharge them.
