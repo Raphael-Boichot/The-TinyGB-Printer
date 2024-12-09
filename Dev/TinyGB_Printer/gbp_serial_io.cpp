@@ -48,7 +48,7 @@
 // Feature
 //#define FEATURE_CHECKSUM_SUPPORTED ///< WIP
 
-#define GBP_BUSY_PACKET_COUNT 20  // 68 Inquiry packets is generally approximately how long it takes for a real printer to print. This is not a real printer so can be shorter
+#define GBP_BUSY_PACKET_COUNT 1000  // 68 Inquiry packets is generally approximately how long it takes for a real printer to print. This is not a real printer so can be shorter
 
 
 /******************************************************************************/
@@ -545,11 +545,7 @@ bool gpb_serial_io_OnChange_ISR(const bool GBP_SCLK, const bool GBP_SOUT)
             break;
           case GBP_COMMAND_INQUIRY:
             if (gpb_pktIO.untransPacketCountdown > 0) {
-              /////////////Specific to TinyGB Printer//////////////
-              if (!digitalRead(PRINTER_BUSY)) {// cheap flux control but the only way I've found to do it reliably
                 gpb_pktIO.untransPacketCountdown--;
-              }//this is a dirty trick but at least it works
-              /////////////Specific to TinyGB Printer//////////////
               if (gpb_pktIO.untransPacketCountdown == 0) {
                 gpb_status_bit_update_unprocessed_data(gpb_pktIO.statusBuffer, false);
                 if (gpb_pktIO.busyPacketCountdown > 0) {
@@ -559,7 +555,9 @@ bool gpb_serial_io_OnChange_ISR(const bool GBP_SCLK, const bool GBP_SOUT)
               }
             } else if (gpb_pktIO.busyPacketCountdown > 0) {
               gpb_pktIO.busyPacketCountdown--;
-              if (gpb_pktIO.busyPacketCountdown == 0) {
+              /////////////Specific to TinyGB Printer//////////////
+              if ((gpb_pktIO.busyPacketCountdown == 0)||(!digitalRead(PRINTER_BUSY))) {//max timer or max packet reached
+              /////////////Specific to TinyGB Printer//////////////
                 gpb_status_bit_update_printer_busy(gpb_pktIO.statusBuffer, false);
               }
             }

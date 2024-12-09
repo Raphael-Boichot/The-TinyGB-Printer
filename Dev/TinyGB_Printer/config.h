@@ -66,6 +66,7 @@ unsigned int max_pixel_line = 0;                                                
 unsigned int max_files_per_folder = 1024;                                                                        //FAT32 limits the number of entries, so better be carefull
 unsigned long lines_in_image_file = 0;                                                                           //to keep tack of image file length
 unsigned long myTime;                                                                                            //timer for PNG encoder
+unsigned long BUSYtime=0;                                                                                          //timer for flux control
 unsigned long FILE_number = 0;                                                                                   //counter of file per session
 bool SDcard_READY = 0;                                                                                           //self explanatory
 bool PRINT_flag = 0;                                                                                             //self explanatory

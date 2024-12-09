@@ -168,8 +168,15 @@ void loop() {
 /////////////Specific to TinyGB Printer//////////////
 void loop1()  //core 1 loop deals with images, written by Raphaël BOICHOT, november 2024
 {
+
+if ((millis() - BUSYtime)>100){
+  digitalWrite(PRINTER_BUSY, LOW);  
+}
+
   if (PRINT_flag == 1) {
-    PRINT_flag = 0;
+    PRINT_flag = 0;    
+    digitalWrite(PRINTER_BUSY, HIGH); 
+    BUSYtime=millis();//launches a timer for flux control
     memcpy(printer_memory_buffer_core_1, printer_memory_buffer_core_0, 640 * DATA_packet_to_print);  //this can also be done by core 0
     LED_WS2812_state(WS2812_Color, 1);
     if (inner_palette == 0x00) {  //4 games uses this palette
@@ -242,9 +249,7 @@ void loop1()  //core 1 loop deals with images, written by Raphaël BOICHOT, nove
       Serial.print(lines_in_image_file, DEC);
       Serial.println(" lines in image file");
       myTime = millis();
-      digitalWrite(PRINTER_BUSY, HIGH);  //freezes the gpb_pktIO.untransPacketCountdown, see gbp_serial_io.cpp
       png_upscaler(tmp_storage_file_name, png_storage_file_name, PNG_palette_RGB, lines_in_image_file);
-      digitalWrite(PRINTER_BUSY, LOW);
       Serial.print("Core 1 -> PNG file closed, encoding time (ms): ");
       Serial.println(millis() - myTime, DEC);
       FILE_number = FILE_number + 1;
@@ -272,9 +277,7 @@ void loop1()  //core 1 loop deals with images, written by Raphaël BOICHOT, nove
     Serial.print(lines_in_image_file, DEC);
     Serial.println(" lines in image file");
     myTime = millis();
-    digitalWrite(PRINTER_BUSY, HIGH);  //freezes the gpb_pktIO.untransPacketCountdown, see gbp_serial_io.cpp
     png_upscaler(tmp_storage_file_name, png_storage_file_name, PNG_palette_RGB, lines_in_image_file);
-    digitalWrite(PRINTER_BUSY, LOW);
     Serial.print("Core 1 -> PNG file closed, encoding time (ms): ");
     Serial.println(millis() - myTime, DEC);
     FILE_number = FILE_number + 1;
