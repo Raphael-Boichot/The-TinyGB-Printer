@@ -35,6 +35,7 @@
 #include "gbp_cbuff.h"
 /////////////Specific to TinyGB Printer//////////////
 #include "Arduino.h" //to access digital stuff
+#define PRINTER_BUSY 29  // Trick to force the printer busy state from anywhere in the code because this is the only way I've found
 /////////////Specific to TinyGB Printer//////////////
 /******************************************************************************/
 
@@ -545,7 +546,7 @@ bool gpb_serial_io_OnChange_ISR(const bool GBP_SCLK, const bool GBP_SOUT)
           case GBP_COMMAND_INQUIRY:
             if (gpb_pktIO.untransPacketCountdown > 0) {
               /////////////Specific to TinyGB Printer//////////////
-              if (!digitalRead(29)) {// cheap flux control but the only way I've found to do it reliably
+              if (!digitalRead(PRINTER_BUSY)) {// cheap flux control but the only way I've found to do it reliably
                 gpb_pktIO.untransPacketCountdown--;
               }//this is a dirty trick but at least it works
               /////////////Specific to TinyGB Printer//////////////
