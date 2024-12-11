@@ -211,6 +211,7 @@ Want to know more about these games ? Want hints and custom saves to unlock all 
 ## Funfacts
 - Most games do not implement the BREAK command to abort printing but just stop transmission and relies on the very severe timing of the printer which automatically rejects data with dubious dead times. The TinyGB printer detects both BREAK command and dubious packets to reject print.
 - Two games have an erroneous palette with DG and LG inverted (Disney's Tarzan and Trade & Battle: Card Hero). By chance, they both use on purpose a weird palette not shared by any other game that can be easily detected and fixed automatically by the printer emulator. This palette issue is barely visible with an actual printer but very obvious with a printer emulator (4x pixel perfect upscaling does not lie).
+- You can still upload the original Arduino Game Boy printer emulator and it will natively work on this board with all its functions ! You will just loose the external LED support as the original project does not handle the internal RGB LED from the Pi Zero.
 
 ## Kind warning
 The code and current design come as it. If you're not happy with the current hardware, the PCB EasyEDA design or the Arduino IDE, create your own, the licence allows it ! Pull request with tested and working improvements are of course still welcomed. Feel free to design and share a 3D printed case, I won't make one.
