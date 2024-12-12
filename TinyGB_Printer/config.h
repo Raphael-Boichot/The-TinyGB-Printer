@@ -13,12 +13,11 @@
 //   ** CS            - pin  9 or 13
 //   ** SCK           - pin 10 or 14
 
-#define SD_MISO 8      // SD card SPI1
-#define SD_CS 9        // SD card SPI1
-#define SD_SCK 10      // SD card SPI1
-#define SD_MOSI 11     // SD card SPI1
-#define BTN_PUSH 12    // Define a PushButton to use to Force a new file in idle mode ///BOICHOT
-#define FOLDER_UNLOCK  // new folder per session or not
+#define SD_MISO 8    // SD card SPI1
+#define SD_CS 9      // SD card SPI1
+#define SD_SCK 10    // SD card SPI1
+#define SD_MOSI 11   // SD card SPI1
+#define BTN_PUSH 12  // Define a PushButton to use to Force a new file in idle mode ///BOICHOT
 
 /* Gameboy Link Cable Mapping to Arduino Pin */
 // Note: Serial Clock Pin must be attached to an interrupt pin of the arduino
@@ -32,10 +31,10 @@
 #define LED_STATUS_PIN 16  // Internal LED blink on packet reception
 #define NUMPIXELS 1        // NeoPixel ring size (just internal LED here)
 Adafruit_NeoPixel pixels(NUMPIXELS, LED_STATUS_PIN, NEO_RGB);
-uint8_t intensity = 30;                                    //WS2812 intensity 255 is a death ray, 10 to 15 is normal
+uint8_t intensity = 60;                                    //WS2812 intensity 255 is a death ray, 10 to 15 is normal
 uint32_t WS2812_Color = pixels.Color(0, intensity, 0);     //RGB triplet, default is green, turns to blue in tear mode
 uint32_t WS2812_SD_crash = pixels.Color(intensity, 0, 0);  //RGB triplet, turn to red, issue with SD card
-uint32_t WS2812_Idle = pixels.Color(0, 5, 5);              //RGB triplet, turn to cyan, device idle
+uint32_t WS2812_Idle = pixels.Color(1, 1, 1);              //RGB triplet, turn to cyan, device idle
 
 unsigned int Next_ID, Next_dir;                           //for directories and filenames
 unsigned char printer_memory_buffer_core_0[9 * 640 + 1];  //Game Boy printer buffer of 9*640 bytes (maximum possible + margin in case of buffer overflow), core 0
@@ -74,3 +73,4 @@ bool SDcard_READY = 0;                                     //self explanatory
 bool PRINT_flag = 0;                                       //self explanatory
 bool TEAR_mode = 0;                                        //self explanatory
 bool skip_byte_on_display = 1;                             //renders the serial less verbose
+bool BITBOY_mode = 0;                                      //mimicks the folder strategy of the BitBoy (100 files per folder)
