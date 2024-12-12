@@ -104,6 +104,7 @@ void setup(void) {
   pinMode(GBP_SO_PIN, INPUT);
   pinMode(GBP_SI_PIN, OUTPUT);
   digitalWrite(GBP_SI_PIN, LOW);
+  LED_WS2812_state(WS2812_Idle, 1);
 
   /* Setup */
   gpb_serial_io_init(sizeof(gbp_serialIO_raw_buffer), gbp_serialIO_raw_buffer);
@@ -159,6 +160,7 @@ void loop() {
         DATA_packet_to_print = 0;          //reset
       }
       Serial.flush();
+      LED_WS2812_state(WS2812_Idle, 1);
     }
   }
   last_millis = curr_millis;
