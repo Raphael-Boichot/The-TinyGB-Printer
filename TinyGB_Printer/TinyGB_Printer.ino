@@ -160,7 +160,6 @@ void loop() {
         DATA_packet_to_print = 0;          //reset
       }
       Serial.flush();
-      LED_WS2812_state(WS2812_Idle, 1);
     }
   }
   last_millis = curr_millis;
@@ -265,7 +264,7 @@ void loop1()  //core 1 loop deals with images, written by Raphaël BOICHOT, nove
       lines_in_image_file = 0;           //resets the number of lines
       SD.remove(tmp_storage_file_name);  //a bit aggressive and maybe not optimal but I'm sure the old data disappears
     }
-    LED_WS2812_state(WS2812_Color, 0);
+    LED_WS2812_state(WS2812_Idle, 1);
   }
 
   //in TEAR mode, a file is never closed unless you push a button
@@ -287,21 +286,21 @@ void loop1()  //core 1 loop deals with images, written by Raphaël BOICHOT, nove
     Serial.print("Core 1 -> Number of file for this session: ");
     Serial.println(FILE_number, DEC);
 
-      if (BITBOY_mode == 0) {
-        if (FILE_number % max_files_per_folder == 0) {
-          Next_dir++;
-          store_next_ID("/tiny.sys", Next_ID, Next_dir);  //store next folder #immediately
-        }
-      } else {
-        if ((Next_ID % 100) == 0) {
-          Next_dir++;
-          store_next_ID("/tiny.sys", Next_ID, Next_dir);  //store next folder #immediately
-        }
+    if (BITBOY_mode == 0) {
+      if (FILE_number % max_files_per_folder == 0) {
+        Next_dir++;
+        store_next_ID("/tiny.sys", Next_ID, Next_dir);  //store next folder #immediately
       }
-      
+    } else {
+      if ((Next_ID % 100) == 0) {
+        Next_dir++;
+        store_next_ID("/tiny.sys", Next_ID, Next_dir);  //store next folder #immediately
+      }
+    }
+
     lines_in_image_file = 0;           //resets the number of lines
     SD.remove(tmp_storage_file_name);  //a bit aggressive and maybe not optmal but I'm sure the old data disappears
-    LED_WS2812_state(WS2812_Color, 0);
+    LED_WS2812_state(WS2812_Idle, 1);
   }
 }  // loop1()
 /////////////Specific to TinyGB Printer//////////////
