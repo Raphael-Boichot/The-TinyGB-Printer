@@ -445,7 +445,9 @@ void Tiny_printer_preparation() {
   ID_file_creator("/tiny.sys");          //create a file on SD card that stores a unique file ID from 1 to 2^32 - 1 (in fact 1 to 99999)
   Next_ID = get_next_ID("/tiny.sys");    //get the file number on SD card
   Next_dir = get_next_dir("/tiny.sys");  //get the folder/session number on SD card
-  Next_dir++;
+#ifdef FOLDER_UNLOCK
+  Next_dir++;  //new folder per session or not, if not, max_files_per_folder is taken
+#endif
   sprintf(tmp_storage_file_name, "/buffer.tmp");
   SD.remove(tmp_storage_file_name);               //remove any previous failed attempt
   store_next_ID("/tiny.sys", Next_ID, Next_dir);  //store next folder #immediately

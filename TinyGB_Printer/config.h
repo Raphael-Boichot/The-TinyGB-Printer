@@ -13,11 +13,12 @@
 //   ** CS            - pin  9 or 13
 //   ** SCK           - pin 10 or 14
 
-#define SD_MISO 8    // SD card SPI1
-#define SD_CS 9      // SD card SPI1
-#define SD_SCK 10    // SD card SPI1
-#define SD_MOSI 11   // SD card SPI1
-#define BTN_PUSH 12  // Define a PushButton to use to Force a new file in idle mode ///BOICHOT
+#define SD_MISO 8      // SD card SPI1
+#define SD_CS 9        // SD card SPI1
+#define SD_SCK 10      // SD card SPI1
+#define SD_MOSI 11     // SD card SPI1
+#define BTN_PUSH 12    // Define a PushButton to use to Force a new file in idle mode ///BOICHOT
+#define FOLDER_UNLOCK  // new folder per session or not
 
 /* Gameboy Link Cable Mapping to Arduino Pin */
 // Note: Serial Clock Pin must be attached to an interrupt pin of the arduino
@@ -34,7 +35,7 @@ Adafruit_NeoPixel pixels(NUMPIXELS, LED_STATUS_PIN, NEO_RGB);
 uint8_t intensity = 30;                                    //WS2812 intensity 255 is a death ray, 10 to 15 is normal
 uint32_t WS2812_Color = pixels.Color(0, intensity, 0);     //RGB triplet, default is green, turns to blue in tear mode
 uint32_t WS2812_SD_crash = pixels.Color(intensity, 0, 0);  //RGB triplet, turn to red, issue with SD card
-uint32_t WS2812_Idle= pixels.Color(0, 5, 5);               //RGB triplet, turn to cyan, device idle
+uint32_t WS2812_Idle = pixels.Color(0, 5, 5);              //RGB triplet, turn to cyan, device idle
 
 unsigned int Next_ID, Next_dir;                           //for directories and filenames
 unsigned char printer_memory_buffer_core_0[9 * 640 + 1];  //Game Boy printer buffer of 9*640 bytes (maximum possible + margin in case of buffer overflow), core 0
@@ -49,24 +50,27 @@ unsigned char PNG_compress_4x[4] = { 0b00000000, 0b01010101, 0b10101010, 0b11111
 //unsigned char PNG_palette_RGB[12] = { 123, 129, 16, 89, 121, 66, 73, 90, 40, 46, 69, 54 };//DMG palette
 //unsigned char PNG_palette_RGB[12] = { 197, 202, 165, 140, 146, 107, 105, 108, 90, 24, 24, 24 };//GBpocket palette
 //unsigned char PNG_palette_RGB[12] = { 255, 255, 255, 127, 253, 55, 0, 100, 198, 0, 0, 0 };//GBcolor palette
-unsigned char PNG_palette_RGB[12] = { 0xFF, 0xFF, 0xFF, 0xAA, 0xAA, 0xAA, 0x55, 0x55, 0x55, 0x00, 0x00, 0x00 };  //RGB colors as they will appear in the PNG file
-unsigned char image_palette[4];                                                                                  //2 bpp local color palette sent by the Game Boy
-unsigned char DATA_packet_counter = 0;                                                                           //counter for packets transmitted
-unsigned char DATA_packet_to_print = 0;                                                                          //counter for packets transmitted for core 1
-unsigned char local_byte_LSB = 0;                                                                                //storage byte for conversion
-unsigned char local_byte_MSB = 0;                                                                                //storage byte for conversion
-unsigned char pixel_level = 0;                                                                                   //storage byte for conversion
-unsigned int DATA_bytes_counter = 0;                                                                             //counter for data bytes
-unsigned int IMAGE_bytes_counter = 0;                                                                            //counter for data bytes
-unsigned int tile_column, tile_line, pixel_line = 0;                                                             //storage variables for conversion
-unsigned int offset_x = 0;                                                                                       //local variable for decoder
-unsigned int max_tile_line = 0;                                                                                  //local variable for decoder
-unsigned int max_pixel_line = 0;                                                                                 //local variable for decoder
-unsigned int max_files_per_folder = 1024;                                                                        //FAT32 limits the number of entries, so better be carefull
-unsigned long lines_in_image_file = 0;                                                                           //to keep tack of image file length
-unsigned long myTime;                                                                                            //timer for PNG encoder
-unsigned long FILE_number = 0;                                                                                   //counter of file per session
-bool SDcard_READY = 0;                                                                                           //self explanatory
-bool PRINT_flag = 0;                                                                                             //self explanatory
-bool TEAR_mode = 0;                                                                                              //self explanatory
-bool skip_byte_on_display = 1;                                                                                   //renders the serial less verbose
+unsigned char PNG_palette_RGB[12] = { 0xFF, 0xFF, 0xFF,
+                                      0xAA, 0xAA, 0xAA,
+                                      0x55, 0x55, 0x55,
+                                      0x00, 0x00, 0x00 };  //RGB colors as they will appear in the PNG file
+unsigned char image_palette[4];                            //2 bpp local color palette sent by the Game Boy
+unsigned char DATA_packet_counter = 0;                     //counter for packets transmitted
+unsigned char DATA_packet_to_print = 0;                    //counter for packets transmitted for core 1
+unsigned char local_byte_LSB = 0;                          //storage byte for conversion
+unsigned char local_byte_MSB = 0;                          //storage byte for conversion
+unsigned char pixel_level = 0;                             //storage byte for conversion
+unsigned int DATA_bytes_counter = 0;                       //counter for data bytes
+unsigned int IMAGE_bytes_counter = 0;                      //counter for data bytes
+unsigned int tile_column, tile_line, pixel_line = 0;       //storage variables for conversion
+unsigned int offset_x = 0;                                 //local variable for decoder
+unsigned int max_tile_line = 0;                            //local variable for decoder
+unsigned int max_pixel_line = 0;                           //local variable for decoder
+unsigned int max_files_per_folder = 1024;                  //FAT32 limits the number of entries, so better be carefull
+unsigned long lines_in_image_file = 0;                     //to keep tack of image file length
+unsigned long myTime;                                      //timer for PNG encoder
+unsigned long FILE_number = 0;                             //counter of file per session
+bool SDcard_READY = 0;                                     //self explanatory
+bool PRINT_flag = 0;                                       //self explanatory
+bool TEAR_mode = 0;                                        //self explanatory
+bool skip_byte_on_display = 1;                             //renders the serial less verbose
