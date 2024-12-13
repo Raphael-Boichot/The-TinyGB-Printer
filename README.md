@@ -24,7 +24,7 @@ Why not starting from another emulator yet made for a Pi Pico ? Because I have t
 - :red_circle: Power the device and the LED blinks red on and off in cycle: SD card not connected or not formatted in FAT32. SD card can be inserted during this step, the device will then boot normally.
 - :repeat: Cycling the power switch on the battery box or using the RESET button on the board has the same effect (reset printer state and increase folder number).
 
-A new folder is created at each boot/RESET. Each image file has a unique ID. Flashes during printing indicate flux of data and access to SD card. Color of flashes indicates the mode (green for automatic mode, blue for tear mode). White dim LED indicates that the device is idle and ready to receive data (and that you forgot to swith it off eventually).
+A new folder is created at each boot/RESET. Each image file has a unique ID. Flashes during printing indicate flux of data and access to SD card. Color of flashes indicates the mode (green for automatic mode, blue for tear mode). White dim LED indicates that the device is idle and ready to receive data (and that you forgot to switch it off after printing).
 
 ## Easy to fabricate
 All the parts used here are cheap and easy to find on Aliexpress. You probably yet have some leftovers from other projects. The total price is probably well below 15€ per piece, shipping of parts included, and you will have extra parts to gift some to your nerdy friends.
