@@ -1,32 +1,44 @@
-Get-ChildItem -Path $driveLetter -Recurse | ForEach-Object {
-    $filePath = $_.FullName
-    Write-Host "Processing file: $filePath"  # Log the file being processed
+# PowerShell Script to Update File Timestamps to Current System Time
+# Script should be placed at the root of the SD card
 
-    $attempts = 0
-    $success = $false
+# Get the current system time
+$currentDateTime = Get-Date
 
-    while ($attempts -lt $maxRetries -and -not $success) {
+# Automatically get the drive letter of the script's location
+$scriptPath = $MyInvocation.MyCommand.Path
+$driveLetter = [System.IO.Path]::GetPathRoot($scriptPath)
+
+# Ensure we detected the drive letter
+if ($driveLetter) {
+    Write-Host "Detected SD card at drive letter: $driveLetter"
+    
+    # Function to update file timestamps
+    function Update-FileTimestamps {
+        param (
+            [string]$filePath
+        )
+
+        # Set the file timestamps to current system time
         try {
-            # Remove the "ReadOnly" attribute if it is set
-            if ($_.Attributes -band [System.IO.FileAttributes]::ReadOnly) {
-                Write-Host "Removing Read-Only attribute from: $filePath"
-                $_.Attributes = $_.Attributes -band -[System.IO.FileAttributes]::ReadOnly
-            }
-
-            # Set the date/time properties for each file/folder
-            Set-ItemProperty -Path $filePath -Name CreationTime -Value $currentDateTime
-            Set-ItemProperty -Path $filePath -Name LastAccessTime -Value $currentDateTime
-            Set-ItemProperty -Path $filePath -Name LastWriteTime -Value $currentDateTime
-            $success = $true # If successful, break the loop
+            Write-Host "Updating timestamps for: $filePath"
+            Set-ItemProperty -Path $filePath -Name "CreationTime" -Value $currentDateTime
+            Set-ItemProperty -Path $filePath -Name "LastAccessTime" -Value $currentDateTime
+            Set-ItemProperty -Path $filePath -Name "LastWriteTime" -Value $currentDateTime
         } catch {
-            # If an error occurs, log it and retry
-            Write-Host "Error accessing file: $filePath. Retrying..."
-            $attempts++
-            Start-Sleep -Seconds $retryDelay
+            Write-Host "Failed to update timestamps for $filePath. Error: $_"
         }
     }
 
-    if (-not $success) {
-        Write-Host "Failed to update timestamps for file: $filePath after $maxRetries attempts."
+    # Recursively get all files in the root folder and subfolders
+    $rootFolder = "$driveLetter"  # This is where the script is located (the SD card root)
+    $files = Get-ChildItem -Path $rootFolder -Recurse -File
+
+    # Update timestamps for each file
+    foreach ($file in $files) {
+        Update-FileTimestamps -filePath $file.FullName
     }
+
+    Write-Host "Timestamps update complete."
+} else {
+    Write-Host "Unable to detect the drive letter. Ensure this script is placed at the root of the SD card."
 }
