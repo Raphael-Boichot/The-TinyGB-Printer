@@ -1,5 +1,4 @@
-## Some Powershell script
+## 3D printed enclosure by [Björn Heirman](https://github.com/BjornB2)
 
-Script to be placed at the root of the SD card and ran to automatically set date / time of the system recursively (made whith ChatGPT). Just right-click then "Run with Powershell".
-
-Do not hesitate to submit your own scripts !
+![](/3D_printed_enclosure/Enclosure.jpg)
+(image credit: Björn Heirman)
