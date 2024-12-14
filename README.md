@@ -217,6 +217,7 @@ Want to know more about these games ? Want hints and custom saves to unlock all 
 The code and current design come as it. If you're not happy with the current hardware, the PCB EasyEDA design or the Arduino IDE, create your own, the licence allows it ! Pull request with tested and working improvements are of course still welcomed. Feel free to design and share a 3D printed case, I won't make one.
 
 ## Aknowledgements
+- [Björn Heirman](https://github.com/BjornB2) for the 3D printed enclosure and feedbacks on the device ergonomy.
 - [Rafael Zenaro](https://github.com/zenaro147) for the idea and because I uses chunks of code from the [NeoGB Printer project](https://github.com/zenaro147/NeoGB-Printer). This project is basically a demake and a way to get rid of the embarassing ESP32 platform.
 - [Brian Khuu](https://github.com/mofosyne) for the emulator code I have butchered until it accepted to talk to my janky core 1 loop.
 - [Toxa](https://github.com/untoxa) for refreshing my mind about some PNG format subtilities that greatly improved PNGenc integration into the project.
