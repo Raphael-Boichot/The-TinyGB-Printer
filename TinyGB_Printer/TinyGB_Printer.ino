@@ -158,6 +158,7 @@ void loop() {
         DATA_bytes_counter = 0;            //reset
         DATA_packet_counter = 0;           //reset
         DATA_packet_to_print = 0;          //reset
+        LED_WS2812_state(WS2812_Idle, 1);
       }
       Serial.flush();
     }
@@ -384,6 +385,7 @@ inline void gbp_parse_packet_loop(void) {
           DATA_bytes_counter = 0;            //reset
           DATA_packet_counter = 0;           //reset
           DATA_packet_to_print = 0;          //reset
+          LED_WS2812_state(WS2812_Idle, 1);
         }
 
         Serial.flush();
