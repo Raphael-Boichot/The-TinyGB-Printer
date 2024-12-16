@@ -232,7 +232,8 @@ void loop1()  //core 1 loop deals with images, written by Raphaël BOICHOT, nove
       }                                                                                               //This part fills 8 lines of pixels
     }                                                                                                 //this part fills the entire image
 
-    img.fillSprite(TFT_BLACK);  //prepare the "video ram" (big sprite)
+    img.pushSprite(x_ori, -48);  //dump image to display
+    img.fillSprite(TFT_WHITE);  //prepare the "video ram" (big sprite)
     for (unsigned char x = 0; x < 160; x++) {
       for (unsigned char y = 0; y < max_pixel_line; y++) {
         pixel_TFT_RGB565 = lookup_TFT_RGB565[0xFF - PNG_image_color[x + y * 160]];
@@ -445,6 +446,16 @@ inline void gbp_parse_packet_loop(void) {
 }
 
 void Tiny_printer_preparation() {
+
+  //Set up the display
+  tft.init();
+  tft.setRotation(0);
+  tft.fillScreen(TFT_BLACK);
+  img.setColorDepth(BITS_PER_PIXEL);  // Set colour depth first
+  img.createSprite(160, 144);      // then create the giant sprite that will be our video ram buffer
+  img.fillSprite(TFT_WHITE);
+  img.pushSprite(x_ori, -48);
+  img.pushSprite(x_ori, y_ori);
   if (digitalRead(BTN_PUSH)) {
     WS2812_Color = pixels.Color(0, 0, intensity);  //RGB triplet, turn to blue
     TEAR_mode = 1;                                 //idle mode with tear paper
@@ -453,13 +464,6 @@ void Tiny_printer_preparation() {
     TEAR_mode = 0;
     Serial.println("// Margin mode, images will be closed automatically");
   }
-
-  //Set up the display
-  tft.init();
-  tft.setRotation(0);
-  tft.fillScreen(TFT_BLACK);
-  img.setColorDepth(BITS_PER_PIXEL);  // Set colour depth first
-  img.createSprite(240, 240);         // then create the giant sprite that will be our video ram buffer
 
   // Ensure the SPI pinout the SD card is connected to / is configured properly
   SPI1.setRX(SD_MISO);  //see config.h to see SPI groups
@@ -472,8 +476,10 @@ void Tiny_printer_preparation() {
     SDcard_READY = 0;
     Serial.println("// SD card not detected, images will not be stored. SD card can still be inserted now");
     while (!SD.begin(SD_CS, SPI1)) {
+      tft.fillScreen(TFT_RED);
       LED_WS2812_state(WS2812_SD_crash, 1);
       delay(1000);
+      tft.fillScreen(TFT_BLACK);
       LED_WS2812_state(WS2812_SD_crash, 0);
     }
   }

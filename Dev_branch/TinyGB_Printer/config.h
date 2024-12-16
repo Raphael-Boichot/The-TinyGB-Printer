@@ -38,7 +38,7 @@ uint32_t WS2812_Idle = pixels.Color(1, 1, 1);              //RGB triplet, turn t
 
 //Offset for the 240*240 ST7789 display
 #define x_ori 40
-#define y_ori 48
+#define y_ori 96
 #define BITS_PER_PIXEL 16
 unsigned short int pixel_TFT_RGB565;
 //grayscale 8 bits table
