@@ -480,10 +480,10 @@ void Tiny_printer_preparation() {
     Serial.println("// Margin mode, images will be closed automatically");
   }
 
-  img.createSprite(160, 240);         // then create the giant sprite that will be an image of our video ram buffer
-  img.fillSprite(TFT_WHITE);          //the sprite is a whole "paper strip" covering the screen
-  img.pushSprite(x_ori, 0);           //the Bodmer TFT uses DMA so nothing is faster than this library
-  memset(TFT_memory_buffer, 255, sizeof(TFT_memory_buffer)); //prepare image buffer
+  img.createSprite(160, 240);                                 // then create the giant sprite that will be an image of our video ram buffer
+  img.fillSprite(TFT_WHITE);                                  //the sprite is a whole "paper strip" covering the screen
+  img.pushSprite(x_ori, 0);                                   //the Bodmer TFT uses DMA so nothing is faster than this library
+  memset(TFT_memory_buffer, 255, sizeof(TFT_memory_buffer));  //prepare image buffer
 
   // Ensure the SPI pinout the SD card is connected to / is configured properly
   SPI1.setRX(SD_MISO);  //see config.h to see SPI groups
@@ -518,6 +518,17 @@ void Tiny_printer_preparation() {
   sprintf(tmp_storage_file_name, "/buffer.tmp");
   SD.remove(tmp_storage_file_name);               //remove any previous failed attempt
   store_next_ID("/tiny.sys", Next_ID, Next_dir);  //store next folder #immediately
+
+  //now time for an easter egg
+  if (digitalRead(BTN_PUSH)) {
+    for (int i = 0; i < 40 * 16; i++) {  // inject a dummy data
+      printer_memory_buffer_core_0[i] = dummy_packet[i];
+    }
+    DATA_packet_to_print = 1;
+    inner_palette = 0x00;
+    inner_lower_margin = 0x01;
+    PRINT_flag = 1;
+  }
 }
 
 void LED_WS2812_state(uint32_t WS2812_Color, bool state) {
