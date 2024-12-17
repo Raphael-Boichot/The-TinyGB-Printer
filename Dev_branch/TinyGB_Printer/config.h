@@ -38,9 +38,7 @@ uint32_t WS2812_Idle = pixels.Color(1, 1, 1);              //RGB triplet, turn t
 
 //Offset for the 240*240 ST7789 display
 #define x_ori 40
-#define y_ori 96
 #define BITS_PER_PIXEL 16
-unsigned short int pixel_TFT_RGB565;
 //grayscale 8 bits table
 unsigned short int lookup_TFT_RGB565[256] = { 0x0000, 0x0000, 0x0000, 0x0000, 0x0020, 0x0020, 0x0020, 0x0020, 0x0841, 0x0841, 0x0841, 0x0841, 0x0861, 0x0861, 0x0861, 0x0861,
                                               0x1082, 0x1082, 0x1082, 0x1082, 0x10A2, 0x10A2, 0x10A2, 0x10A2, 0x18C3, 0x18C3, 0x18C3, 0x18C3, 0x18E3, 0x18E3, 0x18E3, 0x18E3,
@@ -62,6 +60,7 @@ unsigned short int lookup_TFT_RGB565[256] = { 0x0000, 0x0000, 0x0000, 0x0000, 0x
 unsigned int Next_ID, Next_dir;                           //for directories and filenames
 unsigned char printer_memory_buffer_core_0[9 * 640 + 1];  //Game Boy printer buffer of 9*640 bytes (maximum possible + margin in case of buffer overflow), core 0
 unsigned char printer_memory_buffer_core_1[9 * 640 + 1];  //Game Boy printer buffer of 9*640 bytes (maximum possible + margin in case of buffer overflow), core 1
+unsigned char TFT_memory_buffer[240 * 160];               //TFT buffer, a whole display vertical strip
 unsigned char PNG_image_color[144 * 160];                 //"color" RGB 2bbp data, cannot be more than a full Game Boy screen at once
 char png_storage_file_name[64];                           //character string to store images
 char tmp_storage_file_name[64];                           //character string to store images
@@ -88,6 +87,8 @@ unsigned int tile_column, tile_line, pixel_line = 0;       //storage variables f
 unsigned int offset_x = 0;                                 //local variable for decoder
 unsigned int max_tile_line = 0;                            //local variable for decoder
 unsigned int max_pixel_line = 0;                           //local variable for decoder
+unsigned int Tft_offset = 0 ;                              //offset for TFT display when filling buffer
+unsigned int Tft_margin = 16;                              //default margin between image for TFT display in automatic mode
 unsigned int max_files_per_folder = 1024;                  //FAT32 limits the number of entries, so better be carefull
 unsigned long lines_in_image_file = 0;                     //to keep tack of image file length
 unsigned long myTime;                                      //timer for PNG encoder
