@@ -238,10 +238,6 @@ void loop1()  //core 1 loop deals with images, written by Raphaël BOICHOT, nove
       }                                                                                               //This part fills 8 lines of pixels
     }                                                                                                 //this part fills the entire image
 
-    if ((inner_lower_margin > 0) && (TEAR_mode == 0)) {
-      max_pixel_line = max_pixel_line + Tft_margin;  //is is just for easthetic
-    }
-
     //the TFT diplay can hold 15 data packets simultaneously
     //Step 1: copy previous data with a vertical upper translation corresponding to future printing area
     for (int x = 0; x < 160; x++) {
@@ -251,8 +247,8 @@ void loop1()  //core 1 loop deals with images, written by Raphaël BOICHOT, nove
     }
     //Step 2: print the new image data after the previous ones at the bottom of display area
     for (int x = 0; x < 160; x++) {
-      for (int y = 0; y < max_pixel_line; y++) {
-        TFT_memory_buffer[x + (240 - max_pixel_line + y) * 160] = 0xFF - PNG_image_color[x + y * 160];  //color are inverter compared to the PNG format
+      for (int y = 0; y < (max_pixel_line); y++) {
+        TFT_memory_buffer[x + (240 - (max_pixel_line) + y) * 160] = 0xFF - PNG_image_color[x + y * 160];  //color are inverter compared to the PNG format
       }
     }
     //converts tft buffer into a giant sprite covering a whole strip
@@ -338,8 +334,6 @@ void loop1()  //core 1 loop deals with images, written by Raphaël BOICHOT, nove
     lines_in_image_file = 0;           //resets the number of lines
     SD.remove(tmp_storage_file_name);  //a bit aggressive and maybe not optmal but I'm sure the old data disappears
     LED_WS2812_state(WS2812_Idle, 1);
-    img.fillSprite(TFT_WHITE);  //the sprite is a whole "paper strip" covering the screen
-    img.pushSprite(x_ori, 0);   //the Bodmer TFT uses DMA so nothing is faster than this library
   }
 }  // loop1()
 /////////////Specific to TinyGB Printer//////////////
@@ -473,21 +467,23 @@ void Tiny_printer_preparation() {
   //Set up the display
   tft.init();
   tft.setRotation(0);
-  tft.fillScreen(TFT_BLACK);
   img.setColorDepth(BITS_PER_PIXEL);  // Set colour depth first
-  img.createSprite(160, 240);         // then create the giant sprite that will be an image of our video ram buffer
-  img.fillSprite(TFT_WHITE);          //the sprite is a whole "paper strip" covering the screen
-  img.pushSprite(x_ori, 0);           //the Bodmer TFT uses DMA so nothing is faster than this library
-  memset(TFT_memory_buffer, 255, sizeof(TFT_memory_buffer));
 
   if (digitalRead(BTN_PUSH)) {
     WS2812_Color = pixels.Color(0, 0, intensity);  //RGB triplet, turn to blue
     TEAR_mode = 1;                                 //idle mode with tear paper
+    tft.fillScreen(TFT_NAVY);
     Serial.println("// Tear mode, push button to close an image (tear paper)");
   } else {
     TEAR_mode = 0;
+    tft.fillScreen(TFT_DARKGREEN);
     Serial.println("// Margin mode, images will be closed automatically");
   }
+
+  img.createSprite(160, 240);         // then create the giant sprite that will be an image of our video ram buffer
+  img.fillSprite(TFT_WHITE);          //the sprite is a whole "paper strip" covering the screen
+  img.pushSprite(x_ori, 0);           //the Bodmer TFT uses DMA so nothing is faster than this library
+  memset(TFT_memory_buffer, 255, sizeof(TFT_memory_buffer)); //prepare image buffer
 
   // Ensure the SPI pinout the SD card is connected to / is configured properly
   SPI1.setRX(SD_MISO);  //see config.h to see SPI groups
