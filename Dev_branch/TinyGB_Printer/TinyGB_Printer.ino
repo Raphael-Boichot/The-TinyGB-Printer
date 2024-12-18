@@ -397,9 +397,9 @@ inline void gbp_parse_packet_loop(void) {
 
           ///////////////////////specific to the TinyGB Printer////////////////////////
           DATA_packet_to_print = DATA_packet_counter;
-          Serial.println("prout");
+          Serial.println("///////");
           Serial.println(DATA_bytes_counter, DEC);
-          Serial.println("prout");                                                                 //counter for packets transmitted to be transmitted to core 1
+          Serial.println("///////");                                                                 //counter for packets transmitted to be transmitted to core 1
           inner_palette = gbp_pkt_printInstruction_palette_value(gbp_pktbuff);                     //this can also be done by core 1
           inner_lower_margin = gbp_pkt_printInstruction_num_of_linefeed_after_print(gbp_pktbuff);  //this can also be done by core 1
           DATA_bytes_counter = 0;                                                                  //counter for data bytes
