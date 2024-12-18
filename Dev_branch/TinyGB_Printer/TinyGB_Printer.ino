@@ -182,6 +182,9 @@ void loop1()  //core 1 loop deals with images, written by Raphaël BOICHOT, nove
 {
   if (PRINT_flag == 1) {
     PRINT_flag = 0;
+    if (DATA_bytes_to_print == 320) {  //fix for Blarble 1290 homebrew, only game using "half packets", not supported by Hosiden printers
+      DATA_packet_to_print = 0.5;
+    }
     memcpy(printer_memory_buffer_core_1, printer_memory_buffer_core_0, 640 * DATA_packet_to_print);  //this can also be done by core 0
     LED_WS2812_state(WS2812_Color, 1);
     if (inner_palette == 0x00) {  //4 games uses this palette
@@ -217,8 +220,9 @@ void loop1()  //core 1 loop deals with images, written by Raphaël BOICHOT, nove
     IMAGE_bytes_counter = 0;
     pixel_line = 0;
     offset_x = 0;
-    max_tile_line = DATA_packet_to_print * 2;                                      //a DATA packet is 2 tiles high
-    max_pixel_line = DATA_packet_to_print * 16;                                    //a DATA packet is 16 pixel high
+    max_tile_line = DATA_packet_to_print * 2;    //a DATA packet is 2 tiles high
+    max_pixel_line = DATA_packet_to_print * 16;  //a DATA packet is 16 pixel high
+
     for (tile_line = 0; tile_line < max_tile_line; tile_line++) {                  //this part fills 8 lines of pixels
       IMAGE_bytes_counter = 16 * 20 * tile_line;                                   //a tile is 16 bytes, a line screen is 20 tiles (160 pixels width)
       for (int i = 0; i < 8; i++) {                                                // This part fills a line of pixels
@@ -397,9 +401,7 @@ inline void gbp_parse_packet_loop(void) {
 
           ///////////////////////specific to the TinyGB Printer////////////////////////
           DATA_packet_to_print = DATA_packet_counter;
-          Serial.println("///////");
-          Serial.println(DATA_bytes_counter, DEC);
-          Serial.println("///////");                                                                 //counter for packets transmitted to be transmitted to core 1
+          DATA_bytes_to_print = DATA_bytes_counter;                                                //to detect anormal packets not 640 bytes long
           inner_palette = gbp_pkt_printInstruction_palette_value(gbp_pktbuff);                     //this can also be done by core 1
           inner_lower_margin = gbp_pkt_printInstruction_num_of_linefeed_after_print(gbp_pktbuff);  //this can also be done by core 1
           DATA_bytes_counter = 0;                                                                  //counter for data bytes
