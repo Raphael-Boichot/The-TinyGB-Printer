@@ -36,6 +36,7 @@
 #include <SD.h>   //for SD
 #include "Upscalerlib.h"
 #include "config.h"
+#include "splash.h"
 #include <TFT_eSPI.h>  // Hardware-specific library
 #include <SPI.h>
 TFT_eSPI tft = TFT_eSPI();            // Invoke custom library
@@ -109,7 +110,6 @@ void serialClock_ISR(void) {
 
 void setup(void) {
   Serial.begin(115200);
-  delay(1000);                 //wait for the serial to be ready
   Tiny_printer_preparation();  //switches in Tiny Printer mode
   pinMode(GBP_SC_PIN, INPUT);
   pinMode(GBP_SO_PIN, INPUT);
@@ -333,6 +333,16 @@ void loop1()  //core 1 loop deals with images, written by Raphaël BOICHOT, nove
 
     lines_in_image_file = 0;           //resets the number of lines
     SD.remove(tmp_storage_file_name);  //a bit aggressive and maybe not optmal but I'm sure the old data disappears
+
+    memset(TFT_memory_buffer, 255, sizeof(TFT_memory_buffer));  //prepare image buffer
+    //converts tft buffer into a giant sprite covering a whole strip
+    for (int x = 0; x < 160; x++) {
+      for (int y = 0; y < 240; y++) {
+        img.drawPixel(x, y, lookup_TFT_RGB565[TFT_memory_buffer[x + y * 160]]);
+      }
+    }
+    img.pushSprite(x_ori, 0);  //dump image to display
+
     LED_WS2812_state(WS2812_Idle, 1);
   }
 }  // loop1()
@@ -386,7 +396,10 @@ inline void gbp_parse_packet_loop(void) {
           Serial.print(gbp_pkt_printInstruction_print_density(gbp_pktbuff));
 
           ///////////////////////specific to the TinyGB Printer////////////////////////
-          DATA_packet_to_print = DATA_packet_counter;                                              //counter for packets transmitted to be transmitted to core 1
+          DATA_packet_to_print = DATA_packet_counter;
+          Serial.println("prout");
+          Serial.println(DATA_bytes_counter, DEC);
+          Serial.println("prout");                                                                 //counter for packets transmitted to be transmitted to core 1
           inner_palette = gbp_pkt_printInstruction_palette_value(gbp_pktbuff);                     //this can also be done by core 1
           inner_lower_margin = gbp_pkt_printInstruction_num_of_linefeed_after_print(gbp_pktbuff);  //this can also be done by core 1
           DATA_bytes_counter = 0;                                                                  //counter for data bytes
@@ -466,8 +479,9 @@ void Tiny_printer_preparation() {
 
   //Set up the display
   tft.init();
-  tft.setRotation(0);
   img.setColorDepth(BITS_PER_PIXEL);  // Set colour depth first
+  tft.setRotation(0);
+  tft.fillScreen(TFT_BLACK);
 
   if (digitalRead(BTN_PUSH)) {
     WS2812_Color = pixels.Color(0, 0, intensity);  //RGB triplet, turn to blue
@@ -480,8 +494,12 @@ void Tiny_printer_preparation() {
     Serial.println("// Margin mode, images will be closed automatically");
   }
 
-  img.createSprite(160, 240);                                 // then create the giant sprite that will be an image of our video ram buffer
-  img.fillSprite(TFT_WHITE);                                  //the sprite is a whole "paper strip" covering the screen
+  img.createSprite(160, 240);  // then create the giant sprite that will be an image of our video ram buffer
+  for (int x = 0; x < 160; x++) {
+    for (int y = 0; y < 240; y++) {
+      img.drawPixel(x, y, lookup_TFT_RGB565[splashscreen[x + y * 160]]);
+    }
+  }
   img.pushSprite(x_ori, 0);                                   //the Bodmer TFT uses DMA so nothing is faster than this library
   memset(TFT_memory_buffer, 255, sizeof(TFT_memory_buffer));  //prepare image buffer
 
@@ -503,7 +521,7 @@ void Tiny_printer_preparation() {
       LED_WS2812_state(WS2812_SD_crash, 0);
     }
   }
-  for (int i = 0; i < 20; i++) {  // For each pixel..
+  for (int i = 0; i < 40; i++) {  // For each pixel..
     LED_WS2812_state(WS2812_Color, 1);
     delay(25);
     LED_WS2812_state(WS2812_Color, 0);
