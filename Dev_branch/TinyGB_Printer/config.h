@@ -118,7 +118,7 @@ unsigned char PNG_palette_RGB[12] = { 0xFF, 0xFF, 0xFF,
                                       0x00, 0x00, 0x00 };  //RGB colors as they will appear in the PNG file
 unsigned char image_palette[4];                            //2 bpp local color palette sent by the Game Boy
 unsigned char DATA_packet_counter = 0;                     //counter for packets transmitted
-double DATA_packet_to_print = 0;                            //counter for packets transmitted for core 1
+unsigned char DATA_packet_to_print = 0;                            //counter for packets transmitted for core 1
 unsigned char local_byte_LSB = 0;                          //storage byte for conversion
 unsigned char local_byte_MSB = 0;                          //storage byte for conversion
 unsigned char pixel_level = 0;                             //storage byte for conversion

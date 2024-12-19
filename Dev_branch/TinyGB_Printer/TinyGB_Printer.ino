@@ -182,10 +182,11 @@ void loop1()  //core 1 loop deals with images, written by Raphaël BOICHOT, nove
 {
   if (PRINT_flag == 1) {
     PRINT_flag = 0;
-    if (DATA_bytes_to_print == 320) {  //fix for Blarble 1290 homebrew, only game using "half packets", not supported by Hosiden printers
-      DATA_packet_to_print = 0.5;
+    if (DATA_bytes_to_print == 320) {  //fix for Blarble 1290 homebrew, only game using "half packets", not supported by default
+      memcpy(printer_memory_buffer_core_1, printer_memory_buffer_core_0, 320);
+    } else {                                                                                           //regular game, packets are 640 bytes long, 40 tiles, 16 pixels height
+      memcpy(printer_memory_buffer_core_1, printer_memory_buffer_core_0, 640 * DATA_packet_to_print);  //this can also be done by core 0
     }
-    memcpy(printer_memory_buffer_core_1, printer_memory_buffer_core_0, 640 * DATA_packet_to_print);  //this can also be done by core 0
     LED_WS2812_state(WS2812_Color, 1);
     if (inner_palette == 0x00) {  //4 games uses this palette
       inner_palette = 0xE4;       //see Game Boy Programming manual, palette 0x00 is a default palette interpreted as 0xE4 or 0b11100100
@@ -220,8 +221,14 @@ void loop1()  //core 1 loop deals with images, written by Raphaël BOICHOT, nove
     IMAGE_bytes_counter = 0;
     pixel_line = 0;
     offset_x = 0;
-    max_tile_line = DATA_packet_to_print * 2;    //a DATA packet is 2 tiles high
-    max_pixel_line = DATA_packet_to_print * 16;  //a DATA packet is 16 pixel high
+
+    if (DATA_bytes_to_print == 320) {  //fix for Blarble 1290 homebrew, only game using "half packets", not supported by default
+      max_tile_line = 1;               //a DATA packet is 2 tiles high
+      max_pixel_line = 8;              //a DATA packet is 16 pixel high
+    } else {
+      max_tile_line = DATA_packet_to_print * 2;    //a DATA packet is 2 tiles high
+      max_pixel_line = DATA_packet_to_print * 16;  //a DATA packet is 16 pixel high
+    }
 
     for (tile_line = 0; tile_line < max_tile_line; tile_line++) {                  //this part fills 8 lines of pixels
       IMAGE_bytes_counter = 16 * 20 * tile_line;                                   //a tile is 16 bytes, a line screen is 20 tiles (160 pixels width)
@@ -263,10 +270,19 @@ void loop1()  //core 1 loop deals with images, written by Raphaël BOICHOT, nove
     }
     img.pushSprite(x_ori, 0);  //dump image to display
 
-    File Datafile = SD.open(tmp_storage_file_name, FILE_WRITE);        //in any case, if PRINT is received, write to a file (yet existing or not)
-    Datafile.write(PNG_image_color, 160 * 16 * DATA_packet_to_print);  //writes the data to SD card
+    File Datafile = SD.open(tmp_storage_file_name, FILE_WRITE);  //in any case, if PRINT is received, write to a file (yet existing or not)
+    if (DATA_bytes_to_print == 320) {                            //fix for Blarble 1290 homebrew, only game using "half packets", not supported by default
+      Datafile.write(PNG_image_color, 160 * 8);                  //writes half the data to SD card
+    } else {
+      Datafile.write(PNG_image_color, 160 * 16 * DATA_packet_to_print);  //writes the data to SD card
+    }
     Datafile.close();
-    lines_in_image_file = lines_in_image_file + 16 * DATA_packet_to_print;  //keep track of the number of lines stored
+
+    if (DATA_bytes_to_print == 320) {                 //fix for Blarble 1290 homebrew, only game using "half packets", not supported by default
+      lines_in_image_file = lines_in_image_file + 8;  //keep track of the number of lines stored
+    } else {
+      lines_in_image_file = lines_in_image_file + 16 * DATA_packet_to_print;  //keep track of the number of lines stored
+    }
     DATA_packet_to_print = 0;
 
     if ((inner_lower_margin > 0) & (TEAR_mode == 0)) {  //the printer asks to feed paper, end of file, except in TEAR mode
@@ -338,14 +354,9 @@ void loop1()  //core 1 loop deals with images, written by Raphaël BOICHOT, nove
     lines_in_image_file = 0;           //resets the number of lines
     SD.remove(tmp_storage_file_name);  //a bit aggressive and maybe not optmal but I'm sure the old data disappears
 
-    memset(TFT_memory_buffer, 255, sizeof(TFT_memory_buffer));  //prepare image buffer
-    //converts tft buffer into a giant sprite covering a whole strip
-    for (int x = 0; x < 160; x++) {
-      for (int y = 0; y < 240; y++) {
-        img.drawPixel(x, y, lookup_TFT_RGB565[TFT_memory_buffer[x + y * 160]]);
-      }
-    }
-    img.pushSprite(x_ori, 0);  //dump image to display
+    memset(TFT_memory_buffer, 255, sizeof(TFT_memory_buffer));  //clears the image buffer
+    img.fillScreen(TFT_WHITE);                                  //clears the display
+    img.pushSprite(x_ori, 0);                                   //dumps white image to display
 
     LED_WS2812_state(WS2812_Idle, 1);
   }
