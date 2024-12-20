@@ -129,6 +129,7 @@ unsigned int tile_column, tile_line, pixel_line = 0;       //storage variables f
 unsigned int offset_x = 0;                                 //local variable for decoder
 unsigned int max_tile_line = 0;                            //local variable for decoder
 unsigned int max_pixel_line = 0;                           //local variable for decoder
+unsigned int TFT_offset = 16;                              //offset for display in automatic mode in pixels
 unsigned int max_files_per_folder = 1024;                  //FAT32 limits the number of entries, so better be carefull
 unsigned long lines_in_image_file = 0;                     //to keep tack of image file length
 unsigned long myTime;                                      //timer for PNG encoder

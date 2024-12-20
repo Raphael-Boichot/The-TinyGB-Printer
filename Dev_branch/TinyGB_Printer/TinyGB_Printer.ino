@@ -249,6 +249,10 @@ void loop1()  //core 1 loop deals with images, written by Raphaël BOICHOT, nove
       }                                                                                               //This part fills 8 lines of pixels
     }                                                                                                 //this part fills the entire image
 
+    if ((TEAR_mode == 0)&&(inner_lower_margin > 0)) {  //just to make a fancy display with clear image separation
+      max_pixel_line = max_pixel_line + TFT_offset;
+    }
+
     //the TFT diplay can hold 15 data packets simultaneously
     //Step 1: copy previous data with a vertical upper translation corresponding to future printing area
     for (int x = 0; x < 160; x++) {
@@ -258,10 +262,20 @@ void loop1()  //core 1 loop deals with images, written by Raphaël BOICHOT, nove
     }
     //Step 2: print the new image data after the previous ones at the bottom of display area
     for (int x = 0; x < 160; x++) {
-      for (int y = 0; y < (max_pixel_line); y++) {
-        TFT_memory_buffer[x + (240 - (max_pixel_line) + y) * 160] = 0xFF - PNG_image_color[x + y * 160];  //color are inverter compared to the PNG format
+      for (int y = 0; y < max_pixel_line; y++) {
+        TFT_memory_buffer[x + (240 - max_pixel_line + y) * 160] = 0xFF - PNG_image_color[x + y * 160];  //color are inverter compared to the PNG format
       }
     }
+
+    if ((TEAR_mode == 0)&&(inner_lower_margin > 0)) {  //just to make a fancy display with clear image separation
+      //Step 3: overwite the end of buffer with cool pixels
+      for (int x = 0; x < 160; x++) {
+        for (int y = 0; y < TFT_offset; y++) {
+          TFT_memory_buffer[x + (y + 240 - TFT_offset) * 160] = tearsymbol[x + y * 160];
+        }
+      }
+    }
+
     //converts tft buffer into a giant sprite covering a whole strip
     for (int x = 0; x < 160; x++) {
       for (int y = 0; y < 240; y++) {
