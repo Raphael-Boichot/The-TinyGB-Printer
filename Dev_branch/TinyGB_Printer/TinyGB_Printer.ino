@@ -249,7 +249,7 @@ void loop1()  //core 1 loop deals with images, written by Raphaël BOICHOT, nove
       }                                                                                               //This part fills 8 lines of pixels
     }                                                                                                 //this part fills the entire image
 
-    if ((TEAR_mode == 0)&&(inner_lower_margin > 0)) {  //just to make a fancy display with clear image separation
+    if ((TEAR_mode == 0) && (inner_lower_margin > 0)) {  //just to make a fancy display with clear image separation
       max_pixel_line = max_pixel_line + TFT_offset;
     }
 
@@ -267,7 +267,7 @@ void loop1()  //core 1 loop deals with images, written by Raphaël BOICHOT, nove
       }
     }
 
-    if ((TEAR_mode == 0)&&(inner_lower_margin > 0)) {  //just to make a fancy display with clear image separation
+    if ((TEAR_mode == 0) && (inner_lower_margin > 0)) {  //just to make a fancy display with clear image separation
       //Step 3: overwite the end of buffer with cool pixels
       for (int x = 0; x < 160; x++) {
         for (int y = 0; y < TFT_offset; y++) {
@@ -522,13 +522,19 @@ void Tiny_printer_preparation() {
   }
 
   img.createSprite(160, 240);  // then create the giant sprite that will be an image of our video ram buffer
+
   for (int x = 0; x < 160; x++) {
     for (int y = 0; y < 240; y++) {
-      img.drawPixel(x, y, lookup_TFT_RGB565[splashscreen[x + y * 160]]);
+      TFT_memory_buffer[x + y * 160] = splashscreen[x + y * 160];
     }
   }
-  img.pushSprite(x_ori, 0);                                   //the Bodmer TFT uses DMA so nothing is faster than this library
-  memset(TFT_memory_buffer, 255, sizeof(TFT_memory_buffer));  //prepare image buffer
+
+  for (int x = 0; x < 160; x++) {
+    for (int y = 0; y < 240; y++) {
+      img.drawPixel(x, y, lookup_TFT_RGB565[TFT_memory_buffer[x + y * 160]]);
+    }
+  }
+  img.pushSprite(x_ori, 0);  //the Bodmer TFT uses DMA so nothing is faster than this library
 
   // Ensure the SPI pinout the SD card is connected to / is configured properly
   SPI1.setRX(SD_MISO);  //see config.h to see SPI groups
