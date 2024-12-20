@@ -1,4 +1,4 @@
-a=imread('splash.png');
+a=imread('Tear.png');
 
 fid=fopen('splash.h','w');
 [hauteur, largeur, pro]=size(a);
