@@ -48,6 +48,7 @@ All the parts used here are cheap and easy to find on Aliexpress. You probably y
 
 **How to make it:**
 - Solder the pin headers on the Pi Pico, the SD shield, the level shifter and the step-up converter. Beware of which side you solder the pin header. Check if you can drop the uf2 file to the Pico, it must blink red on and off, it's normal.
+- The TFT screen can be mounted on pin headers but is fully optional. The device works without !
 - Solder the caps and the 3.3V converter first. They are surface mount components but big enough to be soldered easily. Don't be afraid by their size. They are not tiny, you're just too far.
 - Solder all parts with the minimal clearance possible against the PCB.
 - Trim and reflow all pins on the back side to get a clean finish. I personally trim pins as short as possible before soldering but there is a risk of scratching the solder mask, so be carefull.
