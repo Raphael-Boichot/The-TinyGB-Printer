@@ -1,7 +1,7 @@
 ## How to configure the Bodmer TFT library
 
 - Locate the TFT_eSPI library: **\Arduino\libraries\TFT_eSPI** folder in your Arduino libraries
-- copy the configuration file for the TFT display in this folder.
+- copy the configuration file (TinyGB_240x240.h) for the TFT display in this folder.
 - edit the User_Setup_Select.h and modify line 29:
     **#include <TinyGB_240x240.h> // Default setup is root library folder**
   
