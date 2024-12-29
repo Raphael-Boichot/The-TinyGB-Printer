@@ -1,4 +1,4 @@
-## How to configure the Bodmer TFT and PNGenc libraies
+## How to configure the Bodmer TFT library
 
 - Locate the TFT_eSPI library: **\Arduino\libraries\TFT_eSPI** folder in your Arduino libraries
 - copy the configuration file for the TFT display in this folder.
