@@ -36,6 +36,18 @@
 #include <SD.h>   //for SD
 #include "Upscalerlib.h"
 #include "config.h"
+#include "splash.h"
+#include <TFT_eSPI.h>  // Hardware-specific library
+#include <SPI.h>
+TFT_eSPI tft = TFT_eSPI();            // Invoke custom library
+TFT_eSprite img = TFT_eSprite(&tft);  // Create Sprite object "img" with pointer to "tft" object
+                                      // the pointer is used by pushSprite() to push it onto the TFT
+//Please read this topic: https://github.com/Bodmer/TFT_eSPI/issues/3476
+//in TFT_eSPI_RP2040.h, you have to comment a command to allow this particular 240x240 display to work :
+//#define SET_BUS_READ_MODE  spi_set_format(SPI_X,  8, (spi_cpol_t)0, (spi_cpha_t)0, SPI_MSB_FIRST)
+//must be replaced by:
+//#define SET_BUS_READ_MODE  // spi_set_format(SPI_X,  8, (spi_cpol_t)0, (spi_cpha_t)0, SPI_MSB_FIRST)
+//It's a trap for who never reads the code comments ^^
 /////////////Specific to TinyGB Printer//////////////
 
 #define GBP_BUFFER_SIZE 650  //maximal size of data buffer 640 bytes + commands
@@ -98,7 +110,6 @@ void serialClock_ISR(void) {
 
 void setup(void) {
   Serial.begin(115200);
-  delay(1000);                 //wait for the serial to be ready
   Tiny_printer_preparation();  //switches in Tiny Printer mode
   pinMode(GBP_SC_PIN, INPUT);
   pinMode(GBP_SO_PIN, INPUT);
@@ -171,7 +182,11 @@ void loop1()  //core 1 loop deals with images, written by Raphaël BOICHOT, nove
 {
   if (PRINT_flag == 1) {
     PRINT_flag = 0;
-    memcpy(printer_memory_buffer_core_1, printer_memory_buffer_core_0, 640 * DATA_packet_to_print);  //this can also be done by core 0
+    if (DATA_bytes_to_print == 320) {  //fix for Blarble 1290 homebrew, only game using "half packets", not supported by default
+      memcpy(printer_memory_buffer_core_1, printer_memory_buffer_core_0, 320);
+    } else {                                                                                           //regular game, packets are 640 bytes long, 40 tiles, 16 pixels height
+      memcpy(printer_memory_buffer_core_1, printer_memory_buffer_core_0, 640 * DATA_packet_to_print);  //this can also be done by core 0
+    }
     LED_WS2812_state(WS2812_Color, 1);
     if (inner_palette == 0x00) {  //4 games uses this palette
       inner_palette = 0xE4;       //see Game Boy Programming manual, palette 0x00 is a default palette interpreted as 0xE4 or 0b11100100
@@ -206,8 +221,15 @@ void loop1()  //core 1 loop deals with images, written by Raphaël BOICHOT, nove
     IMAGE_bytes_counter = 0;
     pixel_line = 0;
     offset_x = 0;
-    max_tile_line = DATA_packet_to_print * 2;                                      //a DATA packet is 2 tiles high
-    max_pixel_line = DATA_packet_to_print * 16;                                    //a DATA packet is 16 pixel high
+
+    if (DATA_bytes_to_print == 320) {  //fix for Blarble 1290 homebrew, only game using "half packets", not supported by default
+      max_tile_line = 1;               //a DATA packet is 2 tiles high
+      max_pixel_line = 8;              //a DATA packet is 16 pixel high
+    } else {
+      max_tile_line = DATA_packet_to_print * 2;    //a DATA packet is 2 tiles high
+      max_pixel_line = DATA_packet_to_print * 16;  //a DATA packet is 16 pixel high
+    }
+
     for (tile_line = 0; tile_line < max_tile_line; tile_line++) {                  //this part fills 8 lines of pixels
       IMAGE_bytes_counter = 16 * 20 * tile_line;                                   //a tile is 16 bytes, a line screen is 20 tiles (160 pixels width)
       for (int i = 0; i < 8; i++) {                                                // This part fills a line of pixels
@@ -227,10 +249,54 @@ void loop1()  //core 1 loop deals with images, written by Raphaël BOICHOT, nove
       }                                                                                               //This part fills 8 lines of pixels
     }                                                                                                 //this part fills the entire image
 
-    File Datafile = SD.open(tmp_storage_file_name, FILE_WRITE);        //in any case, if PRINT is received, write to a file (yet existing or not)
-    Datafile.write(PNG_image_color, 160 * 16 * DATA_packet_to_print);  //writes the data to SD card
+    if ((TEAR_mode == 0) && (inner_lower_margin > 0)) {  //just to make a fancy display with clear image separation
+      max_pixel_line = max_pixel_line + TFT_offset;
+    }
+
+    //the TFT diplay can hold 15 data packets simultaneously
+    //Step 1: copy previous data with a vertical upper translation corresponding to future printing area
+    for (int x = 0; x < 160; x++) {
+      for (int y = max_pixel_line; y < 240; y++) {
+        TFT_memory_buffer[x + (y - max_pixel_line) * 160] = TFT_memory_buffer[x + y * 160];
+      }
+    }
+    //Step 2: print the new image data after the previous ones at the bottom of display area
+    for (int x = 0; x < 160; x++) {
+      for (int y = 0; y < max_pixel_line; y++) {
+        TFT_memory_buffer[x + (240 - max_pixel_line + y) * 160] = 0xFF - PNG_image_color[x + y * 160];  //color are inverter compared to the PNG format
+      }
+    }
+
+    if ((TEAR_mode == 0) && (inner_lower_margin > 0)) {  //just to make a fancy display with clear image separation
+      //Step 3: overwite the end of buffer with cool pixels
+      for (int x = 0; x < 160; x++) {
+        for (int y = 0; y < TFT_offset; y++) {
+          TFT_memory_buffer[x + (y + 240 - TFT_offset) * 160] = tearsymbol[x + y * 160];
+        }
+      }
+    }
+
+    //converts tft buffer into a giant sprite covering a whole strip
+    for (int x = 0; x < 160; x++) {
+      for (int y = 0; y < 240; y++) {
+        img.drawPixel(x, y, lookup_TFT_RGB565[TFT_memory_buffer[x + y * 160]]);
+      }
+    }
+    img.pushSprite(x_ori, 0);  //dump image to display
+
+    File Datafile = SD.open(tmp_storage_file_name, FILE_WRITE);  //in any case, if PRINT is received, write to a file (yet existing or not)
+    if (DATA_bytes_to_print == 320) {                            //fix for Blarble 1290 homebrew, only game using "half packets", not supported by default
+      Datafile.write(PNG_image_color, 160 * 8);                  //writes half the data to SD card
+    } else {
+      Datafile.write(PNG_image_color, 160 * 16 * DATA_packet_to_print);  //writes the data to SD card
+    }
     Datafile.close();
-    lines_in_image_file = lines_in_image_file + 16 * DATA_packet_to_print;  //keep track of the number of lines stored
+
+    if (DATA_bytes_to_print == 320) {                 //fix for Blarble 1290 homebrew, only game using "half packets", not supported by default
+      lines_in_image_file = lines_in_image_file + 8;  //keep track of the number of lines stored
+    } else {
+      lines_in_image_file = lines_in_image_file + 16 * DATA_packet_to_print;  //keep track of the number of lines stored
+    }
     DATA_packet_to_print = 0;
 
     if ((inner_lower_margin > 0) & (TEAR_mode == 0)) {  //the printer asks to feed paper, end of file, except in TEAR mode
@@ -301,6 +367,11 @@ void loop1()  //core 1 loop deals with images, written by Raphaël BOICHOT, nove
 
     lines_in_image_file = 0;           //resets the number of lines
     SD.remove(tmp_storage_file_name);  //a bit aggressive and maybe not optmal but I'm sure the old data disappears
+
+    memset(TFT_memory_buffer, 255, sizeof(TFT_memory_buffer));  //clears the image buffer
+    img.fillScreen(TFT_WHITE);                                  //clears the display
+    img.pushSprite(x_ori, 0);                                   //dumps white image to display
+
     LED_WS2812_state(WS2812_Idle, 1);
   }
 }  // loop1()
@@ -354,7 +425,8 @@ inline void gbp_parse_packet_loop(void) {
           Serial.print(gbp_pkt_printInstruction_print_density(gbp_pktbuff));
 
           ///////////////////////specific to the TinyGB Printer////////////////////////
-          DATA_packet_to_print = DATA_packet_counter;                                              //counter for packets transmitted to be transmitted to core 1
+          DATA_packet_to_print = DATA_packet_counter;
+          DATA_bytes_to_print = DATA_bytes_counter;                                                //to detect anormal packets not 640 bytes long
           inner_palette = gbp_pkt_printInstruction_palette_value(gbp_pktbuff);                     //this can also be done by core 1
           inner_lower_margin = gbp_pkt_printInstruction_num_of_linefeed_after_print(gbp_pktbuff);  //this can also be done by core 1
           DATA_bytes_counter = 0;                                                                  //counter for data bytes
@@ -431,14 +503,39 @@ inline void gbp_parse_packet_loop(void) {
 }
 
 void Tiny_printer_preparation() {
+
+  //Set up the display
+  tft.init();
+  img.setColorDepth(BITS_PER_PIXEL);  // Set colour depth first
+  tft.setRotation(0);
+  tft.fillScreen(TFT_BLACK);
+
   if (digitalRead(BTN_PUSH)) {
     WS2812_Color = pixels.Color(0, 0, intensity);  //RGB triplet, turn to blue
     TEAR_mode = 1;                                 //idle mode with tear paper
+    tft.fillScreen(TFT_NAVY);
     Serial.println("// Tear mode, push button to close an image (tear paper)");
   } else {
     TEAR_mode = 0;
+    tft.fillScreen(TFT_DARKGREEN);
     Serial.println("// Margin mode, images will be closed automatically");
   }
+
+  img.createSprite(160, 240);  // then create the giant sprite that will be an image of our video ram buffer
+
+  for (int x = 0; x < 160; x++) {
+    for (int y = 0; y < 240; y++) {
+      TFT_memory_buffer[x + y * 160] = splashscreen[x + y * 160];
+    }
+  }
+
+  for (int x = 0; x < 160; x++) {
+    for (int y = 0; y < 240; y++) {
+      img.drawPixel(x, y, lookup_TFT_RGB565[TFT_memory_buffer[x + y * 160]]);
+    }
+  }
+  img.pushSprite(x_ori, 0);  //the Bodmer TFT uses DMA so nothing is faster than this library
+
   // Ensure the SPI pinout the SD card is connected to / is configured properly
   SPI1.setRX(SD_MISO);  //see config.h to see SPI groups
   SPI1.setTX(SD_MOSI);
@@ -450,12 +547,14 @@ void Tiny_printer_preparation() {
     SDcard_READY = 0;
     Serial.println("// SD card not detected, images will not be stored. SD card can still be inserted now");
     while (!SD.begin(SD_CS, SPI1)) {
+      tft.fillScreen(TFT_RED);
       LED_WS2812_state(WS2812_SD_crash, 1);
       delay(1000);
+      tft.fillScreen(TFT_BLACK);
       LED_WS2812_state(WS2812_SD_crash, 0);
     }
   }
-  for (int i = 0; i < 20; i++) {  // For each pixel..
+  for (int i = 0; i < 40; i++) {  // For each pixel..
     LED_WS2812_state(WS2812_Color, 1);
     delay(25);
     LED_WS2812_state(WS2812_Color, 0);
@@ -470,6 +569,17 @@ void Tiny_printer_preparation() {
   sprintf(tmp_storage_file_name, "/buffer.tmp");
   SD.remove(tmp_storage_file_name);               //remove any previous failed attempt
   store_next_ID("/tiny.sys", Next_ID, Next_dir);  //store next folder #immediately
+
+  //now time for an easter egg
+  if (digitalRead(BTN_PUSH)) {
+    for (int i = 0; i < 40 * 16; i++) {  // inject a dummy data
+      printer_memory_buffer_core_0[i] = dummy_packet[i];
+    }
+    DATA_packet_to_print = 1;
+    inner_palette = 0x00;
+    inner_lower_margin = 0x01;
+    PRINT_flag = 1;
+  }
 }
 
 void LED_WS2812_state(uint32_t WS2812_Color, bool state) {
