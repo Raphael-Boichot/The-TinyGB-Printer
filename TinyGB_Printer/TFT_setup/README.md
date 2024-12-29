@@ -5,11 +5,15 @@
 - edit the User_Setup_Select.h and modify line 29:
     **#include <TinyGB_240x240.h> // Default setup is root library folder**
   
-- edit the 
+- edit the TFT_eSPI_RP2040.h and modify line 52
+   **#define SET_BUS_READ_MODE  // spi_set_format(SPI_X,  8, (spi_cpol_t)0, (spi_cpha_t)0, SPI_MSB_FIRST)**
 
+This correspond to this issue with this particulat TFT display: [https://github.com/Bodmer/TFT_eSPI/issues/3476](https://github.com/Bodmer/TFT_eSPI/issues/3476)
+
+## How to configure the PNGenc
 
 - Locate the PNGenc library **\Arduino\libraries\PNGenc\src\PNGenc.h** folder in your Arduino libraries
+- edit the line 59:
+   **#define PNG_FILE_BUF_SIZE 16384**
 
-[https://github.com/Bodmer/TFT_eSPI/issues/3476](https://github.com/Bodmer/TFT_eSPI/issues/3476)
-
-just read this [note](https://github.com/Raphael-Boichot/The-TinyGB-Printer/blob/59753096baee4126f26321b7315d2f6e0639d5b6/TinyGB_Printer/Upscalerlib.h#L1)
+Now you're ready to compile !
