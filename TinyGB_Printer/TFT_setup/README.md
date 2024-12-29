@@ -8,12 +8,15 @@
 - edit the TFT_eSPI_RP2040.h and modify line 52
    **#define SET_BUS_READ_MODE  // spi_set_format(SPI_X,  8, (spi_cpol_t)0, (spi_cpha_t)0, SPI_MSB_FIRST)**
 
-This correspond to this issue with this particulat TFT display: [https://github.com/Bodmer/TFT_eSPI/issues/3476](https://github.com/Bodmer/TFT_eSPI/issues/3476)
+This correspond to this issue with this particular TFT display: [https://github.com/Bodmer/TFT_eSPI/issues/3476](https://github.com/Bodmer/TFT_eSPI/issues/3476)
 
-## How to configure the PNGenc
+## How to configure the PNGenc library
 
 - Locate the PNGenc library **\Arduino\libraries\PNGenc\src\PNGenc.h** folder in your Arduino libraries
 - edit the line 59:
    **#define PNG_FILE_BUF_SIZE 16384**
+
+This correspond to this issue with this size of image: 
+[https://github.com/bitbank2/PNGenc/issues/18](https://github.com/bitbank2/PNGenc/issues/18)
 
 Now you're ready to compile !
