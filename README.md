@@ -6,7 +6,7 @@ It's basically like a [BitBoy](https://gameboyphoto.bigcartel.com/product/bitboy
 
 ## That's it !
 **Nothing to configure, nothing to install, flash the rom and it works straight after soldering.**
-![](/Images/Tiny_GB_Printer.jpg)
+![](/Images/Final_version_2.0_3.png)
 
 ## What's inside / how does it work ?
 The code is basically the [Arduino Game Boy Printer emulator](https://github.com/mofosyne/arduino-gameboy-printer-emulator) (with a bit of modifications to handle the RP2040 specificities) running on core 0 and a custom image decoder running on core 1 in parallel. Core 0 politely asks core 1 to convert data at certain times with a flag. Core 0 is quite busy with interrupts while core 1 is more or less idle depending on tasks asked by core 0. Good timing between the two cores is critical (and required quite an optimisation) as core 0 cannot miss any interrupt and core 1 must fullfill all its tasks on time with a good safety margin.
