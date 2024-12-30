@@ -48,16 +48,19 @@ All the parts used here are cheap and easy to find on Aliexpress. You probably y
 
 **How to make it:**
 - Solder the pin headers on the Pi Pico, the SD shield, the level shifter and the step-up converter. Beware of which side you solder the pin header. Check if you can drop the uf2 file to the Pico, it must blink red on and off, it's normal.
-- The TFT screen can be mounted on pin headers but is fully optional. The device works without !
 - Solder the caps and the 3.3V converter first. They are surface mount components but big enough to be soldered easily. Don't be afraid by their size. They are not tiny, you're just too far.
 - Solder all parts with the minimal clearance possible against the PCB.
+- The TFT screen can be mounted on pin headers at this step but is fully optional. The device works without !
 - Trim and reflow all pins on the back side to get a clean finish. I personally trim pins as short as possible before soldering but there is a risk of scratching the solder mask, so be carefull.
 - Solder the battery box terminals and stuck the PCB on it with double sided tape for example (or hot glue if you're addicted to hot snot like me).
 - You're ready to print !
 
 The device draws about 150 mA, so couple of AAA batteries should last on average something like 5 hours of continuous printing and AA more than 20 hours. More than batteries on a modded Game Boy anyway.
 
-**The TinyGB Printer assembled with a 2xAAA battery box**
+**The TinyGB Printer assembled without display**
+![](/Images/Final_version_2.0_4.png)
+
+**The TinyGB Printer assembled with a 2xAAA battery box and the TFT display**
 ![](/Images/TinyGB_Printer_assembled_2.0.jpg)
 
 You can of course attach the wires more conveniently or design a fancy 3D printed shell. This assembly was made for my personal use only.
