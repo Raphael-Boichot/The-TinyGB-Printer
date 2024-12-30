@@ -55,7 +55,7 @@ All the parts used here are cheap and easy to find on Aliexpress. You probably y
 - Solder the battery box terminals and stuck the PCB on it with double sided tape for example (or hot glue if you're addicted to hot snot like me).
 - You're ready to print !
 
-The device draws about 150 mA, so couple of AAA batteries should last on average something like 5 hours of continuous printing and AA more than 20 hours. More than batteries on a modded Game Boy anyway.
+The device draws about 200 mA with display, so couple of AAA batteries should last on average something like 3 hours of continuous printing and AA more than 6 hours. More than batteries on a modded Game Boy anyway.
 
 **The TinyGB Printer assembled without display (TFT display is optional)**
 ![](/Images/Final_version_2.0_4.png)
