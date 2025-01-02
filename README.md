@@ -54,12 +54,12 @@ The code works with the two PCB versions (1.0 without TFT and 2.0 with TFT) but 
 - Solder the pin headers on the Pi Pico, the SD shield, the level shifter and the step-up converter. Beware of which side you solder the pin header. Check if you can drop the uf2 file to the Pico, it must blink red on and off, it's normal.
 - Solder the caps and the 3.3V converter first. They are surface mount components but big enough to be soldered easily. Don't be afraid by their size. They are not tiny, you're just too far.
 - Solder all parts with the minimal clearance possible against the PCB.
-- The TFT screen can be mounted on pin headers at this step but is fully optional. The device works without !
+- The TFT display can be mounted on female pin headers at this step but display is fully optional. The device works without !
 - Trim and reflow all pins on the back side to get a clean finish. I personally trim pins as short as possible before soldering but there is a risk of scratching the solder mask, so be carefull.
 - Solder the battery box terminals and stuck the PCB on it with double sided tape for example (or hot glue if you're addicted to hot snot like me).
 - You're ready to print !
 
-The device can record a bit more than 1 standard Game Boy Camera image for each mAh of battery storage capacity, so about 800 images with 2xAA batteries and about 2500 images with 2xAA batteries on a single charge (TFT display connected).
+The device can record a bit more than 1 standard Game Boy Camera image for each mAh of battery storage capacity, so about 800 images with 2xAA batteries and about 2500 images with 2xAA batteries on a single charge (TFT display connected). Not connecting the TFT display would of course allow more images to be recorded on a single charge.
 
 **The TinyGB Printer assembled without display (TFT display is optional)**
 ![](/Images/Final_version_2.0_4.png)
