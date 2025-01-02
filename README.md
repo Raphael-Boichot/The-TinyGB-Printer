@@ -34,6 +34,7 @@ All the parts used here are cheap and easy to find on Aliexpress. You probably y
 - [The PCB](/PCB_2.0_with_TFT/). Order at [JLCPCB.com](https://jlcpcb.com/) (just drop the gerber .zip to the site and use default options). VAT is paid when ordering so no bad surprise for European customers. The PCB was designed with [EasyEDA Standard Edition](https://easyeda.com/) if you want to modify something.
 
 ![](/PCB_2.0_with_TFT/PCB.png)
+(note the CS pin exposed just in case but not used with the TFT display chosen here)
 
 - [A Raspberry Pi Pico Zero](https://fr.aliexpress.com/item/1005005862794169.html). Just check pinout if seller is not the same.
 - [A bare MicroSD shield](https://fr.aliexpress.com/item/1005005302035188.html) without internal power converter and pin header. The most simple.
