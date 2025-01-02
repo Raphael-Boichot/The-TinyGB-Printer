@@ -59,7 +59,7 @@ The code works with the two PCB versions (1.0 without TFT and 2.0 with TFT) but 
 - Solder the battery box terminals and stuck the PCB on it with double sided tape for example (or hot glue if you're addicted to hot snot like me).
 - You're ready to print !
 
-The device draws about 200 mA with display, so couple of AAA batteries should last on average something like 3 hours of continuous printing and AA more than 9 hours. More than batteries on a modded Game Boy anyway.
+The device can record a bit more than 1 standard Game Boy Camera image for each mAh of battery storage capacity, so about 800 images with 2xAA batteries and about 2500 images with 2xAA batteries on a single charge (TFT display connected).
 
 **The TinyGB Printer assembled without display (TFT display is optional)**
 ![](/Images/Final_version_2.0_4.png)
