@@ -42,3 +42,5 @@ if ($driveLetter) {
 } else {
     Write-Host "Unable to detect the drive letter. Ensure this script is placed at the root of the SD card."
 }
+
+pause
