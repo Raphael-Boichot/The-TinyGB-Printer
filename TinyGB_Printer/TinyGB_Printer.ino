@@ -506,8 +506,9 @@ void Tiny_printer_preparation() {
 
   //Set up the display
   tft.init();
+  tft.setTextSize(2);
   img.setColorDepth(BITS_PER_PIXEL);  // Set colour depth first
-  tft.setRotation(0);
+  tft.setRotation(3);
   tft.fillScreen(TFT_BLACK);
 
   if (digitalRead(BTN_PUSH)) {
@@ -548,9 +549,13 @@ void Tiny_printer_preparation() {
     Serial.println("// SD card not detected, images will not be stored. SD card can still be inserted now");
     while (!SD.begin(SD_CS, SPI1)) {
       tft.fillScreen(TFT_RED);
+      tft.setTextColor(TFT_BLACK);
+      tft.drawString("SD failure !", 0, 96, 4);
       LED_WS2812_state(WS2812_SD_crash, 1);
       delay(1000);
       tft.fillScreen(TFT_BLACK);
+      tft.setTextColor(TFT_RED);
+      tft.drawString("SD failure !", 0, 96, 4);
       LED_WS2812_state(WS2812_SD_crash, 0);
     }
   }
