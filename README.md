@@ -48,7 +48,7 @@ The code works with the two PCB versions (1.0 without TFT and 2.0 with TFT) but 
 - [A 6x6 mm pushbutton](https://fr.aliexpress.com/item/1005003938244847.html), whatever height. The softer the better if you have the choice.
 - [2 x 22 µF caps with a 1206 footprint](https://fr.aliexpress.com/item/1005006022131059.html) (22 to 50 µF is OK if you have spares). Take 10V or 16V.
 - An [AMS1117-3.3V converter](https://fr.aliexpress.com/item/4001104149446.html) - Beware, take the 3.3V, not the ADJ !
-- A [2xAA](https://fr.aliexpress.com/item/4000980371784.html) or [2xAAA](https://fr.aliexpress.com/item/1005004195965365.html) battery box with switch. Single AA battery is a bit too weak to power the device reliably (it can work or not).
+- A [2xAA](https://fr.aliexpress.com/item/4000980371784.html) or [2xAAA](https://fr.aliexpress.com/item/1005004195965365.html) battery box with switch. Single AA or AAA battery is too weak to power the device reliably. The choice of AA or AAA depends on which is your go to Game Boy (pocket or GBC), in order to recharge batteries by batch of 4.
 
 **How to make it:**
 - Solder the pin headers on the Pi Pico, the SD shield, the level shifter and the step-up converter. Beware of which side you solder the pin header. Check if you can drop the uf2 file to the Pico, it must blink red on and off, it's normal.
@@ -56,6 +56,7 @@ The code works with the two PCB versions (1.0 without TFT and 2.0 with TFT) but 
 - Solder all parts with the minimal clearance possible against the PCB.
 - The TFT display can be mounted on female pin headers at this step but display is fully optional. The device works without !
 - Trim and reflow all pins on the back side to get a clean finish. I personally trim pins as short as possible before soldering but there is a risk of scratching the solder mask, so be carefull.
+- Clean any flux residues with isopropanol. Flux may create parasitic noise between pins.
 - Solder the battery box terminals and stuck the PCB on it with double sided tape for example (or hot glue if you're addicted to hot snot like me).
 - You're ready to print !
 
