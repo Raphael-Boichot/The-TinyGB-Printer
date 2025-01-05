@@ -20,12 +20,14 @@ The code is basically the [Arduino Game Boy Printer emulator](https://github.com
 - Want to see what's behind the scene ? Just run the device with a serial console connected (of course not mandatory, it's a standalone device), the cores are speaking to you.
 
 ## Easy to use
-- 🟢 Power the device without touching anything, the LED flashes green (display backround is green too), images are recorded automatically, this is the **automatic mode**. This is perfect for the Game Boy Camera for example. Multi-print is of course supported.
+- 🟢 Power the device without touching anything, the LED flashes green (display backround is green too), images are recorded and sliced automatically, this is the **automatic mode**. This is perfect for the Game Boy Camera for example. Multi-print is of course supported. It uses protocol after margins to decide wether an image is finished or not.
 - 🔵 Power while pressing the pushbutton : the LED flashes blue (display backround is blue too), all images are stacked together in a single file until you press the pushbutton again to "cut paper", it's the **tear mode**. Some rare games require this (see complete game list). You can also use it freely to stack images in some other games. Just be creative !
 - :red_circle: Power the device and the LED blinks red on and off in cycle: SD card not connected or not formatted in FAT32. SD card can be inserted during this step, the device will then boot normally.
 - :repeat: Cycling the power switch on the battery box or using the RESET button on the board has the same effect (reset printer state and increase folder number).
 
 A new folder is created at each boot/RESET. Each image file has a unique ID. Flashes during printing indicate flux of data and access to SD card. Color of flashes indicates the mode (green for automatic mode, blue for tear mode). White dim LED indicates that the device is idle and ready to receive data (and that you forgot to switch it off after printing), in case you chose not using the display.
+
+There is also a easter egg, will you find it ?
 
 ## Easy to fabricate
 All the parts used here are cheap and easy to find on Aliexpress. You probably yet have some leftovers from other projects. The total price is probably well below 15€ per piece, shipping of parts included, and you will have extra parts to gift some to your nerdy friends.
