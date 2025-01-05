@@ -84,6 +84,7 @@ The device can record a bit more than 1 standard Game Boy Camera image for each 
 
 ### Saving your achievements and diploma
 ![](/Images/Game_examples.png)
+(yes I suck at Surfing Pikachu)
 
 ## Compatible with all games using the Game Boy Printer
 In *Italics* games working fine in automatic mode, in **bold** games requiring the push button to tear paper, or tear mode. 
