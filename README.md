@@ -90,11 +90,11 @@ The device can record a bit more than 1 standard Game Boy Camera image for each 
 ![](/Images/Game_examples.png)
 (yes I suck at Surfing Pikachu)
 
-## Compatible with all games using the Game Boy Printer
+## Compatible with ALL games using the Game Boy Printer
 In *Italics* games working fine in automatic mode, in **bold** games requiring the push button to tear paper, or tear mode. 
 All known homebrews to date are compatible with the automatic mode.
 
-(and yes, for who wonders if I'm crazy, I've tested all games in this list and save hacked most of them to access and test all cryptic printing features)
+(and yes, for who wonders if I'm crazy, I've tested ALL games in this list and save hacked most of them to access and test all cryptic printing features)
 
 - *1942*
 - *Alice in Wonderland (US version only, Euro version not printer compatible)*
