@@ -68,7 +68,7 @@ The device can record a bit more than 1 standard Game Boy Camera image for each 
 ![](/Images/Final_version_2.0_4.png)
 (Credit: Raphaël BOICHOT)
 
-**The TinyGB Printer assembled with a 2xAAA battery box and the TFT display**
+**The TinyGB Printer assembled with a 2xAA battery box and the TFT display**
 ![](/Images/TinyGB_Printer_assembled_2.0.jpg)
 (Credit: Raphaël BOICHOT)
 
