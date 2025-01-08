@@ -9,7 +9,7 @@ You can copy, modify, sell or improve it as you want. Just respect the license a
 ## That's it: make it and enjoy it !
 **Nothing to configure, nothing to install, flash the rom and it works straight after soldering.**
 ![](/Images/Final_version_2.0_3.png)
-(yes I like the default ugly GBC green palette, to each his own vices)
+(Credit: Raphaël BOICHOT)
 
 ## What's inside / how does it work ?
 The code is basically the [Arduino Game Boy Printer emulator](https://github.com/mofosyne/arduino-gameboy-printer-emulator) (with a bit of modifications to handle the RP2040 specificities) running on core 0 and a custom image decoder running on core 1 in parallel. Core 0 politely asks core 1 to convert data at certain times with a flag. Core 0 is quite busy with interrupts while core 1 is more or less idle depending on tasks asked by core 0. Good timing between the two cores is critical (and required quite a lot of optimisation) as core 0 cannot miss any interrupt and core 1 must fullfill all its tasks on time with a good safety margin.
@@ -66,9 +66,11 @@ The device can record a bit more than 1 standard Game Boy Camera image for each 
 
 **The TinyGB Printer assembled without display (TFT display is optional)**
 ![](/Images/Final_version_2.0_4.png)
+(Credit: Raphaël BOICHOT)
 
 **The TinyGB Printer assembled with a 2xAAA battery box and the TFT display**
 ![](/Images/TinyGB_Printer_assembled_2.0.jpg)
+(Credit: Raphaël BOICHOT)
 
 **Troubleshooting**
 - Last image is not written ? You've probably switched the device off while the led was still on or you forgot to tear paper with the pushbutton in tear mode.
@@ -81,6 +83,7 @@ The device can record a bit more than 1 standard Game Boy Camera image for each 
 
 ### Making timelapse with [photo!](https://github.com/untoxa/gb-photo)
 ![](/Images/Showcase_2.gif)
+(Credit: Raphaël BOICHOT)
 
 ### Saving your achievements and diploma
 ![](/Images/Game_examples.png)
