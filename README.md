@@ -6,7 +6,7 @@ It's basically like a [BitBoy](https://gameboyphoto.bigcartel.com/product/bitboy
 
 You can copy, modify, sell or improve it as you want. Just respect the license and the dedication of the authors (in very brief, don't forget to cite Brian KHUU and Raphaël BOICHOT as authors and give a link to this repository).
 
-## Make it, enjoy it !
+## Make it, enjoy it immediately !
 **Nothing to configure, nothing to install, flash the rom and it works straight after soldering.**
 ![](/Images/Final_version_2.0_3.jpg)
 (Credit: Raphaël BOICHOT)
