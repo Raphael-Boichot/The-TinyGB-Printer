@@ -8,7 +8,7 @@ You can copy, modify, sell or improve it as you want. Just respect the license a
 
 ## That's it: make it and enjoy it !
 **Nothing to configure, nothing to install, flash the rom and it works straight after soldering.**
-![](/Images/Final_version_2.0_3.png)
+![](/Images/Final_version_2.0_3.jpg)
 (Credit: Raphaël BOICHOT)
 
 ## What's inside / how does it work ?
