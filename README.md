@@ -83,6 +83,7 @@ The device can record a bit more than 1 standard Game Boy Camera image for each 
 
 ### Making timelapse with [photo!](https://github.com/untoxa/gb-photo)
 ![](/Images/Showcase_2.gif)
+
 (Credit: Raphaël BOICHOT)
 
 ### Saving your achievements and diploma
