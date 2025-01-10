@@ -21,7 +21,7 @@ The code is basically the [Arduino Game Boy Printer emulator](https://github.com
 - 🟢 Power the device without touching anything, the LED flashes green (display backround is green too), images are recorded and sliced automatically, this is the **automatic mode**. This is perfect for the Game Boy Camera for example. Multi-print is of course supported. It uses protocol after margins to decide wether an image is finished or not.
 - 🔵 Power while pressing the pushbutton : the LED flashes blue (display backround is blue too), all images are stacked together in a single file until you press the pushbutton again to "cut paper", it's the **tear mode**. Some rare games require this (see complete game list). You can also use it freely to stack images in some other games. Just be creative !
 - :red_circle: Power the device and the LED blinks red on and off in cycle: SD card not connected or not formatted in FAT32. SD card can be inserted during this step, the device will then boot normally.
-- :repeat: Cycling the power switch on the battery box or using the RESET button on the board has the same effect (reset printer state and increase folder number).
+- :repeat: Cycling the power switch on the battery box or using the RESET button on the board has the same effect (reset printer state and increase folder number with the regular build).
 
 A new folder is created at each boot/RESET. Each image file has a unique ID. Flashes during printing indicate flux of data and access to SD card. Color of flashes indicates the mode (green for automatic mode, blue for tear mode). White dim LED indicates that the device is idle and ready to receive data (and that you forgot to switch it off after printing), in case you chose not using the display.
 
@@ -34,13 +34,13 @@ All the parts used here are cheap and easy to find on Aliexpress. You probably y
 - [The PCB](/PCB_2.0_with_TFT/). Order at [JLCPCB.com](https://jlcpcb.com/) (just drop the gerber .zip to the site and use default options). VAT is paid when ordering so no bad surprise for European customers. The PCB was designed with [EasyEDA Standard Edition](https://easyeda.com/) if you want to modify something.
 
 ![](/PCB_2.0_with_TFT/PCB.png)
-(note the CS pin exposed just in case but not used with the TFT display chosen here)
+(note the TFT CS pin exposed, just in case, but not used with the display listed next)
 
 The code works with the two PCB versions (1.0 without TFT and 2.0 with TFT) but I recommend ordering only the 2.0 even if you do not plan using the TFT display (just let the pins exposed or soldered with a bare female pin header).
 
 - [A Raspberry Pi Pico Zero](https://fr.aliexpress.com/item/1005005862794169.html). Just check pinout if seller is not the same.
 - [A bare MicroSD shield](https://fr.aliexpress.com/item/1005005302035188.html) without internal power converter and pin header. The most simple.
-- [A 240x240 1.3 inches TFT Display](https://fr.aliexpress.com/item/1005007143117779.html). It must be that exact one, 7 pins, without CS.
+- [A 240x240 1.3 inches TFT Display](https://fr.aliexpress.com/item/1005007143117779.html). It must be that exact one, 7 pins, without CS. If you decide to use another model, CS pin is exposed and driven but it's up to you to reconfigure the TFT library. 
 - [A 4 gates level shifter](https://fr.aliexpress.com/item/1005004560297038.html). The Pi Pico pins are not 5V rated, so the need for a level shifter.
 - [A 5V DC-DC step-up converter](https://fr.aliexpress.com/item/32809095271.html), 0.9-5V (input) to 5V (output). I know, it does not look impressive but it does prefectly the job.
 - [Male and female pin headers](https://fr.aliexpress.com/item/1005007324368709.html) with 2.54 mm spacing, whatever the pin lenght, you will trim them anyway. The female pin header is required for the TFT display only.
