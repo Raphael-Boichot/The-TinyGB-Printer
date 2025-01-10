@@ -60,7 +60,7 @@ The code works with the two PCB versions (1.0 without TFT and 2.0 with TFT) but 
 - Solder the battery box terminals and stuck the PCB on it with double sided tape for example (or hot glue if you're addicted to hot snot like me).
 - You're ready to print !
 
-The device can record a bit more than 1 standard Game Boy Camera image for each mAh of battery storage capacity, so about 800 images with 2xAA batteries and about 2500 images with 2xAA batteries on a single charge (TFT display connected). Not connecting the TFT display would of course allow more images to be recorded on a single charge.
+The device can record a little more than 1 standard Game Boy Camera image for each mAh of battery storage capacity, so about 800 images with 2xAA batteries and about 2500 images with 2xAA batteries on a single charge (TFT display connected). Not connecting the TFT display would allow about 30% more images to be recorded on a single charge.
 
 **The TinyGB Printer assembled without display (TFT display is optional)**
 ![](/Images/Final_version_2.0_4.png)
