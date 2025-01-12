@@ -94,7 +94,7 @@ The device can record a little more than 1 standard Game Boy Camera image for ea
 In *Italics* games working fine in automatic mode, in **bold** games requiring the push button to tear paper, or tear mode. 
 All known homebrews to date are compatible with the automatic mode.
 
-(and yes, for who wonders if I'm crazy, I've tested ALL games in this list and save hacked most of them to access and test all cryptic printing features)
+(and yes, for who wonders if I'm crazy, I've tested ALL these 110 games and save hacked several dozens of them to access and test all cryptic printing features, took me months)
 
 - *1942*
 - *Alice in Wonderland (US version only, Euro version not printer compatible)*
