@@ -27,7 +27,7 @@ The code is basically the [Arduino Game Boy Printer emulator](https://github.com
 
 A new folder is created at each boot/RESET. Each image file has a unique ID. Flashes during printing indicate flux of data and access to SD card. Color of flashes indicates the mode (green for automatic mode, blue for tear mode). White dim LED indicates that the device is idle and ready to receive data (and that you forgot to switch it off after printing), in case you chose not using the display.
 
-There is also an easter egg, will you find it ?
+**There is also an easter egg, will you find it ?**
 
 ## Easy to fabricate
 All the parts used here are cheap and easy to find on Aliexpress. You probably yet have some leftovers from other projects. The total price is probably well below 15€ per piece, shipping of parts included, and you will have extra parts to gift some to your nerdy friends.
