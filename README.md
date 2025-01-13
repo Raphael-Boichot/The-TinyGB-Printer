@@ -6,8 +6,8 @@ The TinyGB Printer is the simplest possible Game Boy printer emulator storing im
 
 You can copy, modify, sell or improve it as you want. **Just respect the license and the dedication of the authors** (in very brief, don't forget to cite Brian KHUU and Raphaël BOICHOT as authors and give a link to this repository).
 
-## Make it, enjoy it immediately !
-**Nothing to configure, nothing to install, flash the rom and it works straight after soldering.**
+## Make it, enjoy it !
+**Nothing to compile, nothing to install, drop the UF2 file to the device and it works straight after soldering.**
 ![](/Images/Final_version_2.0_3.jpg)
 (Credit: Raphaël BOICHOT)
 
@@ -36,6 +36,7 @@ All the parts used here are cheap and easy to find on Aliexpress. You probably y
 - [The PCB](/PCB_2.0_with_TFT/). Order at [JLCPCB.com](https://jlcpcb.com/) (just drop the gerber .zip to the site and use default options). VAT is paid when ordering so no bad surprise for European customers. The PCB was designed with [EasyEDA Standard Edition](https://easyeda.com/) if you want to modify something.
 
 ![](/PCB_2.0_with_TFT/PCB.png)
+
 (note the TFT CS pin exposed, just in case, but not used with the display listed next)
 
 The code works with the two PCB versions (1.0 without TFT and 2.0 with TFT) but I recommend ordering only the 2.0 even if you do not plan using the TFT display (just let the pins exposed or soldered with a bare female pin header).
