@@ -45,7 +45,7 @@ The code works with the two PCB versions (1.0 without TFT and 2.0 with TFT) but 
 - [A bare MicroSD shield](https://fr.aliexpress.com/item/1005005302035188.html) without internal power converter and pin header. The most simple.
 - [A 240x240 1.3 inches TFT Display](https://fr.aliexpress.com/item/1005007143117779.html). It must be that exact one, 7 pins, without CS. If you decide to use another model, CS pin is exposed and driven but it's up to you to reconfigure the TFT library. 
 - [A 4 gates level shifter](https://fr.aliexpress.com/item/1005004560297038.html). The Pi Pico pins are not 5V rated, so the need for a level shifter.
-- [A 5V DC-DC step-up converter](https://fr.aliexpress.com/item/32809095271.html), 0.9-5V (input) to 5V (output). I know, it does not look impressive but it does prefectly the job.
+- [A 5V DC-DC step-up converter](https://fr.aliexpress.com/item/32809095271.html), 0.9-5V (input) to 5V (output). I know, it does not look impressive but it does perfectly the job. If you want the fullset, here another seller with a [blue PCB](https://fr.aliexpress.com/item/1005001640003575.html).
 - [Male and female pin headers](https://fr.aliexpress.com/item/1005007324368709.html) with 2.54 mm spacing, whatever the pin lenght, you will trim them anyway. The female pin header is required for the TFT display only.
 - [A GBA/GBC Game Boy serial slot](https://fr.aliexpress.com/item/1005006361884480.html). They can be cheap or not depending on the seller, do not hesitate to change.
 - [A 6x6 mm pushbutton](https://fr.aliexpress.com/item/1005003938244847.html), whatever height. The softer the better if you have the choice.
