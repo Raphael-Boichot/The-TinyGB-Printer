@@ -2,7 +2,7 @@
 
 This is a [GNU Octave script](https://octave.org/) to simulate a thermal paper output. GNU Octave is a programming platform / langage for scientific computing, it can be used whatever your prefered OS.
 
-Just place your images in the **/Image_in** folder, run **Thermal_paper_emulator.m** script and enjoy you images freshly printed in **/Paper_out** folder. You can of course play with the [parameters](https://github.com/Raphael-Boichot/The-TinyGB-Printer/blob/11cf0198a5f711a38a46dcad767c037ce5f8676b/SD/Paper_emulator/Thermal_paper_emulator.m#L9) to modify paper color and printing intensity.
+Just drop some images in the **/Image_in** folder, run **Thermal_paper_emulator.m** script and enjoy you images freshly baked in **/Paper_out** folder. You can of course play with the [parameters](https://github.com/Raphael-Boichot/The-TinyGB-Printer/blob/11cf0198a5f711a38a46dcad767c037ce5f8676b/SD/Paper_emulator/Thermal_paper_emulator.m#L9) to modify paper hue and printing intensity.
 
 ### Example of starting image
 ![alt](/SD/Paper_emulator/Image_in/0001839.png)
