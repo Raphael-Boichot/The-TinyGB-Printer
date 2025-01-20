@@ -24,47 +24,47 @@ overlapping=4;%overlapping
 [heigth, width,~]=size(IMAGE);
 streaks=zeros(heigth, width);
 for i=1:1:width
-  start=ceil(2*rand)-1;
-  for j=1:1:heigth
-  streaks(j,i)=start;
-  %you can change the streak length here
-  if rand<0.2;start=ceil(2*rand)-1;end;
-  end
+    start=ceil(2*rand)-1;
+    for j=1:1:heigth
+        streaks(j,i)=start;
+        %you can change the streak length here
+        if rand<0.2;start=ceil(2*rand)-1;end;
+    end
 end
 
 speckle_image=uint8(255*ones(heigth*(mul-overlapping)+overlapping,width*(mul-overlapping)+overlapping,3));
 
 for i=1:1:heigth
-   for j=1:1:width
-       a=1+(i-1)*(mul-overlapping);
-       b=a+mul-1;
-       c=1+(j-1)*(mul-overlapping);
-       d=c+mul-1;
-       if IMAGE(i,j)==0
-       y=0;
-       x=ceil(49*rand);
-       burn_dot=pixel_sample(1+20*y:20+20*y,1+20*x:20+20*x,:);
-       end
+    for j=1:1:width
+        a=1+(i-1)*(mul-overlapping);
+        b=a+mul-1;
+        c=1+(j-1)*(mul-overlapping);
+        d=c+mul-1;
+        if IMAGE(i,j)==0
+            y=0;
+            x=ceil(49*rand);
+            burn_dot=pixel_sample(1+20*y:20+20*y,1+20*x:20+20*x,:);
+        end
 
-       if IMAGE(i,j)==84
-       y=1;
-       x=ceil(49*rand);
-       burn_dot=pixel_sample(1+20*y:20+20*y,1+20*x:20+20*x,:);
-       end
+        if IMAGE(i,j)==84
+            y=1;
+            x=ceil(49*rand);
+            burn_dot=pixel_sample(1+20*y:20+20*y,1+20*x:20+20*x,:);
+        end
 
-       if IMAGE(i,j)==168
-       y=2;
-       x=ceil(49*rand);
-       burn_dot=pixel_sample(1+20*y:20+20*y,1+20*x:20+20*x,:);
-       end
+        if IMAGE(i,j)==168
+            y=2;
+            x=ceil(49*rand);
+            burn_dot=pixel_sample(1+20*y:20+20*y,1+20*x:20+20*x,:);
+        end
 
-       if not(IMAGE(i,j)==255);
-       if rand<0.5; burn_dot=flip(burn_dot,ceil(2*rand));end;
-       burn_dot=rot90(burn_dot,ceil(2*rand)-2);
-       if streaks(i,j)==0; burn_dot=burn_dot+15;end;
-       speckle_image(a:b,c:d,:)=min(burn_dot,speckle_image(a:b,c:d,:));
-       end
-end
+        if not(IMAGE(i,j)==255);
+            if rand<0.5; burn_dot=flip(burn_dot,ceil(2*rand));end;
+            burn_dot=rot90(burn_dot,ceil(2*rand)-2);
+            if streaks(i,j)==0; burn_dot=burn_dot+15;end;
+            speckle_image(a:b,c:d,:)=min(burn_dot,speckle_image(a:b,c:d,:));
+        end
+    end
 end
 %centering image on paper, The width of the print should be 27.1mm compared to the paper at 38mm
 [V,W,~]=size(speckle_image);
@@ -104,29 +104,29 @@ speckle_image=[fliplr(flipud(border1_resized));speckle_image;border2_resized];
 alpha=[fliplr(flipud(alpha_layer1));alpha_central;alpha_layer2];
 %coloring the paper
 if (paper_color==6)
-speckle_image(:,:,1)=speckle_image(:,:,1)*((255-ceil(35*rand))/255);
-speckle_image(:,:,2)=speckle_image(:,:,2)*((255-ceil(35*rand))/255);
-speckle_image(:,:,3)=speckle_image(:,:,3)*((255-ceil(35*rand))/255);
+    speckle_image(:,:,1)=speckle_image(:,:,1)*((255-ceil(35*rand))/255);
+    speckle_image(:,:,2)=speckle_image(:,:,2)*((255-ceil(35*rand))/255);
+    speckle_image(:,:,3)=speckle_image(:,:,3)*((255-ceil(35*rand))/255);
 end
 if (paper_color==5)
-speckle_image(:,:,1)=speckle_image(:,:,1)*(242/255);
-speckle_image(:,:,2)=speckle_image(:,:,2)*(230/255);
-speckle_image(:,:,3)=speckle_image(:,:,3)*(255/255);
+    speckle_image(:,:,1)=speckle_image(:,:,1)*(242/255);
+    speckle_image(:,:,2)=speckle_image(:,:,2)*(230/255);
+    speckle_image(:,:,3)=speckle_image(:,:,3)*(255/255);
 end
 if (paper_color==4)
-speckle_image(:,:,1)=speckle_image(:,:,1)*(255/255);
-speckle_image(:,:,2)=speckle_image(:,:,2)*(221/255);
-speckle_image(:,:,3)=speckle_image(:,:,3)*(232/255);
+    speckle_image(:,:,1)=speckle_image(:,:,1)*(255/255);
+    speckle_image(:,:,2)=speckle_image(:,:,2)*(221/255);
+    speckle_image(:,:,3)=speckle_image(:,:,3)*(232/255);
 end
 if (paper_color==3)
-speckle_image(:,:,1)=speckle_image(:,:,1)*(220/255);
-speckle_image(:,:,2)=speckle_image(:,:,2)*(250/255);
-speckle_image(:,:,3)=speckle_image(:,:,3)*(242/255);
+    speckle_image(:,:,1)=speckle_image(:,:,1)*(220/255);
+    speckle_image(:,:,2)=speckle_image(:,:,2)*(250/255);
+    speckle_image(:,:,3)=speckle_image(:,:,3)*(242/255);
 end
 if (paper_color==2)
-speckle_image(:,:,1)=speckle_image(:,:,1)*(247/255);
-speckle_image(:,:,2)=speckle_image(:,:,2)*(250/255);
-speckle_image(:,:,3)=speckle_image(:,:,3)*(220/255);
+    speckle_image(:,:,1)=speckle_image(:,:,1)*(247/255);
+    speckle_image(:,:,2)=speckle_image(:,:,2)*(250/255);
+    speckle_image(:,:,3)=speckle_image(:,:,3)*(220/255);
 end
 if (paper_color==1)
 end
