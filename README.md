@@ -53,6 +53,8 @@ The code works with the two PCB versions (1.0 without TFT and 2.0 with TFT) but 
 - An [AMS1117-3.3V converter](https://www.aliexpress.com/item/4001104149446.html) - Beware, take the 3.3V, not the ADJ !
 - A [2xAA](https://www.aliexpress.com/item/4000980371784.html) or [2xAAA](https://www.aliexpress.com/item/1005004195965365.html) battery box **with switch** (mandatory, this is the only way to switch the device on and off). Single AA or AAA battery is too weak to power the device reliably. The choice of AA or AAA depends on which is your go to Game Boy (pocket or GBC), in order to recharge batteries by batch of 4.
 
+Additionnaly, you would need a [GBC compatible link cable](https://www.aliexpress.com/item/1005006479007710.html). Beware, purple GBA cables (or specific GBA cables) are not compatible due to a different pinout. You can of course use genuine GBC/GBP link cables or DMG link cable with GBC/GBP adapter.
+
 **How to make it:**
 - Solder the pin headers on the Pi Pico, the SD shield, the level shifter and the step-up converter. **Beware of which side you solder the pin header**. Check if you can drop the uf2 file to the Pico, it must blink red on and off, it's normal.
 - Solder the caps and the 3.3V converter first. They are surface mount components but big enough to be soldered easily. Don't be afraid by their size. They are not tiny, you're just too far.
