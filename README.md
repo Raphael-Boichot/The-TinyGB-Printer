@@ -29,7 +29,7 @@ The code is basically the [Arduino Game Boy Printer emulator](https://github.com
 
 A new folder is created at each boot/RESET. Each image file has a unique ID. Flashes during printing indicate flux of data and access to SD card. Color of flashes indicates the mode (green for automatic mode, blue for tear mode). White dim LED indicates that the device is idle and ready to receive data (and that you forgot to switch it off after printing), in case you chose not using the display.
 
-If you miss the analog feeling thermal paper, you can still use this [thermal printer emulator](/SD/Paper_emulator) written in GNU Octave which turns your pixel perfect images into noisy paper strips with an exact aspect ratio and paper tone compared to a real Game Boy Printer equiped with genuine color / white paper. At least these will not fade with time !
+If you miss the analog feeling of thermal paper, you can still use this [thermal printer emulator](/SD/Paper_emulator) written in GNU Octave which turns your pixel perfect images into noisy paper strips with an exact aspect ratio and paper tone compared to a real Game Boy Printer equiped with genuine color / white paper. At least these will not fade with time !
 
 **There is also an easter egg, will you find it ?** (Easy for real camera / printer nerds)
 
@@ -97,6 +97,9 @@ The device can record a little more than 1 standard Game Boy Camera image for ea
 ### Saving your achievements and diploma
 ![](/Images/Game_examples.png)
 (yes I suck at Surfing Pikachu)
+
+### Simulating thermal paper output with a [dedicated script](https://github.com/Raphael-Boichot/The-TinyGB-Printer/tree/main/SD/Paper_emulator)
+![](/SD/Paper_emulator/Paper_out/printerPaper-dark8-0001839.png)
 
 ## Compatible with ALL games using the Game Boy Printer
 In *Italics* games working fine in automatic mode, in **bold** games requiring the push button to tear paper, or tear mode. 
