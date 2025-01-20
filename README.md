@@ -4,7 +4,9 @@ The TinyGB Printer is the simplest possible Game Boy printer emulator storing im
 
 **It supports all printing modes of all games compatible with the Game Boy Printer (with all possible protocol tricks like double speed, compression, custom palette, break command, arbitrary lenght printing, etc.) plus all homebrews known to date.**
 
-You can copy, modify, or improve it as you wish, all sources are provided. **Just respect the license and the dedication of the authors** (in very brief, don't forget to cite Brian KHUU and Raphaël BOICHOT as authors and give a link to this repository).
+This emulator of course works with any genuine model of Game Boy (DMG, GBC, GBP, GBA). Compatibility was also confirmed with the GB Boy Colour, but I do not own any recent FPGA replicas to try.
+
+You can copy, modify, or improve it as you wish, all sources are provided. **Just respect the license and the dedication of the authors** (in very brief, don't forget to cite Brian KHUU (emulator/parser part) and Raphaël BOICHOT (hardware/decoder part) as authors and give a link to this repository).
 
 ## Make it, enjoy it !
 **Nothing to compile, nothing to install, drop the UF2 file to the device and it works straight after soldering.**
@@ -47,7 +49,7 @@ The code works with the two PCB versions (1.0 without TFT and 2.0 with TFT) but 
 - [A 4 gates level shifter](https://www.aliexpress.com/item/1005006255186878.html). The Pi Pico pins are not 5V rated, so the need for a level shifter. They are highly reusable in other pico related projects, so you never have too much of them in spare.
 - [A 5V DC-DC step-up converter](https://www.aliexpress.com/item/32809095271.html), 0.9-5V (input) to 5V (output). I know, it does not look impressive but it does perfectly the job of powering small devices. If you want the blue fullset, here another seller with a [blue PCB version](https://aliexpress.com/item/1005001640003575.html).
 - [Male and female pin headers](https://www.aliexpress.com/item/4000873858801.html) with 2.54 mm spacing, whatever the pin lenght, you will trim them anyway. The female pin header is required for the TFT display only. Once again, highly reusable in other projects.
-- [A GBA/GBC external link port](https://www.aliexpress.com/item/1005006358075502.html). They can be cheap or not depending on the seller, do not hesitate to change. This port is for the Gameboy Advance but it's backwards compatible (with the right cable) with the Gameboy Pocket and Colour. The port is different from the original Gameboy DMG.
+- [A GBA/GBC external link port](https://www.aliexpress.com/item/1005006358075502.html). They can be cheap or not depending on the seller, do not hesitate to change. This port is for the Gameboy Advance but it's backwards compatible (with the right cable) with any model of Game Boy.
 - [A 6x6 mm pushbutton](https://www.aliexpress.com/item/1005003938244847.html), whatever height. The softer the better if you have the choice. Make sure you get the 4 pin with the short legs.
 - [2 x 22 µF caps with a 1206 footprint](https://www.aliexpress.com/item/1005006022131059.html) (22 to 50 µF is OK if you have spares). Take 10V or 16V. These come in packs of 20, you only need 2, so check your drawers just in case.
 - An [AMS1117-3.3V converter](https://www.aliexpress.com/item/4001104149446.html) - Beware, take the 3.3V, not the ADJ !
