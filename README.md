@@ -41,17 +41,17 @@ All the parts used here are cheap and easy to find on Aliexpress. You probably y
 
 The code works with the two PCB versions (1.0 without TFT and 2.0 with TFT) but I recommend ordering only the 2.0 even if you do not plan using the TFT display (just let the pins exposed or soldered with a bare female pin header).
 
-- [A Raspberry Pi Pico Zero](https://fr.aliexpress.com/item/1005005862794169.html). Just check pinout if seller is not the same.
-- [A bare MicroSD shield](https://fr.aliexpress.com/item/1005005302035188.html) without internal power converter and pin header. The most simple.
-- [A 240x240 1.3 inches TFT Display](https://fr.aliexpress.com/item/1005007143117779.html). It must be that exact one, 7 pins, without CS. If you decide to use another model, CS pin is exposed and driven but it's up to you to reconfigure the TFT library. 
-- [A 4 gates level shifter](https://fr.aliexpress.com/item/1005004560297038.html). The Pi Pico pins are not 5V rated, so the need for a level shifter.
-- [A 5V DC-DC step-up converter](https://fr.aliexpress.com/item/32809095271.html), 0.9-5V (input) to 5V (output). I know, it does not look impressive but it does perfectly the job. If you want the fullset, here another seller with a [blue PCB](https://fr.aliexpress.com/item/1005001640003575.html).
-- [Male and female pin headers](https://fr.aliexpress.com/item/1005007324368709.html) with 2.54 mm spacing, whatever the pin lenght, you will trim them anyway. The female pin header is required for the TFT display only.
-- [A GBA/GBC Game Boy serial slot](https://fr.aliexpress.com/item/1005006361884480.html). They can be cheap or not depending on the seller, do not hesitate to change.
-- [A 6x6 mm pushbutton](https://fr.aliexpress.com/item/1005003938244847.html), whatever height. The softer the better if you have the choice.
-- [2 x 22 µF caps with a 1206 footprint](https://fr.aliexpress.com/item/1005006022131059.html) (22 to 50 µF is OK if you have spares). Take 10V or 16V.
-- An [AMS1117-3.3V converter](https://fr.aliexpress.com/item/4001104149446.html) - Beware, take the 3.3V, not the ADJ !
-- A [2xAA](https://fr.aliexpress.com/item/4000980371784.html) or [2xAAA](https://fr.aliexpress.com/item/1005004195965365.html) battery box with switch. Single AA or AAA battery is too weak to power the device reliably. The choice of AA or AAA depends on which is your go to Game Boy (pocket or GBC), in order to recharge batteries by batch of 4.
+- [A Raspberry Pi Pico Zero](https://www.aliexpress.com/item/1005005862794169.html). Just check pinout if seller is not the same.
+- [A bare MicroSD shield](https://www.aliexpress.com/item/1005005302035188.html) without internal power converter and **without pin header** (the pins header will be mounted upside down compared to pre-soldered units so it must be soldered manually).
+- [A 240x240 1.3 inches TFT Display](https://www.aliexpress.com/item/1005007143117779.html). It must be that exact one, 7 pins, without CS, 240x240 pixels, GMT130-V1.0. If you decide to use another 240x240 pixels model, CS pin is exposed and driven but it's up to you to reconfigure the TFT library if necessary.
+- [A 4 gates level shifter](https://www.aliexpress.com/item/1005006255186878.html). The Pi Pico pins are not 5V rated, so the need for a level shifter. They are highly reusable in other pico related projects, so you never have too much of them in spare.
+- [A 5V DC-DC step-up converter](https://www.aliexpress.com/item/32809095271.html), 0.9-5V (input) to 5V (output). I know, it does not look impressive but it does perfectly the job of powering small devices. If you want the blue fullset, here another seller with a [blue PCB version](https://aliexpress.com/item/1005001640003575.html).
+- [Male and female pin headers](https://www.aliexpress.com/item/4000873858801.html) with 2.54 mm spacing, whatever the pin lenght, you will trim them anyway. The female pin header is required for the TFT display only. One again, highly reusable in other projects.
+- [A GBA/GBC external link port](https://www.aliexpress.com/item/1005006358075502.html). They can be cheap or not depending on the seller, do not hesitate to change. This port is for the Gameboy Advance, and it's backwards compatible (with the right cable) with the Gameboy Pocket and Colour. The port is different from the original Gameboy DMG.
+- [A 6x6 mm pushbutton](https://www.aliexpress.com/item/1005003938244847.html), whatever height. The softer the better if you have the choice. Make sure you get the 4 pin with the short legs.
+- [2 x 22 µF caps with a 1206 footprint](https://www.aliexpress.com/item/1005006022131059.html) (22 to 50 µF is OK if you have spares). Take 10V or 16V. These come in packs of 20, you only need 2, so check your drawers just in case.
+- An [AMS1117-3.3V converter](https://www.aliexpress.com/item/4001104149446.html) - Beware, take the 3.3V, not the ADJ !
+- A [2xAA](https://www.aliexpress.com/item/4000980371784.html) or [2xAAA](https://www.aliexpress.com/item/1005004195965365.html) battery box **with switch** (mandatory, this is the only way to switch the device on and off). Single AA or AAA battery is too weak to power the device reliably. The choice of AA or AAA depends on which is your go to Game Boy (pocket or GBC), in order to recharge batteries by batch of 4.
 
 **How to make it:**
 - Solder the pin headers on the Pi Pico, the SD shield, the level shifter and the step-up converter. Beware of which side you solder the pin header. Check if you can drop the uf2 file to the Pico, it must blink red on and off, it's normal.
