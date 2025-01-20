@@ -61,7 +61,7 @@ Additionnaly, you would need a [GBC compatible link cable](https://www.aliexpres
 - Solder all parts with the minimal clearance possible against the PCB.
 - The TFT display can be mounted on female pin headers at this step but display is fully optional. The device works without !
 - Trim and reflow all pins on the back side to get a clean finish. I personally trim pins as short as possible before soldering but there is a risk of scratching the solder mask, so be carefull.
-- Clean any flux residues with isopropanol. Flux may create parasitic noise between pins.
+- Clean as much as you can any flux residues with isopropanol. Flux may create parasitic noise between pins. **Beware, flushing the TFT display with isopropanol is a very reliable way to kill it !**
 - Solder the battery box terminals and stuck the PCB on it with double sided tape for example (or hot glue if you're addicted to hot snot like me).
 - You're ready to print !
 
