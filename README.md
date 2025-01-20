@@ -98,7 +98,7 @@ The device can record a little more than 1 standard Game Boy Camera image for ea
 ![](/Images/Game_examples.png)
 (yes I suck at Surfing Pikachu)
 
-### Simulating thermal paper output with a [dedicated script](https://github.com/Raphael-Boichot/The-TinyGB-Printer/tree/main/SD/Paper_emulator)
+### Simulating thermal paper output with a [dedicated script](https://github.com/Raphael-Boichot/The-TinyGB-Printer/tree/main/SD/Paper_emulator) (requires a PC)
 ![](/SD/Paper_emulator/Paper_out/printerPaper-dark8-0001839.png)
 
 ## Compatible with ALL games using the Game Boy Printer
