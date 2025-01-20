@@ -7,5 +7,5 @@ Just place your images in the **/Image_in** folder, run **Thermal_paper_emulator
 ### Example of starting image
 ![alt](/SD/Paper_emulator/Image_in/0001839.png)
 
-### Example of simulated thermal paper
+### Example of simulated thermal paper (blue hue)
 ![alt](/SD/Paper_emulator/Paper_out/printerPaper-dark8-0001839.png)
