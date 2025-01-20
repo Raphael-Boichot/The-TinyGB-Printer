@@ -1,4 +1,4 @@
-## Some Toy script to simulate thermal paper
+## Some script to simulate thermal paper
 
 This is a [GNU Octave script](https://octave.org/) to simulate a thermal paper output. GNU Octave is a programming platform / langage for scientific computing, it can be used whatever your prefered OS.
 
