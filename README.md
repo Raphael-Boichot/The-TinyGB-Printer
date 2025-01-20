@@ -54,7 +54,7 @@ The code works with the two PCB versions (1.0 without TFT and 2.0 with TFT) but 
 - A [2xAA](https://www.aliexpress.com/item/4000980371784.html) or [2xAAA](https://www.aliexpress.com/item/1005004195965365.html) battery box **with switch** (mandatory, this is the only way to switch the device on and off). Single AA or AAA battery is too weak to power the device reliably. The choice of AA or AAA depends on which is your go to Game Boy (pocket or GBC), in order to recharge batteries by batch of 4.
 
 **How to make it:**
-- Solder the pin headers on the Pi Pico, the SD shield, the level shifter and the step-up converter. Beware of which side you solder the pin header. Check if you can drop the uf2 file to the Pico, it must blink red on and off, it's normal.
+- Solder the pin headers on the Pi Pico, the SD shield, the level shifter and the step-up converter. **Beware of which side you solder the pin header**. Check if you can drop the uf2 file to the Pico, it must blink red on and off, it's normal.
 - Solder the caps and the 3.3V converter first. They are surface mount components but big enough to be soldered easily. Don't be afraid by their size. They are not tiny, you're just too far.
 - Solder all parts with the minimal clearance possible against the PCB.
 - The TFT display can be mounted on female pin headers at this step but display is fully optional. The device works without !
