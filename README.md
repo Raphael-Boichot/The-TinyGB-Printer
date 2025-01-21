@@ -37,7 +37,7 @@ If you miss the analog feeling of thermal paper, you can still use this [thermal
 All the parts used here are cheap and easy to find on Aliexpress. You probably yet have some leftovers from other projects. The total price is probably well below 15€ per piece, shipping of parts included, and you will have extra parts to gift some to your nerdy friends.
 
 **Parts to order:**
-- [The PCB](/PCB_2.0_with_TFT/). Order at [JLCPCB.com](https://jlcpcb.com/) (just drop the gerber .zip to the site and use default options). VAT is paid when ordering so no bad surprise for European customers. The PCB was designed with [EasyEDA Standard Edition](https://easyeda.com/) if you want to modify something.
+- [The PCB](/PCB_2.0_with_TFT/). Order at [JLCPCB.com](https://jlcpcb.com/) (just drop the gerber .zip to the site and use default options). VAT is paid when ordering so no bad surprise for European customers. They also offer worldwide very cheap shipping options. The PCB was designed with [EasyEDA Standard Edition](https://easyeda.com/) if you want to modify something.
 
 ![](/PCB_2.0_with_TFT/PCB.png)
 
