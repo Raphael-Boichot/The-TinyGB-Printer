@@ -133,7 +133,7 @@ void setup(void) {
 #endif
 
 #define VERSION_STRING "V3.2.1 (Copyright (C) 2022 Brian KHUU)"
-#define TINY_VERSION_STRING "V2.0.0 (Copyright (C) 2024 Raphaël BOICHOT)"
+#define TINY_VERSION_STRING "V2.0.1 (Copyright (C) 2024 Raphaël BOICHOT)"
   Serial.println(F("// Game Boy Printer Emulator for Arduino " VERSION_STRING));
   Serial.println(F("// TinyGB Printer converter add-on " TINY_VERSION_STRING));
   Serial.flush();
@@ -450,6 +450,7 @@ inline void gbp_parse_packet_loop(void) {
         }
         Serial.println((char)'}');
 
+        ///////////////////////specific to the TinyGB Printer////////////////////////
         if (gbp_pktState.command == GBP_COMMAND_BREAK) {
           Serial.println("Core 0 -> BREAK command detected, flush printer");
           SD.remove(tmp_storage_file_name);  //remove any previous failed attempt
@@ -459,6 +460,7 @@ inline void gbp_parse_packet_loop(void) {
           DATA_packet_to_print = 0;          //reset
           LED_WS2812_state(WS2812_Idle, 1);
         }
+        ///////////////////////specific to the TinyGB Printer////////////////////////
 
         Serial.flush();
       } else {
@@ -559,7 +561,7 @@ void Tiny_printer_preparation() {
       LED_WS2812_state(WS2812_SD_crash, 0);
     }
   }
-  for (int i = 0; i < 40; i++) {  // For each pixel..
+  for (int i = 0; i < 40; i++) {  //flashes the internal RGB LED, long enough to not discover the easter egg immediately
     LED_WS2812_state(WS2812_Color, 1);
     delay(25);
     LED_WS2812_state(WS2812_Color, 0);
@@ -577,7 +579,7 @@ void Tiny_printer_preparation() {
 
   //now time for an easter egg
   if (digitalRead(BTN_PUSH)) {
-    for (int i = 0; i < 40 * 16; i++) {  // inject a dummy data
+    for (int i = 0; i < 40 * 16; i++) {  // inject the dummy data packet
       printer_memory_buffer_core_0[i] = dummy_packet[i];
     }
     DATA_packet_to_print = 1;
