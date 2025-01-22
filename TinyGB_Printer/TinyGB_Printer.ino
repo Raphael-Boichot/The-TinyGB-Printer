@@ -161,6 +161,7 @@ void loop() {
       Serial.println("B)");
       gbp_pkt_reset(&gbp_pktState);
       tileBuff.count = 0;
+      /////////////Specific to TinyGB Printer//////////////
       //incomplete packet due to abort command or transmission stopped inbetween DATA packets
       if (!(DATA_bytes_counter % 640 == 0) | (gbp_pktState.command == GBP_COMMAND_DATA)) {
         Serial.println("Core 0 -> Incomplete packet detected due to abort command, flush printer");
@@ -171,6 +172,7 @@ void loop() {
         DATA_packet_to_print = 0;          //reset
         LED_WS2812_state(WS2812_Idle, 1);
       }
+      /////////////Specific to TinyGB Printer//////////////
       Serial.flush();
     }
   }
@@ -316,12 +318,12 @@ void loop1()  //core 1 loop deals with images, written by Raphaël BOICHOT, nove
       Serial.print("Core 1 -> Number of file for this session: ");
       Serial.println(FILE_number, DEC);
 
-      if (BITBOY_mode == 0) {
+      if (BITBOY_mode == 0) {  // in this mode the folders are incremented at each boot
         if (FILE_number % max_files_per_folder == 0) {
           Next_dir++;
           store_next_ID("/tiny.sys", Next_ID, Next_dir);  //store next folder #immediately
         }
-      } else {
+      } else {  // in this mode the folders must contain 100 files
         if ((Next_ID % 100) == 0) {
           Next_dir++;
           store_next_ID("/tiny.sys", Next_ID, Next_dir);  //store next folder #immediately
@@ -492,7 +494,7 @@ inline void gbp_parse_packet_loop(void) {
               if (DATA_bytes_counter > 9 * 640) {  //overflow protection, image will be glitched at worse but device continues to run.
                 DATA_bytes_counter = 0;            //buffer loops on itself
                 DATA_packet_counter = 0;           //data are sacrified to avoid crash
-              }                                    // this overflow can happen with fast protocol (multi-print) when SD card is full like an egg. Commands may be missed. Results becomes unpredictable and the Pico crashes
+              }                                    //this overflow can happen with fast protocol (multi-print) when SD card is full like an egg. Commands may be missed. Results becomes unpredictable and the Pico crashes
               ///////////////////////specific to the TinyGB Printer////////////////////////
             }
             Serial.flush();
@@ -505,7 +507,6 @@ inline void gbp_parse_packet_loop(void) {
 }
 
 void Tiny_printer_preparation() {
-
   //Set up the display
   tft.init();
   tft.setTextSize(2);
@@ -516,11 +517,11 @@ void Tiny_printer_preparation() {
   if (digitalRead(BTN_PUSH)) {
     WS2812_Color = pixels.Color(0, 0, intensity);  //RGB triplet, turn to blue
     TEAR_mode = 1;                                 //idle mode with tear paper
-    tft.fillScreen(TFT_NAVY);
+    tft.fillScreen(TFT_NAVY);                      //this blue looks cool
     Serial.println("// Tear mode, push button to close an image (tear paper)");
   } else {
     TEAR_mode = 0;
-    tft.fillScreen(TFT_DARKGREEN);
+    tft.fillScreen(TFT_DARKGREEN);  //this green looks cool
     Serial.println("// Margin mode, images will be closed automatically");
   }
 
