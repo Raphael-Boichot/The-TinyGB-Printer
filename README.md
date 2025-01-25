@@ -101,7 +101,7 @@ The device can record a little more than 1 standard Game Boy Camera image for ea
 ### Simulating thermal paper output with a [dedicated script](https://github.com/Raphael-Boichot/The-TinyGB-Printer/tree/main/SD/Paper_emulator) (requires a PC)
 ![](/SD/Paper_emulator/Paper_out/printerPaper-dark8-0001839.png)
 
-## Compatible with ALL games using the Game Boy Printer, homebrews included
+## Compatible with ALL original games using the Game Boy Printer
 In *Italics* games working fine in automatic mode, in **bold** games requiring the push button to tear paper, or tear mode.
 
 (and yes, for who wonders if I'm crazy, I've tested ALL these 110 games and save hacked several dozens of them to access and test all cryptic printing features, took me months)
@@ -218,6 +218,15 @@ In *Italics* games working fine in automatic mode, in **bold** games requiring t
 - *VS Lemmings (VS.レミングス) - Lemmings US version does not have print feature*
 
 Want to know more about these games ? Want hints and custom saves to unlock all printing features ? Want to read the whole story of the thermal printer emulator module ? Follow the [link](https://github.com/Raphael-Boichot/GameboyPrinterPaperSimulation).
+
+## Compatible with ALL homebrews using the Game Boy Printer
+In *Italics* games working fine in automatic mode, in **bold** games requiring the push button to tear paper, or tear mode.
+
+- *[2bit PXLR Studio](https://github.com/HerrZatacke/2bit-pxlr-studio) by Andreas Hahn*
+- *[Photo!](https://github.com/untoxa/gb-photo) by Untoxa*
+- *[gb_snake](https://github.com/reini1305/gb_snake) by by Christian Reinbacher*
+- **[gb_bannerprinter](https://github.com/reini1305/gb_bannerprinter) by Christian Reinbacher**
+- *[Blarble1290](https://8bittygames.com/blarble1290/) by Patrick Rodriguez*
 
 ## Documented limitation
 - [Photo!](https://github.com/untoxa/gb-photo) standard printing (normal speed and double speed) is the only mode supported to date. Fast Printing and Transfer modes are only supported by the [Pico GB Printer](https://github.com/untoxa/pico-gb-printer), a very good dedicated printer emulator. It must natively be compatible with this board after some minor code update (basically just update the GPIOs according to the current schematic).
