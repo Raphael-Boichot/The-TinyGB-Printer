@@ -246,7 +246,7 @@ Want to know more about these games ? Want hints and custom saves to unlock all 
 The code and current design come as it. If you're not happy with the current hardware, the PCB EasyEDA design or the Arduino IDE, create your own, the licence allows it ! Polite pull requests with tested and working improvements are of course still welcomed. Remind that this is a hard work made with dedication, for FREE.
 
 ## Aknowledgements
+- [Brian Khuu](https://github.com/mofosyne) for the emulator code I have butchered until it accepted to drive my janky core 1 loop. We've worked hard together to support all possible games but he's the true giant whose shoulders I sit on, his emulator is incredible.
 - [Björn Heirman](https://github.com/BjornB2) for the 3D printed enclosure and feedbacks on the device ergonomy.
-- [Rafael Zenaro](https://github.com/zenaro147) for the idea and because I uses chunks of code from the [NeoGB Printer project](https://github.com/zenaro147/NeoGB-Printer). This project is basically a demake and a way to get rid of the embarassing ESP32 platform.
-- [Brian Khuu](https://github.com/mofosyne) for the emulator code I have butchered until it accepted to talk to my janky core 1 loop.
+- [Rafael Zenaro](https://github.com/zenaro147) for the initial idea ("hey dude, why not doing a Pi Pico version now ?!") and because I uses many chunks of code from the [NeoGB Printer project](https://github.com/zenaro147/NeoGB-Printer). This project is basically a demake and a way to get rid of the embarassing ESP32 platform. The TinyGB Printer was ought to be our new common project but it did not because life is what it is.
 - [Toxa](https://github.com/untoxa) for refreshing my mind about some PNG format subtilities that greatly improved PNGenc integration into the project.
