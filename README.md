@@ -101,10 +101,8 @@ The device can record a little more than 1 standard Game Boy Camera image for ea
 ### Simulating thermal paper output with a [dedicated script](https://github.com/Raphael-Boichot/The-TinyGB-Printer/tree/main/SD/Paper_emulator) (requires a PC)
 ![](/SD/Paper_emulator/Paper_out/printerPaper-dark8-0001839.png)
 
-## Compatible with ALL original games using the Game Boy Printer
-In *Italics* games working fine in automatic mode, in **bold** games requiring the push button to tear paper, or tear mode.
-
-(and yes, for who wonders if I'm crazy, I've tested ALL these 110 games and save hacked several dozens of them to access and test all cryptic printing features, took me months)
+## Compatible with the 110 original games using the Game Boy Printer
+In *Italics* games working fine in automatic mode, in **bold** games requiring the push button to tear paper, or tear mode (and yes, for who wonders if I'm crazy, I've tested ALL these games and save hacked several dozens of them to access and test all cryptic printing features, took me months).
 
 - *1942*
 - *Alice in Wonderland (US version only, Euro version not printer compatible)*
@@ -219,7 +217,7 @@ In *Italics* games working fine in automatic mode, in **bold** games requiring t
 
 Want to know more about these games ? Want hints and custom saves to unlock all printing features ? Want to read the whole story of the thermal printer emulator module ? Follow the [link](https://github.com/Raphael-Boichot/GameboyPrinterPaperSimulation).
 
-## Compatible with ALL homebrews using the Game Boy Printer
+## Compatible with homebrews known to target the Game Boy Printer
 In *Italics* games working fine in automatic mode, in **bold** games requiring the push button to tear paper, or tear mode.
 
 - *[2bit PXLR Studio](https://github.com/HerrZatacke/2bit-pxlr-studio) by Andreas Hahn - A Game Boy Camera custom rom*
