@@ -222,7 +222,7 @@ In *Italics* games working fine in automatic mode, in **bold** games requiring t
 
 - *[2bit PXLR Studio](https://github.com/HerrZatacke/2bit-pxlr-studio) by Andreas Hahn - A Game Boy Camera custom rom*
 - *[Photo!](https://github.com/untoxa/gb-photo) by Untoxa - A Game Boy Camera custom rom*
-- *[gb_snake](https://github.com/reini1305/gb_snake) by by Christian Reinbacher - A one or two players version of Snake*
+- *[gb_snake](https://github.com/reini1305/gb_snake) by Christian Reinbacher - A one or two players version of Snake*
 - **[gb_bannerprinter](https://github.com/reini1305/gb_bannerprinter) by Christian Reinbacher - A thermal paper banner printer**
 - *[Blarble1290](https://8bittygames.com/blarble1290/) by Patrick Rodriguez - A text based adventure where the printer becomes alive*
 
