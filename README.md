@@ -222,11 +222,11 @@ Want to know more about these games ? Want hints and custom saves to unlock all 
 ## Compatible with ALL homebrews using the Game Boy Printer
 In *Italics* games working fine in automatic mode, in **bold** games requiring the push button to tear paper, or tear mode.
 
-- *[2bit PXLR Studio](https://github.com/HerrZatacke/2bit-pxlr-studio) by Andreas Hahn*
-- *[Photo!](https://github.com/untoxa/gb-photo) by Untoxa*
-- *[gb_snake](https://github.com/reini1305/gb_snake) by by Christian Reinbacher*
-- **[gb_bannerprinter](https://github.com/reini1305/gb_bannerprinter) by Christian Reinbacher**
-- *[Blarble1290](https://8bittygames.com/blarble1290/) by Patrick Rodriguez*
+- *[2bit PXLR Studio](https://github.com/HerrZatacke/2bit-pxlr-studio) by Andreas Hahn - A Game Boy Camera custom rom*
+- *[Photo!](https://github.com/untoxa/gb-photo) by Untoxa - A Game Boy Camera custom rom*
+- *[gb_snake](https://github.com/reini1305/gb_snake) by by Christian Reinbacher - A one or two players version of Snake*
+- **[gb_bannerprinter](https://github.com/reini1305/gb_bannerprinter) by Christian Reinbacher - A thermal paper banner printer**
+- *[Blarble1290](https://8bittygames.com/blarble1290/) by Patrick Rodriguez - A text based adventure where the printer becomes alive*
 
 ## Documented limitation
 - [Photo!](https://github.com/untoxa/gb-photo) standard printing (normal speed and double speed) is the only mode supported to date. Fast Printing and Transfer modes are only supported by the [Pico GB Printer](https://github.com/untoxa/pico-gb-printer), a very good dedicated printer emulator. It must natively be compatible with this board after some minor code update (basically just update the GPIOs according to the current schematic).
