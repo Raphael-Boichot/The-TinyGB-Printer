@@ -101,9 +101,8 @@ The device can record a little more than 1 standard Game Boy Camera image for ea
 ### Simulating thermal paper output with a [dedicated script](https://github.com/Raphael-Boichot/The-TinyGB-Printer/tree/main/SD/Paper_emulator) (requires a PC)
 ![](/SD/Paper_emulator/Paper_out/printerPaper-dark8-0001839.png)
 
-## Compatible with ALL games using the Game Boy Printer
-In *Italics* games working fine in automatic mode, in **bold** games requiring the push button to tear paper, or tear mode. 
-All known homebrews to date are compatible with the automatic mode.
+## Compatible with ALL games using the Game Boy Printer, homebrews included
+In *Italics* games working fine in automatic mode, in **bold** games requiring the push button to tear paper, or tear mode.
 
 (and yes, for who wonders if I'm crazy, I've tested ALL these 110 games and save hacked several dozens of them to access and test all cryptic printing features, took me months)
 
