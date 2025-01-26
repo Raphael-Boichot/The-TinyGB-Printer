@@ -2,7 +2,7 @@
 
 The TinyGB Printer is the simplest possible Game Boy printer emulator storing images directly on SD card. This is basically a demake of the ESP32 based [NeoGB printer](https://github.com/zenaro147/NeoGB-Printer) (which I co-developed with [Rafael Zenaro](https://github.com/zenaro147)), but for the Raspberry Pi Pico. It stores the printed images in pixel perfect 4x PNG format. It is meant to be powered by double NiMH AA or AAA batteries, like the Game Boy Color / Pocket, so that you can recharge them with the same equipment. All parts are cheap and easy to gather online and assembly is meant to be simplistic.
 
-**It supports all printing modes of all games compatible with the Game Boy Printer (with all possible protocol tricks like double speed, compression, custom palette, break command, arbitrary lenght printing, etc.).** So yes, Pokémons, Zelda, Game Boy Camera, all work.
+**It supports all printing modes of all games compatible with the Game Boy Printer (with all possible protocol tricks like double speed, compression, custom palette, break command, arbitrary lenght printing, etc.).** So yes, Pokémons, Zelda, Game Boy Camera, all work among a thousand of other games.
 
 This emulator of course works with any genuine model of Game Boy (DMG, GBC, GBP, GBA). Compatibility was also confirmed with the [GB Boy Colour](https://github.com/Raphael-Boichot/Knowledge-repo-about-the-Kong-Feng-GB-BOY-COLOUR), but I do not own any recent Game Boy FPGA replicas to try.
 
