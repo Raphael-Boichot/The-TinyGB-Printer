@@ -102,7 +102,7 @@ The device can record a little more than 1 standard Game Boy Camera image for ea
 ![](/SD/Paper_emulator/Paper_out/printerPaper-dark8-0001839.png)
 
 ## Compatible with the 110 original games using the Game Boy Printer
-In *Italics* games working fine in automatic mode, in **bold** games requiring the push button to tear paper, or tear mode (and yes, for who wonders if I'm crazy, I've tested ALL these games and save hacked several dozens of them to access and test all cryptic printing features, took me months).
+In *Italics* games working fine in automatic mode, in **bold** games requiring the push button to tear paper, or tear mode. For who wonders if I'm crazy, after initially documenting the complete list (I guess) in sweat and blood around 2021, I've tested ALL these games and save hacked several dozens of them to access and test all cryptic printing features, took me months.
 
 - *1942*
 - *Alice in Wonderland (US version only, Euro version not printer compatible)*
@@ -220,13 +220,13 @@ Want to know more about these games ? Want hints and custom saves to unlock all 
 ## Also compatible with homebrews known to work with the Game Boy Printer
 In *Italics* games working fine in automatic mode, in **bold** games requiring the push button to tear paper, or tear mode.
 
-- *[2bit PXLR Studio](https://github.com/HerrZatacke/2bit-pxlr-studio) by Andreas Hahn - A Game Boy Camera custom rom*
-- *[Photo!](https://github.com/untoxa/gb-photo) by Untoxa - A Game Boy Camera custom rom*
+- *[2bit PXLR Studio](https://github.com/HerrZatacke/2bit-pxlr-studio) by Andreas Hahn - The first Game Boy Camera custom rom*
+- *[Photo!](https://github.com/untoxa/gb-photo) by Untoxa - A Game Boy Camera custom rom, evolution of 2bit PXLR Studio*
 - *[gb_snake](https://github.com/reini1305/gb_snake) by Christian Reinbacher - A one or two players version of Snake*
 - **[gb_bannerprinter](https://github.com/reini1305/gb_bannerprinter) by Christian Reinbacher - A thermal paper banner printer**
-- *[Blarble1290](https://8bittygames.com/blarble1290/) by Patrick Rodriguez - A text based adventure where the printer becomes alive*
+- *[Blarble1290](https://8bittygames.com/blarble1290/) by Patrick Rodriguez - A text based adventure where the printer talks to you, miserable human being !*
 
-If you find an homebrew **working for real on a genuine Game Boy Printer** (not a PC emulator please) and **not working on the TinyGB Printer**, create an issue, I will support it soon. Besides that, I'm not interested in supporting homebrews incompatible with real hardware.
+If you find any homebrew **working for real on a genuine Game Boy Printer** (not a PC emulator please) and **not working on the TinyGB Printer**, create an issue, I will support it soon. Besides that, I'm not interested in supporting homebrews or printing modes not fully compatible with real hardware (I made an exception with Blarble1290 because it is fun to play, see the "Funfacts" section).
 
 ## Documented limitation
 - [Photo!](https://github.com/untoxa/gb-photo) standard printing (normal speed and double speed) is the only mode supported to date. Fast Printing and Transfer modes are only supported by the [Pico GB Printer](https://github.com/untoxa/pico-gb-printer), a very good dedicated printer emulator. It must natively be compatible with this board after some minor code update (basically just update the GPIOs according to the current schematic).
@@ -252,7 +252,7 @@ If you find an homebrew **working for real on a genuine Game Boy Printer** (not 
 - Testing each major code / hardware modification requires tons of quality check in real printing conditions (Game Boy(s), serial cable, batteries, flashcart, sometimes oscilloscope, all that shit). I typically have to pass a dozen of difficult games with ruthless protocol implementation which I know will not print correctly in case of even the slightest issue with printer emulator / decoder. I sometimes use these games too to assess other emulators / decoders accuracy for fun (most don't pass).
 
 ## Kind warning
-The code and current design come as it. If you're not happy with the current hardware, the PCB EasyEDA design or the Arduino IDE, create your own, the licence allows it ! Polite pull requests with tested and working improvements are of course still welcomed. Remind that this is a hard work made with dedication, for FREE.
+The code and current design come as it. If you're not happy with the current hardware, the PCB EasyEDA design or the Arduino IDE, create your own, the licence allows it ! Polite pull requests with bullet proofed improvements are of course always welcomed. Remind that this project is the fruit of hard work made with dedication, for FREE. It is a gift to the player's community.
 
 ## Aknowledgements
 - [Brian Khuu](https://github.com/mofosyne) for the emulator code I have butchered until it accepted to drive my janky core 1 loop. We've worked hard together to support all possible games years ago and he's the true giant whose shoulders I sit on, his emulator is incredible.
