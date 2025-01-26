@@ -102,7 +102,7 @@ The device can record a little more than 1 standard Game Boy Camera image for ea
 ![](/SD/Paper_emulator/Paper_out/printerPaper-dark8-0001839.png)
 
 ## Compatible with the 110 original games using the Game Boy Printer
-In *Italics* games working fine in automatic mode, in **bold** games requiring the push button to tear paper, or tear mode. For who wonders if I'm crazy, after initially documenting the complete list (I guess) in sweat and blood around 2021, I've tested ALL these games and save hacked several dozens of them to access and test all cryptic printing features, took me months.
+In *Italics* games working fine in automatic mode, in **bold** games requiring the push button to tear paper, or tear mode. For who wonders if I'm crazy, after initially documenting the complete list (I guess) in sweat and blood around 2021, I've tested ALL these games and save hacked several dozens of them to access and test all cryptic printing features, took me months (most are in Japanese...).
 
 - *1942*
 - *Alice in Wonderland (US version only, Euro version not printer compatible)*
