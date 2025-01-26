@@ -226,7 +226,7 @@ In *Italics* games working fine in automatic mode, in **bold** games requiring t
 - **[gb_bannerprinter](https://github.com/reini1305/gb_bannerprinter) by Christian Reinbacher - A thermal paper banner printer**
 - *[Blarble1290](https://8bittygames.com/blarble1290/) by Patrick Rodriguez - A text based adventure where the printer becomes alive*
 
-If you find an homebrew working on a real Game Boy Printer (not a PC emulator) and not working on the TinyGB Printer, create an issue, I will support it soon. I'm not interested in supporting homebrews untested on real hardware.
+If you find an homebrew **working for real on a genuine Game Boy Printer** (not a PC emulator please) and **not working on the TinyGB Printer**, create an issue, I will support it soon. Besides that, I'm not interested in supporting homebrews incompatible with real hardware.
 
 ## Documented limitation
 - [Photo!](https://github.com/untoxa/gb-photo) standard printing (normal speed and double speed) is the only mode supported to date. Fast Printing and Transfer modes are only supported by the [Pico GB Printer](https://github.com/untoxa/pico-gb-printer), a very good dedicated printer emulator. It must natively be compatible with this board after some minor code update (basically just update the GPIOs according to the current schematic).
