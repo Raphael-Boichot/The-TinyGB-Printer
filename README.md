@@ -252,7 +252,7 @@ If you find any homebrew **working for real on a genuine Game Boy Printer** (not
 - Testing each major code / hardware modification requires tons of quality check in real printing conditions (Game Boy(s), serial cable, batteries, flashcart, sometimes oscilloscope, all that shit). I typically have to pass a dozen of difficult games with ruthless protocol implementation which I know will not print correctly in case of even the slightest issue with printer emulator / decoder. I sometimes use these games too to assess other emulators / decoders accuracy for fun (most don't pass).
 
 ## Kind warning
-The code and current design come as it. If you're not happy with the current hardware, the PCB EasyEDA design or the Arduino IDE, create your own, the licence allows it ! Polite pull requests with bullet proofed improvements are of course always welcomed. Remind that this project is the fruit of hard work made with dedication, __for FREE__. It is basically a gift to the player's community. I will ruthlessly treat any attempt to make money on it without indicating this source repository and without respecting the credits on images.
+The code and current design come as it. If you're not happy with the current hardware, the PCB EasyEDA design or the Arduino IDE, create your own, the licence allows it ! Polite pull requests with bullet proofed improvements are of course always welcomed. Remind that this project is the fruit of hard work made with dedication, for free.
 
 ## Aknowledgements
 - [Brian Khuu](https://github.com/mofosyne) for the emulator code I have butchered until it accepted to drive my janky core 1 loop. We've worked hard together to support all possible games years ago and he's the true giant whose shoulders I sit on, his emulator is incredible.
