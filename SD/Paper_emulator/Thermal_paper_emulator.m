@@ -4,6 +4,7 @@
 % This code can take any image as input as long as it is PNG
 clear
 clc
+close all
 
 %%%%%%%%%%%%%%%%%%%%%%%%%General parameters%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 paper_color=2; %6=random, 5=purple, 4=pink, 3=regular blue, 2=regular yellow or 1=regular white
@@ -29,11 +30,13 @@ for k=1:1:nfiles
     currentfilename = imagefiles(k).name;
     disp(['Converting image ',currentfilename,' in progress...'])
     [a,map]=imread(['Image_in/',currentfilename]);
-
     if not(isempty(map));%dealing with indexed images
         disp('Indexed image, converting to grayscale');
         a=ind2gray(a,map);
     end
+
+    imshow(a)
+    drawnow
 
     [height, width, layers]=size(a);
     if layers>1%dealing with color images
@@ -84,8 +87,13 @@ for k=1:1:nfiles
         case 2; a=(a==C(1))*0+(a==C(2))*255;
     end;
     [epaper, alpha]=epaper_packet(a,paper_color,darkness,scale_percentage);
+    imshow(epaper)
+    drawnow
+    pause(1);
     imwrite(epaper,['Paper_out/printerPaper-dark',num2str(darkness),'-',currentfilename],'Alpha',alpha);
     disp(['printerPaper-dark',num2str(darkness),'-',currentfilename,' saved.'])
 end
+close all
+msgbox('Done !')
 disp('Done!')
 
