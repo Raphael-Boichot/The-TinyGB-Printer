@@ -225,7 +225,7 @@ In *Italics* games working fine in automatic mode, in **bold** games requiring t
 - *[gb_snake](https://github.com/reini1305/gb_snake) by Christian Reinbacher - A one or two players version of Snake*
 - **[gb_bannerprinter](https://github.com/reini1305/gb_bannerprinter) by Christian Reinbacher - A thermal paper banner printer**
 - *[Blarble1290](https://8bittygames.com/blarble1290/) by Patrick Rodriguez - A text based adventure where the printer talks to you, miserable human being !*
-- *A [Game Boy Printer test rom](https://github.com/mmuszkow/gbprinter) by mmuszkow - It prints text to the printer, what else ?*
+- *A [Game Boy Printer test rom](https://github.com/mmuszkow/gbprinter) by Maciek Moszkowski - It prints text to the printer, what else ?*
 
 If you find any homebrew **working for real on a genuine Game Boy Printer** (not a PC emulator please) and **not working on the TinyGB Printer**, create an issue, I will support it soon. Besides that, I'm not interested in supporting homebrews or printing modes not fully compatible with real hardware (I made an exception with Blarble1290 because it is fun to play, see the "Funfacts" section).
 
