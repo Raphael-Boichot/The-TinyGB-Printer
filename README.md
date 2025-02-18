@@ -4,7 +4,7 @@ The TinyGB Printer is the simplest possible Game Boy printer emulator storing im
 
 **It supports all printing modes of all games compatible with the Game Boy Printer (with all possible protocol tricks like double speed, compression, custom palette, break command, arbitrary lenght printing, etc.).** So yes, all Pokémons, Link's Awakening DX, Super Mario Bros Deluxe, Game Boy Camera, all work plus dozens of other ones.
 
-This emulator of course works with any genuine model of Game Boy (DMG, GBC, GBP, GBA). Compatibility was also confirmed with the [GB Boy Colour](https://github.com/Raphael-Boichot/Knowledge-repo-about-the-Kong-Feng-GB-BOY-COLOUR). It was however reported as **not compatible with the Analogue Pocket.**
+This emulator of course works with any genuine model of Game Boy (DMG, GBC, GBP, GBA). Compatibility was also confirmed with the [GB Boy Colour](https://github.com/Raphael-Boichot/Knowledge-repo-about-the-Kong-Feng-GB-BOY-COLOUR).
 
 You can copy, modify, or improve it as you wish, all sources are provided. **Just respect the license and the dedication of the authors**. In very brief, don't forget to cite Brian KHUU (emulator/parser part) and Raphaël BOICHOT (hardware/decoder part) as authors and give a link to this repository.
 
@@ -232,7 +232,7 @@ If you find any homebrew **working for real on a genuine Game Boy Printer** (not
 ## Documented limitation
 - [Photo!](https://github.com/untoxa/gb-photo) standard printing (normal speed and double speed) is the only mode supported to date. Fast Printing and Transfer modes are only supported by the [Pico GB Printer](https://github.com/untoxa/pico-gb-printer), a very good dedicated printer emulator. It must natively be compatible with this board after some minor code update (basically just update the GPIOs according to the current schematic).
 - After tens of thousands of images stored, the access to SD card can become unstable and multi-print may crash within a session. The device just reminds you that embedded systems are not expected to manage such enormous filesystem. It's probably time to move your precious files on a more durable medium anyway.
-- For obscure reasons probably linked to line impedance, the Analogue Pocket refuses to communicate with the TinyGB Printer. I however do not (and will never) have the real device to investigate the issue. I guess that removing and bypassing the level shifter must solve the problem if this is what I think (up to you to try). It is anyway possible to directly extract Game Boy Camera images from the Analogue Pocket savestates. Bummer for the other compatible games.
+- For obscure reasons probably linked to line impedance, to date, the Analogue Pocket refuses to communicate with the TinyGB Printer. I however do not (and will never) have the real device to investigate the issue. I guess that removing and bypassing the level shifter must solve the problem if this is what I think (up to you to try). It is anyway possible to directly extract Game Boy Camera images from the Analogue Pocket savestates. Bummer for the other compatible games.
 
 ## Dev notes
 - The Pi Pico zero is not able to power the SD card (in writing mode) and keep track of the interrupts with the serial port at the same time, so the separate 3.3V regulator for the SD shied. The 5V step-up converter itself is also rather noisy, so extra caps are necessary.
