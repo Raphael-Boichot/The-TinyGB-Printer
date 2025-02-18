@@ -4,7 +4,7 @@ The TinyGB Printer is the simplest possible Game Boy printer emulator storing im
 
 **It supports all printing modes of all games compatible with the Game Boy Printer (with all possible protocol tricks like double speed, compression, custom palette, break command, arbitrary lenght printing, etc.).** So yes, all Pokémons, Link's Awakening DX, Super Mario Bros Deluxe, Game Boy Camera, all work plus dozens of other ones.
 
-This emulator of course works with any genuine model of Game Boy (DMG, GBC, GBP, GBA). Compatibility was also confirmed with the [GB Boy Colour](https://github.com/Raphael-Boichot/Knowledge-repo-about-the-Kong-Feng-GB-BOY-COLOUR). It was reported as **not compatible with the Anlogue Pocket.**
+This emulator of course works with any genuine model of Game Boy (DMG, GBC, GBP, GBA). Compatibility was also confirmed with the [GB Boy Colour](https://github.com/Raphael-Boichot/Knowledge-repo-about-the-Kong-Feng-GB-BOY-COLOUR). It was however reported as **not compatible with the Anlogue Pocket.**
 
 You can copy, modify, or improve it as you wish, all sources are provided. **Just respect the license and the dedication of the authors**. In very brief, don't forget to cite Brian KHUU (emulator/parser part) and Raphaël BOICHOT (hardware/decoder part) as authors and give a link to this repository.
 
