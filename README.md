@@ -79,6 +79,10 @@ The device can record a little more than 1 standard Game Boy Camera image for ea
 ![](/Images/TinyGB_Printer_assembled_2.0.jpg)
 (Credit: Raphaël BOICHOT)
 
+**The TinyGB Printer with TFT display and [3D printed case](/PCB_2.0_with_TFT/3D_printed_enclosure)**
+![](/PCB_2.0_with_TFT/3D_printed_enclosure/Enclosure.jpg)
+(Credit: Slade1972)
+
 **Troubleshooting**
 - Last image is not written ? You've probably switched the device off while the led was still on or you forgot to tear paper with the pushbutton in tear mode.
 - Last batch of images is incomplete (empty folder or just first images recorded with a multi-print) ? The batteries are completely out of juice, recharge them.
