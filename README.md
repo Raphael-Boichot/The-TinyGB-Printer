@@ -258,7 +258,8 @@ The code and current design come as it. If you're not happy with the current har
 
 ## Aknowledgements
 - [Brian Khuu](https://github.com/mofosyne) for the emulator code I have butchered until it accepted to drive my janky core 1 loop. We've worked hard together to support all possible games years ago and he's the true giant whose shoulders I sit on, his emulator is incredible.
-- [Björn Heirman](https://github.com/BjornB2) for the 3D printed enclosure and feedbacks on the device ergonomy.
+- [Slade1972](https://github.com/Slade1972) for the 3D printed enclosure (PCB 2.0 with display) and feedbacks on the building procedure and compatibility with the Analogue Pocket.
+- [Björn Heirman](https://github.com/BjornB2) for the 3D printed enclosure (PCB 1.0 without display) and feedbacks on the device ergonomy.
 - [Rafael Zenaro](https://github.com/zenaro147) for the initial idea ("hey man, why not doing a Pi Pico version of the NeoGB Printer now ?!") and because I reused many chunks of code from the [NeoGB Printer project](https://github.com/zenaro147/NeoGB-Printer). This project is finally more a demake than a remake of the NeoGB Printer. The TinyGB Printer was ought to be our new common project but it did not because real life is what it is.
 - [Toxa](https://github.com/untoxa) for refreshing my mind about some PNG format subtilities that greatly improved PNGenc integration into the project.
 
