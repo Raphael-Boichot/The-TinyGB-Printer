@@ -94,6 +94,6 @@ for k=1:1:nfiles
     disp(['printerPaper-dark',num2str(darkness),'-',currentfilename,' saved.'])
 end
 close all
-msgbox('Done !')
+msgbox('Done !');
 disp('Done!')
 
