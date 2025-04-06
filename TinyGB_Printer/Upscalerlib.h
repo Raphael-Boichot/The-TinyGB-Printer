@@ -1,5 +1,3 @@
-//Very important: in /src/PNGenc.h, increase PNG_FILE_BUF_SIZE to 16384 intead of the 2048 by default which is way too short !
-//modify this manually in your local install of the PNGenc library, there is no call to do this automatically
 #include <PNGenc.h>  //for png encoding
 PNG png;             // static instance of the PNG encoder class
 File myfile;
@@ -49,8 +47,8 @@ void png_upscaler(char DATA_input[], char PNG_output[], unsigned char PNG_palett
     uint8_t Compression_level = 3;  //1 least=fast, 9 most=slow
     uint8_t bits_per_pixel = 2;     //assuming an upscaling factor of 4, 4 pixels are stored for each byte. In 8 bpp, each byte is an entry in the index table (can be 2, 4 or 8)
     unsigned long index;
-    // palette is BGR for indexed image (and maybe other, who knows...). This library lacks deep debugging...
-    //[768] in PNGenc because the PNG upscaler requires a full 3*0xFF BGR palette.
+    // palette is BGR for indexed image (see library wiki https://github.com/bitbank2/PNGenc/wiki/API).
+    // [768] in PNGenc because the PNG upscaler requires a full 3*0xFF BGR palette.
     unsigned char PNG_palette_BGR[768] = { PNG_palette_RGB[2], PNG_palette_RGB[1], PNG_palette_RGB[0],      //White
                                            PNG_palette_RGB[5], PNG_palette_RGB[4], PNG_palette_RGB[3],      //Light gray
                                            PNG_palette_RGB[8], PNG_palette_RGB[7], PNG_palette_RGB[6],      //Dark gray
