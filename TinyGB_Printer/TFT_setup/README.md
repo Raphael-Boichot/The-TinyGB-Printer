@@ -12,14 +12,4 @@
 
 This correspond to this issue with this particular TFT display: [https://github.com/Bodmer/TFT_eSPI/issues/3476](https://github.com/Bodmer/TFT_eSPI/issues/3476)
 
-## How to configure the PNGenc library
-
-- Locate the PNGenc library **\Arduino\libraries\PNGenc\src\PNGenc.h** folder in your Arduino libraries
-- edit the line 59:
-
-   **#define PNG_FILE_BUF_SIZE 16384**
-
-This correspond to this issue with this size of image: 
-[https://github.com/bitbank2/PNGenc/issues/18](https://github.com/bitbank2/PNGenc/issues/18)
-
 Now you're ready to compile !
