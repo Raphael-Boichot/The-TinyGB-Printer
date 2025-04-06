@@ -96,6 +96,11 @@ The device can record a little more than 1 standard Game Boy Camera image for ea
 
 (Credit: Raphaël BOICHOT)
 
+### Making High Dynamic Range image with [photo!](https://github.com/untoxa/gb-photo)
+![](/SD/Script_for_AEB_mode/Output_averaged.png)
+
+(Credit: Raphaël BOICHOT)
+
 ### Saving your achievements and diploma
 ![](/Images/Game_examples.png)
 (yes I suck at Surfing Pikachu)
