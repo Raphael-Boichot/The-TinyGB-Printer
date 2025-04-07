@@ -45,7 +45,7 @@ All the parts used here are cheap and easy to find on Aliexpress. You probably y
 
 The code works with the two PCB versions (1.0 without TFT and 2.0 with TFT) but I recommend ordering only the 2.0 even if you do not plan using the TFT display (just let the pins exposed or soldered with a bare female pin header).
 
-- [A Raspberry Pi Pico Zero](https://www.aliexpress.com/item/1005005862794169.html). Just check pinout if seller is not the same.
+- [A Raspberry Pi Pico Zero](https://aliexpress.com/item/1005007945758255.html). Just check pinout if seller is not the same.
 - [A bare MicroSD shield](https://www.aliexpress.com/item/1005005302035188.html) without internal power converter and **without pin header** (the pins header will be mounted upside down compared to pre-soldered units so it must be soldered manually).
 - [A 240x240 1.3 inches TFT Display](https://www.aliexpress.com/item/1005007143117779.html). It must be that exact one, 7 pins, without CS, 240x240 pixels, GMT130-V1.0. If you decide to use another 240x240 pixels model, CS pin is exposed and driven but it's up to you to reconfigure the TFT library if necessary.
 - [A 4 gates level shifter](https://www.aliexpress.com/item/1005006255186878.html). The Pi Pico pins are not 5V rated, so the need for a level shifter. They are highly reusable in other pico related projects, so you never have too much of them in spare. If the ones you received [look like this](https://forum.arduino.cc/t/logic-level-shifter-problem/1138650?page=2), ask for refund, they are fake / defective.
