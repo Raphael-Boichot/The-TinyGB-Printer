@@ -4,7 +4,7 @@ The TinyGB Printer is the simplest possible Game Boy printer emulator storing im
 
 **It supports all printing modes of all games compatible with the Game Boy Printer (with all possible protocol tricks like double speed, compression, custom palette, break command, arbitrary lenght printing, etc.).** So yes, all Pokémons, Link's Awakening DX, Super Mario Bros Deluxe, Game Boy Camera, all work plus dozens of other ones.
 
-This emulator of course works with any genuine model of Game Boy (DMG, GBC, GBP, GBA). Compatibility was also confirmed with the [GB Boy Colour](https://github.com/Raphael-Boichot/Knowledge-repo-about-the-Kong-Feng-GB-BOY-COLOUR). To date, **the Analogue Pocket is [not compatible](https://github.com/Raphael-Boichot/The-TinyGB-Printer/discussions/2#discussioncomment-12235394)** (no idea why).
+This emulator of course works with any genuine model of Game Boy (DMG, GBC, GBP, GBA). Compatibility was also confirmed with the [GB Boy Colour](https://github.com/Raphael-Boichot/Knowledge-repo-about-the-Kong-Feng-GB-BOY-COLOUR). To date, **the Analogue Pocket is [not compatible](https://github.com/Raphael-Boichot/The-TinyGB-Printer/discussions/2#discussioncomment-12235394)** (no idea why at the moment).
 
 You can copy, modify, or improve it as you wish, all sources are provided. **Just respect the license and the dedication of the authors**. In very brief, don't forget to cite Brian KHUU (emulator/parser part) and Raphaël BOICHOT (hardware/decoder part) as authors and give a link to this repository.
 
@@ -91,21 +91,21 @@ The device can record a little more than 1 standard Game Boy Camera image for ea
 
 ## Examples of use
 
-### Making timelapse with [photo!](https://github.com/untoxa/gb-photo)
+### Make fancy timelapses with [photo!](https://github.com/untoxa/gb-photo)
 ![](/Images/Showcase_2.gif)
 
 (Credit: Raphaël BOICHOT)
 
-### Making [High Dynamic Range](/SD/Script_for_AEB_mode) image with [photo!](https://github.com/untoxa/gb-photo)
+### Make [High Dynamic Range](/SD/Script_for_AEB_mode) image with [photo!](https://github.com/untoxa/gb-photo)
 ![](/SD/Script_for_AEB_mode/Output_averaged.png)
 
 (Credit: Raphaël BOICHOT)
 
-### Saving your achievements and diploma
+### Save your achievements and diploma
 ![](/Images/Game_examples.png)
 (yes I suck at Surfing Pikachu)
 
-### Simulating thermal paper output with a [dedicated script](https://github.com/Raphael-Boichot/The-TinyGB-Printer/tree/main/SD/Paper_emulator) (requires a PC)
+### Simulate thermal paper output with a [dedicated script](https://github.com/Raphael-Boichot/The-TinyGB-Printer/tree/main/SD/Paper_emulator) (requires a PC)
 ![](/SD/Paper_emulator/Paper_out/printerPaper-dark8-0001839.png)
 
 ## Compatible with the 110 original games using the Game Boy Printer
@@ -239,7 +239,7 @@ If you find any homebrew **working for real on a genuine Game Boy Printer** (not
 ## Documented limitation
 - [Photo!](https://github.com/untoxa/gb-photo) standard printing (normal speed and double speed) is the only mode supported to date. Fast Printing and Transfer modes are only supported by the [Pico GB Printer](https://github.com/untoxa/pico-gb-printer), a very good dedicated printer emulator. It must natively be compatible with this board after some minor code update (basically just update the GPIOs according to the current schematic).
 - After tens of thousands of images stored, the access to SD card can become unstable and multi-print may crash within a session. The device just reminds you that embedded systems are not expected to manage such enormous filesystem. It's probably time to move your precious files on a more durable medium anyway.
-- The Analogue Pocket is reported as **not compatible**, for reasons I do not understand. I do not own one of these expensive gizmos (and won't, my dedication to Science has its limits) and cannot borrow one from around me, so I cannot fix this issue for the moment. Knowing that even the crappy GB Boy Colour is compatible with the TinyGB Printer, it very puzzles me.
+- The Analogue Pocket is reported as **not compatible**, for reasons I do not understand. I do not own one of these expensive gizmos (and won't, my dedication to Science has its limits) and cannot borrow one from around me, so I cannot fix this issue for the moment (may this be fixable).
 
 ## Dev notes
 - The Pi Pico zero is not able to power the SD card (in writing mode) and keep track of the interrupts with the serial port at the same time, so the separate 3.3V regulator for the SD shied. The 5V step-up converter itself is also rather noisy, so extra caps are necessary.
