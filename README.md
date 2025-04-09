@@ -91,6 +91,10 @@ The device can record a little more than 1 standard Game Boy Camera image for ea
 
 ## Examples of use
 
+### Save your achievements and diploma
+![](/Images/Game_examples.png)
+(yes I suck at Surfing Pikachu)
+
 ### Make fancy timelapses with [photo!](https://github.com/untoxa/gb-photo)
 ![](/Images/Showcase_2.gif)
 
@@ -105,10 +109,6 @@ The device can record a little more than 1 standard Game Boy Camera image for ea
 ![](/SD/Script_for_AEB_mode/Code_color_fusion/Color_fusion.png)
 
 (Yes, this is done with a Game Boy Camera)
-
-### Save your achievements and diploma
-![](/Images/Game_examples.png)
-(yes I suck at Surfing Pikachu)
 
 ### Simulate thermal paper output with a [dedicated script](https://github.com/Raphael-Boichot/The-TinyGB-Printer/tree/main/SD/Paper_emulator) (requires a PC)
 ![](/SD/Paper_emulator/Paper_out/printerPaper-dark8-0001839.png)
