@@ -8,8 +8,3 @@ You can also upload your images to the [GBCamera Android Manager](https://github
 
 ### Example of enhanced image
 ![alt](/SD/Script_for_AEB_mode/Output_averaged.png)
-
-### Example of enhanced image using RGB filters
-![](/SD/Script_for_AEB_mode/Code_color_fusion/Color_fusion.png)
-
-And yes, this is done with a Game Boy Camera.
