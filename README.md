@@ -101,10 +101,10 @@ The device can record a little more than 1 standard Game Boy Camera image for ea
 
 (Credit: Raphaël BOICHOT)
 
-### Example of High Dynamic Range image using RGB filters and stacking
+### Make High Dynamic Range image using RGB filters and [stacking](/SD/Script_for_AEB_mode/Code_color_fusion)
 ![](/SD/Script_for_AEB_mode/Code_color_fusion/Color_fusion.png)
 
-And yes, this is done with a Game Boy Camera.
+(Yes, this is done with a Game Boy Camera)
 
 ### Save your achievements and diploma
 ![](/Images/Game_examples.png)
