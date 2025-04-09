@@ -91,7 +91,7 @@ The device can record a little more than 1 standard Game Boy Camera image for ea
 
 ## Examples of use
 
-### Save your achievements and diploma
+### Save your Game Boy Camera images, achievements and diploma
 ![](/Images/Game_examples.png)
 (yes I suck at Surfing Pikachu)
 
