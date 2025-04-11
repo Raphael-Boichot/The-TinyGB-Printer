@@ -8,3 +8,6 @@ You can also upload your images to the [GBCamera Android Manager](https://github
 
 ### Example of enhanced image
 ![alt](/SD/Script_for_AEB_mode/Output_averaged.png)
+
+### Example of very enhanced image
+![](/SD/Script_for_AEB_mode/Code_color_fusion/Color_fusion.png)
