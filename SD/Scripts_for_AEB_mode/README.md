@@ -7,7 +7,7 @@ Just drop some images taken at different exposures (like with AEB mode in Photo!
 You can also upload your images to the [GBCamera Android Manager](https://github.com/Mraulio/GBCamera-Android-Manager) and apply the exact same process.
 
 ### Example of enhanced image
-![alt](/SD/Script_for_AEB_mode/Output_averaged.png)
+![alt](/SD/Scripts_for_AEB_mode/Code_black_and_white/EAB_image.png)
 
 ### Example of very enhanced image
 ![](/SD/Script_for_AEB_mode/Code_color_fusion/Color_fusion.png)
