@@ -101,12 +101,12 @@ The device can record a little more than 1 standard Game Boy Camera image for ea
 (Credit: Raphaël BOICHOT)
 
 ### Make [High Dynamic Range](/SD/Script_for_AEB_mode) image with [photo!](https://github.com/untoxa/gb-photo)
-![](/SD/Script_for_AEB_mode/Output_averaged.png)
+![alt](/SD/Scripts_for_AEB_mode/Code_black_and_white/EAB_image.png)
 
 (Credit: Raphaël BOICHOT)
 
-### Make High Dynamic Range image using RGB filters and [stacking](/SD/Script_for_AEB_mode/Code_color_fusion)
-![](/SD/Script_for_AEB_mode/Code_color_fusion/Color_fusion.png)
+### Make color images using RGB filters and [stacking](/SD/Script_for_AEB_mode)
+![](/SD/Scripts_for_AEB_mode/Code_color_fusion/Color_fusion.png)
 
 (Yes, this is done with a Game Boy Camera)
 
