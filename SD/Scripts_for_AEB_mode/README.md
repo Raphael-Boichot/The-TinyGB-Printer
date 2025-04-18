@@ -10,4 +10,4 @@ You can also upload your images to the [GBCamera Android Manager](https://github
 ![alt](/SD/Scripts_for_AEB_mode/Code_black_and_white/EAB_image.png)
 
 ### Example of very enhanced image
-![](/SD/Script_for_AEB_mode/Code_color_fusion/Color_fusion.png)
+![](/SD/Scripts_for_AEB_mode/Code_color_fusion/Color_fusion.png)
