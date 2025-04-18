@@ -12,7 +12,7 @@ pkg load image
 %User parameters
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 target_png_file='EAB_image.png'; %target file for animated gif
-scaling_factor=2;
+scaling_factor=1;
 color_limit=4; %threshold to reject an image /255
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
