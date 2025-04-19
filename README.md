@@ -8,6 +8,8 @@ This emulator of course works with any genuine model of Game Boy (DMG, GBC, GBP,
 
 You can copy, modify, or improve it as you wish, all sources are provided. **Just respect the license and the dedication of the authors**. In very brief, don't forget to cite Brian KHUU (emulator/parser part) and Raphaël BOICHOT (hardware/decoder part) as authors and give a link to this repository.
 
+You can share your images with other enthusiasts on the [Game Boy Camera Club Telegram](https://t.me/gameboycamera).
+
 ## Make it, enjoy it !
 **Nothing to compile, nothing to install, drop the UF2 file to the device and it works straight after soldering.**
 ![](/Images/Final_version_2.0_3.jpg)
