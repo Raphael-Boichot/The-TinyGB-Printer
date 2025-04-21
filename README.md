@@ -100,8 +100,6 @@ The device can record a little more than 1 standard Game Boy Camera image for ea
 ### Save your prefered Game Boy Camera images
 ![](/Images/Game_Boy_Camera_1.png)
 
-![](/Images/Game_Boy_Camera_2.png)
-
 ### Make fancy timelapses with [photo!](https://github.com/untoxa/gb-photo)
 ![](/Images/Showcase_2.gif)
 
