@@ -1,4 +1,4 @@
-## Some script to create animated gif (requires a PC)
+## Some Python script to create animated gif
 
 This is a Python script to to create animated gifs (not myself a huge fan of Python, so this is a ChatGPT generated script). Any online tool should do the job too.
 
