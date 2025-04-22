@@ -1,6 +1,6 @@
 ## Some script to create animated gif (requires a PC)
 
-This is a Python script to to create animated gifs (not myself a huge fan of Python, so this is a ChatGPT generated script)
+This is a Python script to to create animated gifs (not myself a huge fan of Python, so this is a ChatGPT generated script). Any online tool should do the job too.
 
 Just drop some images taken at different times in the /Pictures folder, run the code script and enjoy your animation !
 
