@@ -1,4 +1,4 @@
-## Some script to create High Dynamic Range pictures (requires a PC)
+## Some script to create High Dynamic Range pictures
 
 These are [GNU Octave scripts](https://octave.org/) to to create High Dynamic Range picture. GNU Octave is a programming platform / langage for scientific computing, it can be used whatever your prefered OS.
 
