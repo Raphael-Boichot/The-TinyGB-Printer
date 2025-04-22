@@ -13,7 +13,7 @@ pkg load image
 target_gif_file='Animation.gif'; %target file for animated gif
 gif_deadtime=0.05;               %delay is seconds between pictures for animated gifs
 gif_skip=1;                      %keep every 1 out of gif_skip image for gif
-scaling_factor=1;                %because images are 8x after powershell step
+scaling_factor=1;                %because you may want to change the image format which is 4x natively
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 listing = dir('./Pictures/*.png');
