@@ -14,5 +14,4 @@ image_sequence[0].save(
     duration=50,   
     loop=0         
 )
-
 print(f"Animation made: {output_path}")
