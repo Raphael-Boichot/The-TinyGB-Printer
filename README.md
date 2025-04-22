@@ -100,7 +100,7 @@ The device can record a little more than 1 standard Game Boy Camera image for ea
 ### Save your prefered Game Boy Camera images
 ![](/Images/Game_Boy_Camera_1.png)
 
-### Make fancy timelapses with [photo!](https://github.com/untoxa/gb-photo) (requires a [flashable camera](https://github.com/Raphael-Boichot/Game_Boy_Mini_Flashable_Camera))
+### Make fancy timelapses with [photo!](https://github.com/untoxa/gb-photo) (requires a [flashable camera](https://github.com/Raphael-Boichot/Game_Boy_Mini_Flashable_Camera) and a [script](/SD/Script_for_animated_gif))
 ![](/Images/Showcase_2.gif)
 
 (Credit: Raphaël BOICHOT)
@@ -110,7 +110,7 @@ The device can record a little more than 1 standard Game Boy Camera image for ea
 
 (Credit: Raphaël BOICHOT)
 
-### Make color images using RGB filters and [stacking](/SD/Scripts_for_AEB_mode) (requires a PC)
+### Make color images using RGB filters and [script for stacking](/SD/Scripts_for_AEB_mode) (requires a PC)
 ![](/SD/Scripts_for_AEB_mode/Code_color_fusion/Color_fusion.png)
 
 (Yes, this is done with a Game Boy Camera)
