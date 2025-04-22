@@ -1,6 +1,6 @@
 ## Some script to create animated gif
 
-This is a [GNU Octave scripts](https://octave.org/) to to create animated gif. GNU Octave is a programming platform / langage for scientific computing, it can be used whatever your prefered OS.
+This is a [GNU Octave script](https://octave.org/) to to create animated gif. GNU Octave is a programming platform / langage for scientific computing, it can be used whatever your prefered OS.
 
 Just drop some images taken at different times in the /Pictures folder, run the code script and enjoy your animation !
 
