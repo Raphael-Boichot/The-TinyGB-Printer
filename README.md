@@ -115,7 +115,7 @@ The device can record a little more than 1 standard Game Boy Camera image for ea
 
 (Yes, this is done with a Game Boy Camera)
 
-### Simulate thermal paper output with a [dedicated script](/SD/Paper_emulator) (requires a PC)
+### Simulate thermal paper output with a [dedicated script](/SD/Paper_emulator)
 ![](/SD/Paper_emulator/Paper_out/printerPaper-dark8-0001839.png)
 
 ## Compatible with the 110 original games using the Game Boy Printer
