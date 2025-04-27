@@ -1,5 +1,6 @@
 clc
 clear
+close all
 
 disp('-----------------------------------------------------------')
 disp('|Beware, this code is for GNU Octave ONLY !!!             |')
