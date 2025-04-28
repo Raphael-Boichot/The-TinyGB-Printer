@@ -45,7 +45,7 @@
 // Feature
 //#define FEATURE_CHECKSUM_SUPPORTED ///< WIP
 
-#define GBP_BUSY_PACKET_COUNT 20  // 68 Inquiry packets is generally approximately how long it takes for a real printer to print. This is not a real printer so can be shorter
+#define GBP_BUSY_PACKET_COUNT 1  // 20 is default with Arduino version, 1 is the fastest possible
 
 
 /******************************************************************************/
