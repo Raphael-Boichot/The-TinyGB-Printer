@@ -115,6 +115,8 @@ The device can record a little more than 1 standard Game Boy Camera image for ea
 
 (Yes, this is done with a Game Boy Camera)
 
+Besides scripts proposed here, you can also upload your images to the [GBCamera Android Manager](https://github.com/Mraulio/GBCamera-Android-Manager) or use the [Python HDR image processing tool](https://github.com/seb-tourneux/gbcam-hdr-utils) and apply the exact same process.
+
 ### Simulate thermal paper output with a [dedicated script](/SD/Paper_emulator)
 ![](/SD/Paper_emulator/Paper_out/printerPaper-dark8-0001839.png)
 
