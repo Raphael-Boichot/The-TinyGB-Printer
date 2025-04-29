@@ -133,7 +133,7 @@ void setup(void) {
 #endif
 
 #define VERSION_STRING "V3.2.1 (Copyright (C) 2022 Brian KHUU)"
-#define TINY_VERSION_STRING "V2.0.2 (Copyright (C) 2024 Raphaël BOICHOT)"
+#define TINY_VERSION_STRING "V2.0.3 (Copyright (C) 2024 Raphaël BOICHOT)"
   Serial.println(F("// Game Boy Printer Emulator for Arduino " VERSION_STRING));
   Serial.println(F("// TinyGB Printer converter add-on " TINY_VERSION_STRING));
   Serial.flush();

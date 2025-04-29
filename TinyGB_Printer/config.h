@@ -1,6 +1,6 @@
-/*****************************
- * SD CARD MODULE DEFINITIONS 
- *****************************/
+/****************************************
+ * SD CARD MODULE DEFINITIONS FOR PI PICO
+ ****************************************/
 //    SD card attached to SPI bus as follows on RP2040:
 //   ************ SPI0 ************
 //   ** MISO (AKA RX) - pin 0, 4, or 16

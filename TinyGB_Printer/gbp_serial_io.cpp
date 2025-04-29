@@ -34,20 +34,17 @@
 #include "gbp_serial_io.h"
 #include "gbp_cbuff.h"
 
+/*******************************************************************************
+Dev notes (2025-04-29): one game (Love Hina Pocket) is senstive to GBP_PKT10_TIMEOUT_MS
+GBP_BUSY_PACKET_COUNT can be increased as much as you want. 
+For Game Boy Camera, GBP_PKT10_TIMEOUT_MS 68 gives the real printing delay but it depends on games
+There is no flux control here (second core deals with images) so no need to play with this parameter
+A Game Boy Printer data packet takes about 1.2 s to print in real
+********************************************************************************/
+
 /******************************************************************************/
-
-#define GBP_PKT10_TIMEOUT_MS 400
-
-// Testing
-//#define TEST_CHECKSUM_FORCE_FAIL
-//#define TEST_PRETEND_BUFFER_FULL
-
-// Feature
-//#define FEATURE_CHECKSUM_SUPPORTED ///< WIP
-
-#define GBP_BUSY_PACKET_COUNT 1  // 20 is default with Arduino version, 1 is the fastest possible
-
-
+#define GBP_PKT10_TIMEOUT_MS 400  //do not modify
+#define GBP_BUSY_PACKET_COUNT 1   // 20 is default with Arduino version, 1 is the fastest possible
 /******************************************************************************/
 
 typedef enum {
