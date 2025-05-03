@@ -25,9 +25,9 @@
 // |  6  4  2  |
 //  \_5__3__1_/   (at cable)
 //
-#define GBP_SO_PIN 4       // Pin 2            : Serial OUTPUT
-#define GBP_SI_PIN 3       // Pin 3            : Serial INPUT
-#define GBP_SC_PIN 2       // Pin 5            : Serial Clock (Interrupt)
+#define GBP_SO_PIN 4       // Cable pin 2 : Serial OUTPUT
+#define GBP_SI_PIN 3       // Cable pin 3 : Serial INPUT
+#define GBP_SC_PIN 2       // Cable pin 5 : Serial Clock (Interrupt)
 #define LED_STATUS_PIN 16  // Internal LED blink on packet reception
 #define NUMPIXELS 1        // NeoPixel ring size (just internal LED here)
 Adafruit_NeoPixel pixels(NUMPIXELS, LED_STATUS_PIN, NEO_RGB);
