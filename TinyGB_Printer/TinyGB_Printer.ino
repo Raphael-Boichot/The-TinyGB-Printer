@@ -113,11 +113,13 @@ void gpio_irq_callback(uint gpio, uint32_t events) {
 *******************************************************************************/
 
 void setup(void) {
+#ifdef DEBUG_MODE
   Serial.begin(115200);
+#endif
   Tiny_printer_preparation();  //switches in Tiny Printer mode
-  gpio_init(BTN_PUSH);       // Configure BTN_PUSH as input
+  gpio_init(BTN_PUSH);         // Configure BTN_PUSH as input
   gpio_set_dir(BTN_PUSH, GPIO_IN);
-  gpio_init(GBP_SC_PIN);       // Configure SC and SO as inputs too
+  gpio_init(GBP_SC_PIN);  // Configure SC and SO as inputs too
   gpio_set_dir(GBP_SC_PIN, GPIO_IN);
   gpio_init(GBP_SO_PIN);
   gpio_set_dir(GBP_SO_PIN, GPIO_IN);
@@ -143,9 +145,11 @@ void setup(void) {
 
 #define VERSION_STRING "V3.2.1 (Copyright (C) 2022 Brian KHUU)"
 #define TINY_VERSION_STRING "V2.0.3 (Copyright (C) 2024 Raphaël BOICHOT)"
+#ifdef DEBUG_MODE
   Serial.println(F("// Game Boy Printer Emulator for Arduino " VERSION_STRING));
   Serial.println(F("// TinyGB Printer converter add-on " TINY_VERSION_STRING));
   Serial.flush();
+#endif
 }  // setup()
 
 void loop() {
@@ -161,6 +165,7 @@ void loop() {
   if (curr_millis > last_millis) {
     uint32_t elapsed_ms = curr_millis - last_millis;
     if (gbp_serial_io_timeout_handler(elapsed_ms)) {
+#ifdef DEBUG_MODE
       Serial.print("Core 0 -> ");
       Serial.print("Completed ");
       Serial.print("(Memory Waterline: ");
@@ -168,12 +173,15 @@ void loop() {
       Serial.print("B out of ");
       Serial.print(gbp_serial_io_dataBuff_max());
       Serial.println("B)");
+#endif
       gbp_pkt_reset(&gbp_pktState);
       tileBuff.count = 0;
       /////////////Specific to TinyGB Printer//////////////
       //incomplete packet due to abort command or transmission stopped inbetween DATA packets
       if (!(DATA_bytes_counter % 640 == 0) | (gbp_pktState.command == GBP_COMMAND_DATA)) {
+#ifdef DEBUG_MODE
         Serial.println("Core 0 -> Incomplete packet detected due to abort command, flush printer");
+#endif
         SD.remove(tmp_storage_file_name);  //remove any previous failed attempt
         lines_in_image_file = 0;           //resets the number of lines
         DATA_bytes_counter = 0;            //reset
@@ -201,15 +209,21 @@ void loop1()  //core 1 loop deals with images, written by Raphaël BOICHOT, nove
     LED_WS2812_state(WS2812_Color, 1);
     if (inner_palette == 0x00) {  //4 games uses this palette
       inner_palette = 0xE4;       //see Game Boy Programming manual, palette 0x00 is a default palette interpreted as 0xE4 or 0b11100100
+#ifdef DEBUG_MODE
       Serial.println("Core 1 -> Palette 0x00, fixed to 0xE4");
+#endif
     }
     if (inner_palette == 0xE1) {  //1 game uses this wrong palette
       inner_palette = 0xD2;       //palette fix for Disney's Tarzan, inverts DG and LG
+#ifdef DEBUG_MODE
       Serial.println("Core 1 -> Palette 0xE1 (Disney's Tarzan), fixed to 0xD2");
+#endif
     }
     if (inner_palette == 0x2D) {  //1 game uses this wrong palette
       inner_palette = 0x1E;       //palette fix for Trade & Battle: Card Hero, inverts DG and LG. Text will become hard to read but at least creatures are well depicted
+#ifdef DEBUG_MODE
       Serial.println("Core 1 -> Palette 0x2D (Trade & Battle: Card Hero), fixed to 0xE1");
+#endif
     }
     //0xE4 = 0b11100100 = 3-2-1-0 intensity of colors for printer (3 = black, 0 = white), for Game Boy pixel encoded values 0-1-2-3
     image_palette[0] = bitRead(inner_palette, 0) + 2 * bitRead(inner_palette, 1);
@@ -217,6 +231,7 @@ void loop1()  //core 1 loop deals with images, written by Raphaël BOICHOT, nove
     image_palette[2] = bitRead(inner_palette, 4) + 2 * bitRead(inner_palette, 5);
     image_palette[3] = bitRead(inner_palette, 6) + 2 * bitRead(inner_palette, 7);
 
+#ifdef DEBUG_MODE
     Serial.print("Core 1 -> I received ");
     Serial.print(DATA_packet_to_print, DEC);
     Serial.print(" packets to print with palette ");
@@ -224,6 +239,7 @@ void loop1()  //core 1 loop deals with images, written by Raphaël BOICHOT, nove
     Serial.print(" and ");
     Serial.print(inner_lower_margin, DEC);
     Serial.println(" after margin");
+#endif
 
     //All the meat to decode the 2bpp Game Boy Tile Format is explained here (among other sources): https://www.huderlem.com/demos/gameboy2bpp.html
     //the image data are a simple one dimensional array because there is no gain to have a 2D array, in particular when burning data to SD card
@@ -314,19 +330,24 @@ void loop1()  //core 1 loop deals with images, written by Raphaël BOICHOT, nove
       Next_ID++;                                        //increment file number
       store_next_ID("/tiny.sys", Next_ID, Next_dir);
       sprintf(png_storage_file_name, "/%05d/%07d.png", Next_dir, Next_ID);
+#ifdef DEBUG_MODE
       Serial.print("Core 1 -> Encoding ");
       Serial.print(png_storage_file_name);
       Serial.print(" due to feed paper signal, with ");
       Serial.print(lines_in_image_file, DEC);
       Serial.println(" lines in image file");
+#endif
       myTime = millis();
       png_upscaler(tmp_storage_file_name, png_storage_file_name, PNG_palette_RGB, lines_in_image_file);
+#ifdef DEBUG_MODE
       Serial.print("Core 1 -> PNG file closed, encoding time (ms): ");
       Serial.println(millis() - myTime, DEC);
+#endif
       FILE_number = FILE_number + 1;
+#ifdef DEBUG_MODE
       Serial.print("Core 1 -> Number of file for this session: ");
       Serial.println(FILE_number, DEC);
-
+#endif
       if (BITBOY_mode == 0) {  // in this mode the folders are incremented at each boot
         if (FILE_number % max_files_per_folder == 0) {
           Next_dir++;
@@ -351,18 +372,24 @@ void loop1()  //core 1 loop deals with images, written by Raphaël BOICHOT, nove
     Next_ID++;  //increment file number
     store_next_ID("/tiny.sys", Next_ID, Next_dir);
     sprintf(png_storage_file_name, "/%05d/%07d.png", Next_dir, Next_ID);
+#ifdef DEBUG_MODE
     Serial.print("Core 1 -> Encoding ");
     Serial.print(png_storage_file_name);
     Serial.print(" due to push button, with ");
     Serial.print(lines_in_image_file, DEC);
     Serial.println(" lines in image file");
+#endif
     myTime = millis();
     png_upscaler(tmp_storage_file_name, png_storage_file_name, PNG_palette_RGB, lines_in_image_file);
+#ifdef DEBUG_MODE
     Serial.print("Core 1 -> PNG file closed, encoding time (ms): ");
     Serial.println(millis() - myTime, DEC);
+#endif
     FILE_number = FILE_number + 1;
+#ifdef DEBUG_MODE
     Serial.print("Core 1 -> Number of file for this session: ");
     Serial.println(FILE_number, DEC);
+#endif
 
     if (BITBOY_mode == 0) {
       if (FILE_number % max_files_per_folder == 0) {
@@ -394,13 +421,16 @@ inline void gbp_parse_packet_loop(void) {
   for (int i = 0; i < gbp_serial_io_dataBuff_getByteCount(); i++) {
     if (gbp_pkt_processByte(&gbp_pktState, (const uint8_t)gbp_serial_io_dataBuff_getByte(), gbp_pktbuff, &gbp_pktbuffSize, sizeof(gbp_pktbuff))) {
       if (gbp_pktState.received == GBP_REC_GOT_PACKET) {
+#ifdef DEBUG_MODE
         Serial.print("Core 0 -> ");
         Serial.print((char)'{');
         Serial.print("\"command\":\"");
         Serial.print(gbpCommand_toStr(gbp_pktState.command));
         Serial.print("\"");
+#endif
         if (!skip_byte_on_display) {
           if (gbp_pktState.command == GBP_COMMAND_INQUIRY) {
+#ifdef DEBUG_MODE
             Serial.print(", \"status\":{");
             Serial.print("\"LowBat\":");
             Serial.print(gpb_status_bit_getbit_low_battery(gbp_pktState.status) ? '1' : '0');
@@ -419,11 +449,13 @@ inline void gbp_parse_packet_loop(void) {
             Serial.print(",\"Sum\":");
             Serial.print(gpb_status_bit_getbit_checksum_error(gbp_pktState.status) ? '1' : '0');
             Serial.print((char)'}');
+#endif
           }
         }
 
         if (gbp_pktState.command == GBP_COMMAND_PRINT) {
           //!{"command":"PRNT","sheets":1,"margin_upper":1,"margin_lower":3,"pallet":228,"density":64 }
+#ifdef DEBUG_MODE
           Serial.print(", \"sheets\":");
           Serial.print(gbp_pkt_printInstruction_num_of_sheets(gbp_pktbuff));
           Serial.print(", \"margin_upper\":");
@@ -434,7 +466,7 @@ inline void gbp_parse_packet_loop(void) {
           Serial.print(gbp_pkt_printInstruction_palette_value(gbp_pktbuff));
           Serial.print(", \"density\":");
           Serial.print(gbp_pkt_printInstruction_print_density(gbp_pktbuff));
-
+#endif
           ///////////////////////specific to the TinyGB Printer////////////////////////
           DATA_packet_to_print = DATA_packet_counter;
           DATA_bytes_to_print = DATA_bytes_counter;                                                //to detect anormal packets not 640 bytes long
@@ -450,20 +482,29 @@ inline void gbp_parse_packet_loop(void) {
           LED_WS2812_state(WS2812_Color, 1);
 
 #ifdef GBP_FEATURE_PARSE_PACKET_USE_DECOMPRESSOR
+#ifdef DEBUG_MODE
           Serial.print(", \"compressed\":0");  // Already decompressed by us, so no need to do so
+#endif
 #else
+#ifdef DEBUG_MODE
           Serial.print(", \"compressed\":");
           Serial.print(gbp_pktState.compression);
 #endif
+#endif
+#ifdef DEBUG_MODE
           Serial.print(", \"more\":");
           Serial.print((gbp_pktState.dataLength != 0) ? '1' : '0');
+#endif
           LED_WS2812_state(WS2812_Color, 0);
         }
+#ifdef DEBUG_MODE
         Serial.println((char)'}');
-
+#endif
         ///////////////////////specific to the TinyGB Printer////////////////////////
         if (gbp_pktState.command == GBP_COMMAND_BREAK) {
+#ifdef DEBUG_MODE
           Serial.println("Core 0 -> BREAK command detected, flush printer");
+#endif
           SD.remove(tmp_storage_file_name);  //remove any previous failed attempt
           lines_in_image_file = 0;           //resets the number of lines
           DATA_bytes_counter = 0;            //reset
@@ -485,12 +526,16 @@ inline void gbp_parse_packet_loop(void) {
 
               if (!skip_byte_on_display) {
                 if (i == GBP_TILE_SIZE_IN_BYTE - 1) {
+#ifdef DEBUG_MODE
                   Serial.print((char)nibbleToCharLUT[(data_8bit >> 4) & 0xF]);
                   Serial.println((char)nibbleToCharLUT[(data_8bit >> 0) & 0xF]);  // use println on last byte to reduce serial calls
+#endif
                 } else {
+#ifdef DEBUG_MODE
                   Serial.print((char)nibbleToCharLUT[(data_8bit >> 4) & 0xF]);
                   Serial.print((char)nibbleToCharLUT[(data_8bit >> 0) & 0xF]);
                   Serial.print((char)' ');
+#endif
                 }
               }
 
@@ -527,11 +572,15 @@ void Tiny_printer_preparation() {
     WS2812_Color = pixels.Color(0, 0, intensity);  //RGB triplet, turn to blue
     TEAR_mode = 1;                                 //idle mode with tear paper
     tft.fillScreen(TFT_NAVY);                      //this blue looks cool
+#ifdef DEBUG_MODE
     Serial.println("// Tear mode, push button to close an image (tear paper)");
+#endif
   } else {
     TEAR_mode = 0;
     tft.fillScreen(TFT_DARKGREEN);  //this green looks cool
+#ifdef DEBUG_MODE
     Serial.println("// Margin mode, images will be closed automatically");
+#endif
   }
 
   img.createSprite(160, 240);  // then create the giant sprite that will be an image of our video ram buffer
@@ -555,10 +604,14 @@ void Tiny_printer_preparation() {
   SPI1.setSCK(SD_SCK);
   if (SD.begin(SD_CS, SPI1)) {  //SD.begin(SD_CS) for SPI0, SPI.setRX, etc. because...
     SDcard_READY = 1;
+#ifdef DEBUG_MODE
     Serial.println("// SD card detected, now switch to emulator mode");
+#endif
   } else {
     SDcard_READY = 0;
+#ifdef DEBUG_MODE
     Serial.println("// SD card not detected, images will not be stored. SD card can still be inserted now");
+#endif
     while (!SD.begin(SD_CS, SPI1)) {
       tft.fillScreen(TFT_RED);
       tft.setTextColor(TFT_BLACK);
@@ -616,9 +669,13 @@ void ID_file_creator(const char* path) {  //from fresh SD, device needs a "secre
     File Datafile = SD.open(path, FILE_WRITE);
     Datafile.write(buf, 8);
     Datafile.close();
+#ifdef DEBUG_MODE
     Serial.println("// Creating a new configuration file");
+#endif
   } else {
+#ifdef DEBUG_MODE
     Serial.println("// Configuration file yet existing");
+#endif
   }
 }
 

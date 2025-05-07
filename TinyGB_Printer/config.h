@@ -18,6 +18,7 @@
 #define SD_SCK 10    // SD card SPI1
 #define SD_MOSI 11   // SD card SPI1
 #define BTN_PUSH 12  // Define a PushButton to use to Force a new file in idle mode ///BOICHOT
+//#define DEBUG_MODE   //allow additionnal outputs on on serial, only for debugging
 
 /* Gameboy Link Cable Mapping to Arduino Pin */
 // Note: Serial Clock Pin must be attached to an interrupt pin of the arduino
