@@ -31,6 +31,7 @@
 #include "gbp_serial_io.h"
 
 /////////////Specific to TinyGB Printer//////////////
+#include <hardware/gpio.h>
 #include <Adafruit_NeoPixel.h>
 #include <SPI.h>  //for SD
 #include <SD.h>   //for SD
@@ -91,17 +92,20 @@ const char* gbpCommand_toStr(int val) {
 }
 
 /*******************************************************************************
-  Interrupt Service Routine
+  Interrupt Service Routine using direct GPIO
 *******************************************************************************/
-
-void serialClock_ISR(void) {
-  // Serial Clock (1 = Rising Edge) (0 = Falling Edge); Master Output Slave Input (This device is slave)
+void gpio_irq_callback(uint gpio, uint32_t events) {
+  if (gpio == GBP_SC_PIN) {
+    bool so_bit = gpio_get(GBP_SO_PIN);  // Read the bit from the master (SO = Serial Output from Master)
+    bool tx_bit;
 #ifdef GBP_FEATURE_USING_RISING_CLOCK_ONLY_ISR
-  const bool txBit = gpb_serial_io_OnRising_ISR(digitalRead(GBP_SO_PIN));
+    tx_bit = gpb_serial_io_OnRising_ISR(so_bit);
 #else
-  const bool txBit = gpb_serial_io_OnChange_ISR(digitalRead(GBP_SC_PIN), digitalRead(GBP_SO_PIN));
+    bool sc_level = gpio_get(GBP_SC_PIN);
+    tx_bit = gpb_serial_io_OnChange_ISR(sc_level, so_bit);
 #endif
-  digitalWrite(GBP_SI_PIN, txBit ? HIGH : LOW);
+    gpio_put(GBP_SI_PIN, tx_bit);  // Write the response bit back to the master
+  }
 }
 
 /*******************************************************************************
@@ -111,20 +115,25 @@ void serialClock_ISR(void) {
 void setup(void) {
   Serial.begin(115200);
   Tiny_printer_preparation();  //switches in Tiny Printer mode
-  pinMode(GBP_SC_PIN, INPUT);
-  pinMode(GBP_SO_PIN, INPUT);
-  pinMode(GBP_SI_PIN, OUTPUT);
-  digitalWrite(GBP_SI_PIN, LOW);
+  gpio_init(BTN_PUSH);       // Configure BTN_PUSH as input
+  gpio_set_dir(BTN_PUSH, GPIO_IN);
+  gpio_init(GBP_SC_PIN);       // Configure SC and SO as inputs too
+  gpio_set_dir(GBP_SC_PIN, GPIO_IN);
+  gpio_init(GBP_SO_PIN);
+  gpio_set_dir(GBP_SO_PIN, GPIO_IN);
+  gpio_init(GBP_SI_PIN);  // Configure SI as output
+  gpio_set_dir(GBP_SI_PIN, GPIO_OUT);
+  gpio_put(GBP_SI_PIN, 0);  // start LOW
   LED_WS2812_state(WS2812_Idle, 1);
 
   /* Setup */
   gpb_serial_io_init(sizeof(gbp_serialIO_raw_buffer), gbp_serialIO_raw_buffer);
 
-  /* Attach ISR */
+  /* Attach ISR / Enable GPIO interrupt with callback */
 #ifdef GBP_FEATURE_USING_RISING_CLOCK_ONLY_ISR
-  attachInterrupt(digitalPinToInterrupt(GBP_SC_PIN), serialClock_ISR, RISING);  // attach interrupt handler
+  gpio_set_irq_enabled_with_callback(GBP_SC_PIN, GPIO_IRQ_EDGE_RISE, true, &gpio_irq_callback);
 #else
-  attachInterrupt(digitalPinToInterrupt(GBP_SC_PIN), serialClock_ISR, CHANGE);  // attach interrupt handler
+  gpio_set_irq_enabled_with_callback(GBP_SC_PIN, GPIO_IRQ_EDGE_RISE | GPIO_IRQ_EDGE_FALL, true, &gpio_irq_callback);
 #endif
 
   /* Packet Parser */
@@ -337,7 +346,7 @@ void loop1()  //core 1 loop deals with images, written by Raphaël BOICHOT, nove
   }
 
   //in TEAR mode, a file is never closed unless you push a button
-  if ((TEAR_mode == 1) & (digitalRead(BTN_PUSH)) & (lines_in_image_file > 0)) {  //in tear mode, a button push only can close file, whatever the printer (non empty) state
+  if ((TEAR_mode == 1) & (gpio_get(BTN_PUSH)) & (lines_in_image_file > 0)) {  //in tear mode, a button push only can close file, whatever the printer (non empty) state
     LED_WS2812_state(WS2812_Color, 1);
     Next_ID++;  //increment file number
     store_next_ID("/tiny.sys", Next_ID, Next_dir);
@@ -514,7 +523,7 @@ void Tiny_printer_preparation() {
   tft.setRotation(3);
   tft.fillScreen(TFT_BLACK);
 
-  if (digitalRead(BTN_PUSH)) {
+  if (gpio_get(BTN_PUSH)) {
     WS2812_Color = pixels.Color(0, 0, intensity);  //RGB triplet, turn to blue
     TEAR_mode = 1;                                 //idle mode with tear paper
     tft.fillScreen(TFT_NAVY);                      //this blue looks cool
@@ -579,7 +588,7 @@ void Tiny_printer_preparation() {
   store_next_ID("/tiny.sys", Next_ID, Next_dir);  //store next folder #immediately
 
   //now time for an easter egg
-  if (digitalRead(BTN_PUSH)) {
+  if (gpio_get(BTN_PUSH)) {
     for (int i = 0; i < 40 * 16; i++) {  // inject the dummy data packet
       printer_memory_buffer_core_0[i] = dummy_packet[i];
     }
