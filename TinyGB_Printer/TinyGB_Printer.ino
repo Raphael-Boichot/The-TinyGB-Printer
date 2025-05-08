@@ -143,8 +143,6 @@ void setup(void) {
   gbp_pkt_init(&gbp_pktState);
 #endif
 
-#define VERSION_STRING "V3.2.1 (Copyright (C) 2022 Brian KHUU)"
-#define TINY_VERSION_STRING "V2.0.3 (Copyright (C) 2024 Raphaël BOICHOT)"
 #ifdef DEBUG_MODE
   Serial.println(F("// Game Boy Printer Emulator for Arduino " VERSION_STRING));
   Serial.println(F("// TinyGB Printer converter add-on " TINY_VERSION_STRING));
@@ -596,6 +594,9 @@ void Tiny_printer_preparation() {
       img.drawPixel(x, y, lookup_TFT_RGB565[TFT_memory_buffer[x + y * 160]]);
     }
   }
+
+  img.setTextColor(TFT_BLACK);
+  img.drawString(TINY_VERSION_SHORT, 112, 16, 2);
   img.pushSprite(x_ori, 0);  //the Bodmer TFT uses DMA so nothing is faster than this library
 
   // Ensure the SPI pinout the SD card is connected to / is configured properly

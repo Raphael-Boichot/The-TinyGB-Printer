@@ -18,6 +18,10 @@
 #define SD_SCK 10    // SD card SPI1
 #define SD_MOSI 11   // SD card SPI1
 #define BTN_PUSH 12  // Define a PushButton to use to Force a new file in idle mode ///BOICHOT
+#define VERSION_STRING "V3.2.1 (Copyright (C) 2022 Brian KHUU)"
+#define TINY_VERSION_STRING "V2.0.4 (Copyright (C) 2024 Raphaël BOICHOT)"
+#define TINY_VERSION_SHORT "V2.0.4"
+bool BITBOY_mode = 0;  //mimicks the folder strategy of the BitBoy (100 files per folder)
 //#define DEBUG_MODE   //allow additionnal outputs on on serial, only for debugging
 
 /* Gameboy Link Cable Mapping to Arduino Pin */
@@ -140,4 +144,3 @@ bool SDcard_READY = 0;                                     //self explanatory
 bool PRINT_flag = 0;                                       //self explanatory
 bool TEAR_mode = 0;                                        //self explanatory
 bool skip_byte_on_display = 1;                             //renders the serial less verbose
-bool BITBOY_mode = 0;                                      //mimicks the folder strategy of the BitBoy (100 files per folder)
