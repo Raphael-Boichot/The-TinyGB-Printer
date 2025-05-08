@@ -6,7 +6,7 @@ The TinyGB Printer is the simplest possible Game Boy printer emulator storing im
 
 You can copy, modify, or improve it as you wish, all sources are provided. **Just respect the license and the dedication of the authors**. In very brief, don't forget to cite Brian KHUU (emulator/parser part) and Raphaël BOICHOT (hardware/decoder part) as authors and give a link to this repository.
 
-You can also share your images with the friendly community of Game Boy Camera enthusiasts on the [Game Boy Camera Club Telegram](https://t.me/gameboycamera).
+You can also share your images with the friendly community of Game Boy Camera enthusiasts on the [Game Boy Camera Club Telegram](https://t.me/gameboycamera). I can also help you solving issues on that Telegram.
 
 ## Make it, enjoy it !
 **Nothing to compile, nothing to install, drop the UF2 file to the device and it works straight after soldering.**
