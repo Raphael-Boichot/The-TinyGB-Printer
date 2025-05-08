@@ -14,7 +14,7 @@ You can also share your images with the friendly community of Game Boy Camera en
 (Credit: Raphaël BOICHOT)
 
 ## What's inside / how does it work ?
-The code is basically the [Arduino Game Boy Printer emulator](https://github.com/mofosyne/arduino-gameboy-printer-emulator) (with a bit of tuning to handle the RP2040 specificities) running on core 0 and a custom image decoder running on core 1 in parallel. Core 0 politely asks core 1 to convert data at certain times with a flag. Core 0 is quite busy with interrupts while core 1 is more or less idle depending on tasks asked by core 0. Good timing between the two cores is critical (and required quite a lot of optimisation) as core 0 cannot miss any interrupt and core 1 must fullfill all its tasks on time with a good safety margin.
+The code is basically the [Arduino Game Boy Printer emulator](https://github.com/mofosyne/arduino-gameboy-printer-emulator) (with a bit of tuning to handle the Pi Pico SDK commands) running on core 0 and a custom image decoder running on core 1 in parallel. Good timing between the two cores is critical (and required quite a lot of optimisation) as core 0 cannot miss any single interrupt while core 1 must fullfill all its tasks on time with a good safety margin. Flux control to "occupy" the Game Boy during image conversion is not necessary here.
 
 ## Easy to install
 - After soldering everything, connect the Raspberry Pi Pico with a USB cable to your computer while pressing BOOT, drop the [uf2 file](/Builds) to the USB folder poping out and enjoy your device. If it makes smoke, check for shorts with a multimeter.
@@ -64,7 +64,7 @@ Additionnaly, you would need a [GBC compatible link cable](https://www.aliexpres
 - Solder all parts with the minimal clearance possible against the PCB.
 - The TFT display can be mounted on female pin headers at this step but display is fully optional. The device works without !
 - Trim and reflow all pins on the back side to get a clean finish. I personally trim pins as short as possible before soldering but there is a risk of scratching the solder mask, so be carefull.
-- Clean as much as you can any flux residues with isopropanol. Flux may create parasitic noise between pins. **Beware, flushing the TFT display with isopropanol is a very reliable way to kill it !**
+- Clean as much as you can any flux residues with isopropanol. Flux may create parasitic noise between pins. **Beware, flushing the TFT display with isopropanol is a very reliable way of killing it !**
 - Solder the battery box terminals and stuck the PCB on it with double sided tape for example (or hot glue if you're addicted to hot snot like me).
 - You're ready to print !
 
@@ -87,6 +87,7 @@ The device can record a little more than 1 standard Game Boy Camera image for ea
 - The TFT display does not work when you compile by yourself ? See [notes](https://github.com/Raphael-Boichot/The-TinyGB-Printer/blob/f55e4003a29216d7775f089cb41b405cfadc126f/TinyGB_Printer/TinyGB_Printer.ino#L45) for configuring the TFT_eSPI library, you have to manually edit some command for this particular display.
 - Any SD card must work out of the box. If the printer is reluctant to recognize yours (it can happen, rarely), use a [low level formatting tool](https://www.sdcard.org/downloads/formatter/) or low level formatting commands like diskpart on Windows. Filesystem must be FAT32.
 - The image palette is obviously wrong for a particular game ? Open an issue and I will rapidely find a solution.
+- One image is just not readable ? You've probably overflown the lenght limit for PNG images in **tear mode** (2^32-1 pixels). Wicked but possible.
 
 ## Examples of use
 
