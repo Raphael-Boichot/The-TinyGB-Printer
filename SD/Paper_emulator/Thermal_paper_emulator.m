@@ -23,7 +23,11 @@ catch
 end
 
 mkdir Paper_out
-imagefiles = dir('Image_in/*.png');% the default format is png, other are ignored
+imagefiles_png = dir('Image_in/*.png');
+imagefiles_jpg = dir('Image_in/*.jpg');
+imagefiles_jpeg = dir('Image_in/*.jpeg');
+imagefiles_bmp = dir('Image_in/*.bmp');
+imagefiles = [imagefiles_png; imagefiles_jpg; imagefiles_jpeg; imagefiles_bmp];
 nfiles = length(imagefiles);    % Number of files found
 
 for k=1:1:nfiles
