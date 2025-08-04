@@ -234,7 +234,7 @@ In *Italics* games working fine in automatic mode, in **bold** games requiring t
 Want to know more about these games ? Want hints and custom saves to unlock all printing features ? Want to read the whole story of the thermal printer emulator module ? Follow the [link](https://github.com/Raphael-Boichot/GameboyPrinterPaperSimulation).
 
 ## Also compatible with homebrews known to work with the Game Boy Printer
-In *Italics* games working fine in automatic mode, in **bold** games requiring the push button to tear paper, or tear mode.
+In *Italics* games working fine in automatic mode, **in bold** games requiring the push button to tear paper, or tear mode.
 
 - *[2bit PXLR Studio](https://github.com/HerrZatacke/2bit-pxlr-studio) by Andreas Hahn - The first Game Boy Camera custom rom*
 - *[Photo!](https://github.com/untoxa/gb-photo) by Untoxa - A Game Boy Camera custom rom, evolution of 2bit PXLR Studio*
