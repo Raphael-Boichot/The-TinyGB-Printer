@@ -239,7 +239,7 @@ In *Italics* games working fine in automatic mode, **in bold** games requiring t
 - *[2bit PXLR Studio](https://github.com/HerrZatacke/2bit-pxlr-studio) by Andreas Hahn - The first Game Boy Camera custom rom*
 - *[Photo!](https://github.com/untoxa/gb-photo) by Untoxa - A Game Boy Camera custom rom, evolution of 2bit PXLR Studio*
 - *[gb_snake](https://github.com/reini1305/gb_snake) by Christian Reinbacher - A one or two players version of Snake*
-- **[gb_bannerprinter](https://github.com/reini1305/gb_bannerprinter) by Christian Reinbacher - A thermal paper banner printer**
+- **[gb_bannerprinter](https://github.com/reini1305/gb_bannerprinter) by Christian Reinbacher - A thermal paper banner printer** (note: it will not print with a real printer, see the Funfacts section)
 - *[Blarble1290](https://8bittygames.com/blarble1290/) by Patrick Rodriguez - A text based adventure where the printer talks to you, miserable human being !*
 - *A [Game Boy Printer test rom](https://github.com/mmuszkow/gbprinter) by Maciek Moszkowski - It prints text to the printer, what else ?*
 - **[GBC Windows](https://archive.org/details/gbcwindows) by Rubenretro, developped with GB Studio - A spoof of Windows 3.1 with a printer function that works — mostly.**
