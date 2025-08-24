@@ -12,7 +12,7 @@ pkg load image
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 target_gif_file = 'Animation.gif';  % target file for animated gif
 gif_deadtime    = 0.05;             % delay in seconds between pictures
-gif_skip        = 4;                % keep every 1 out of gif_skip images
+gif_skip        = 1;                % keep every 1 out of gif_skip images
 scaling_factor  = 1;                % scale images if needed
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

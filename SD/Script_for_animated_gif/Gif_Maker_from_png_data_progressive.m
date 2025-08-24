@@ -9,8 +9,9 @@ pkg load image
 
 % Parameters
 target_gif_file = 'Animation_progressive.gif';
+final_avg_png   = 'Final_Average.png';
 gif_deadtime    = 0.05;
-gif_skip        = 9;
+gif_skip        = 1;
 scaling_factor  = 1;
 n_colors        = 256;
 
@@ -71,6 +72,10 @@ for k = 2:numel(frames_idx)
     imwrite(frames_idx{k}, gray_map, target_gif_file, ...
             'gif', 'WriteMode', 'append', 'DelayTime', gif_deadtime, 'Compression', 'bzip');
 end
+
+% Save final average as PNG
+imwrite(current_avg, final_avg_png);
+disp(['Final average image saved as ', final_avg_png]);
 
 disp('-----------------------------------------------------------')
 disp('Done! Progressive averaged grayscale GIF is ready!')
