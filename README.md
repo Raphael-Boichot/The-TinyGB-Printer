@@ -269,6 +269,17 @@ If you find any homebrew **working for real on a genuine Game Boy Printer** (not
 - Testing each major code / hardware modification requires tons of quality check in real printing conditions (Game Boy(s), serial cable, batteries, flashcart, sometimes oscilloscope, all that shit). I typically have to pass a dozen of difficult games with ruthless protocol implementation which I know will not print correctly in case of even the slightest issue with printer emulator / decoder. I sometimes try these games on other emulators / decoders for testing their accuracy. Most don't pass this crash test. The TinyGB Printer is the only emulator and decoder combo I know of that is 100% accurate.
 - A noticeable amount of compatible games listed here are considered as the [shittiest GB/GBC games](https://w.atwiki.jp/gcmatome/pages/33.html). I must admit that "playing" some of them (in one case even making a mandatory 100% to just unlock the printer menu) was less enjoyable than a visit to the dentist. I mean some games gave me nausea *systematically* when playing (yes, I'm thinking of you, E.T. The Extra-Terrestrial: Digital Companion, you piece of shit), which is *not always* the case with dental care.
 
+## Running batteryless (at your own risk)
+
+Depending on the Game Boy model or flash cartridge you use, it is possible tu run the device from the +5V of the serial port only. For this, I recommend using a version of the TinyGB Printer without the display and non SD bootleg cartridge (so no EZ-FLASH Junior for example). It should put you in a situation where enough juice is available from the internal Game Boy Converter.
+
+Run a wire from the +5V from the Pi pico to the +5V of the serial port (beware, most schematics invert SD and +5V pins so follow strictly the wiring shown in next image). I recommend using a low forward voltage Shottky diode like a BYV1040 (like here), a 1N5817 or a BAT41 to avoid any unwanted connection if the USB is connected as well as the serial. You also have to used a third party serial cable as genuine have the +5V not connected.
+
+Now you're ready to run without battery at your own risk.
+
+![](/Images/Running_batteryless.png)
+(Credit: Raphaël BOICHOT)
+
 ## Kind warning
 The code and current design come as is. If you're not happy with the current hardware, the PCB EasyEDA design or the Arduino IDE, create your own, the licence allows it ! Polite pull requests with bulletproof improvements are of course always welcomed. Remind that this project is the fruit of hard work made with dedication, offered for free.
 
