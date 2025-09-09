@@ -271,7 +271,7 @@ If you find any homebrew **working for real on a genuine Game Boy Printer** (not
 
 ## Running batteryless (at your own risk)
 
-Depending on the Game Boy model or flash cartridge you use, it is possible tu run the device from the +5V of the serial port only. For this, I recommend using a version of the TinyGB Printer **without the display** and **non SD bootleg cartridge** (so no EZ-FLASH Junior for example). It should put you in a situation where enough juice is available from the internal Game Boy power converter.
+Depending on the Game Boy model or flash cartridge you use, it is possible tu run the device from the +5V of the serial port only. For this, I recommend using a version of the TinyGB Printer **without the display** and **non SD flash cartridge** (so no EZ-FLASH Junior for example). It should put you in a situation where enough juice is available from that poor internal Game Boy power converter.
 
 Run a wire from the +5V from the Pi pico to the +5V of the serial port (beware, most schematics invert SD and +5V pins so follow strictly the wiring shown in the next image). I recommend using a low forward voltage Shottky diode like a BYV1040 (like here), a 1N5817 or a BAT41 to avoid any unwanted connection if the USB is connected as well as the serial. **Cathode must be mounted facing the Pi Pico**. You also have to used a **third party serial cable** as genuine have the +5V not connected.
 
