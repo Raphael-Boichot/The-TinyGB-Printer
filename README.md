@@ -292,6 +292,6 @@ The code and current design come as is. If you're not happy with the current har
 - [Slade1972](https://github.com/Slade1972) for the 3D printed enclosure (PCB 2.0 with display) and feedbacks on the building procedure and thorough compatibility tests with the Analogue Pocket.
 - [Björn Heirman](https://github.com/BjornB2) for the 3D printed enclosure (PCB 1.0 without display) and feedbacks on the device ergonomy.
 - [Rafael Zenaro](https://github.com/zenaror) for the initial idea ("hey man, why not doing a Pi Pico version of the NeoGB Printer now ?!") and because I reused many chunks of code from the [NeoGB Printer project](https://github.com/zenaro147/NeoGB-Printer). This project is finally more a demake than a remake of the NeoGB Printer. The TinyGB Printer was ought to be our new common project but it did not because real life is what it is.
-- [Toxa](https://github.com/untoxa) for refreshing my mind about some PNG format subtelties that greatly improved PNGenc integration into the project.
+- [Toxa](https://github.com/untoxa) for refreshing my mind about some PNG format subtelties that greatly improved PNGenc integration into the project. He is also at the origin of the batteryless design.
 
 ![Chee Chai Aliens](/Images/Chee_Chai_Aliens.gif)
