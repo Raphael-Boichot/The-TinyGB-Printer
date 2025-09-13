@@ -277,11 +277,11 @@ Run a wire from the +5V from the Pi pico to the +5V of the serial port (beware, 
 
 Now you're ready to run without battery and **at your own risk**. On my side, it works at least on GBC modded with a TFT display, with two different third party cables I own (the transparent green oddity sold on Amazon and the regular black crap from Aliexpress). These are the only tests I've made, you're on your own for your particular display / console combo if it does not work. If connecting the device just crashes your Game Boy, better revert to the normal "with battery" setup. You can use this [PCB](/PCB_2.0_batteryless/) to play by yourself with this design.
 
-### Retrofit of PCB 2.0 to run batteryless
+### Retrofit of PCB 2.0 to run batteryless (third party link cable required)
 ![](/Images/Running_batteryless.png)
 (Credit: Raphaël BOICHOT)
 
-### Experimental PCB, may or may not work with your setup
+### Experimental PCB, untested, may or may not work with your setup
 ![](/PCB_2.0_batteryless/PCB.png)
 
 ## Kind warning
