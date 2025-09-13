@@ -260,7 +260,7 @@ If you find any homebrew **working for real on a genuine Game Boy Printer** (not
 - I have considered the dev achieved when the device became more reliable than a BitBoy in endurance tests (because even a BitBoy can crash when abused for long in double speed mode) while having extended functions.
 - The inspiration came from the experience of co-developping both the hardware and software of the NeoGB Printer on ESP32 with Rafael Zenaro. After four years tinkering with other projects in electronics and helping people to painfully compile, build and configure the NeoGB Printer, I have to admit that the system had some teething problems. The TinyGB Printer was made to be simple, reliable, no Wifi, easy to maintain.
 - The device uses a quite baroque 7 pins 240x240 TFT display without CS pin. This is just because I had this one in stock as leftover from another project during dev. It is also very tiny and cute. This display is hopefully quite common on Aliexpress but on the other hand requires some annoying tuning of the TFT library. The project PCB and code can be easily modified to handle more classical TFT display.
-- Most serial port schematics / pinouts I found on the internet invert SD and +5V (VDD on my schematic), which are basically never connected in genuine serial cables. So is the one I used here... Another explanation (which is maybe linked to the first one) is that third party serial cables just connect randomly these pins. In any case, there's something fishy about these two pins. This why the batteryless design (see next sections) won't be integrated officially on the PCB.
+- Most serial port schematics / pinouts I found on the internet invert SD and +5V (VDD on my schematic), which are basically never connected in genuine serial cables. So is the one I used here... Another explanation (which is maybe linked to the first one) is that third party serial cables just connect randomly these pins. In any case, there's something fishy about these two pins.
 
 ## Funfacts
 - Most games do not implement the BREAK command to abort printing but just stop transmission and relies on the very severe timing of the real printer which automatically rejects data packets with dubious dead times in between (more than 150 ms dead time between packets "kills" the whole transmission) or with incorrect checksum. The TinyGB printer detects both BREAK command and dubious packets to reject print.
@@ -275,10 +275,12 @@ Depending on the Game Boy model or flash cartridge you use, it is possible tu ru
 
 Run a wire from the +5V from the Pi pico to the +5V of the serial port (beware, most schematics invert SD and +5V (VDD) pins so follow strictly the wiring shown in the next image). I recommend using a low forward voltage Shottky diode like a BYV1040 (like here), a 1N5817 or a BAT41 to avoid any fatal connection if the USB is connected as well as the serial. **Cathode must be mounted facing the Pi Pico**. You also have to used a **third party serial cable** as genuine ones have the +5V (VDD) not connected.
 
-Now you're ready to run without battery and **at your own risk**. On my side, it works at least on GBC modded with a TFT display, with two different third party cables I own (the transparent green oddity sold on Amazon and the regular black crap from Aliexpress). These are the only tests I've made, you're on your own for your particular display / console combo if it does not work. If connecting the device just crashes your Game Boy, better revert to the normal "with battery" setup.
+Now you're ready to run without battery and **at your own risk**. On my side, it works at least on GBC modded with a TFT display, with two different third party cables I own (the transparent green oddity sold on Amazon and the regular black crap from Aliexpress). These are the only tests I've made, you're on your own for your particular display / console combo if it does not work. If connecting the device just crashes your Game Boy, better revert to the normal "with battery" setup. You can use this [PCB](/PCB_2.0_batteryless/) to play by yourself with this design.
 
 ![](/Images/Running_batteryless.png)
 (Credit: Raphaël BOICHOT)
+
+![](/PCB_2.0_batteryless/PCB.png)
 
 ## Kind warning
 The code and current design come as is. If you're not happy with the current hardware, the PCB EasyEDA design or the Arduino IDE, create your own, the licence allows it ! Polite pull requests with bulletproof improvements are of course always welcomed. Remind that this project is the fruit of hard work made with dedication, offered for free.
