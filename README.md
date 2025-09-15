@@ -279,7 +279,7 @@ Now you're ready to run without battery and **at your own risk**. On my side, it
 
 ### Retrofit of PCB 2.0 to run batteryless (third party link cable required)
 ![](/Images/Running_batteryless.png)
-![](/Images/Running_batteryless_2.png)
+![](/Images/Running_batteryless_2.jpg)
 (Credit: Raphaël BOICHOT)
 
 ### Experimental PCB, untested, just try it !
