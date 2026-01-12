@@ -272,6 +272,8 @@ If you find any homebrew **working for real on a genuine Game Boy Printer** (not
 ## Running batteryless (at your own risk)
 Foreword: SD and VCC are never connected in Game Boy genuine cables nor required by any known Nintendo product. There is no specifications for them contrary to SI and SO which are crossed. It appears that **most after market cables (at least the three I own) have SD and VCC wired AND crossed**. The device here necessitates after market cables so everything is designed considering that SD and VCC are crossed within the cable.
 
+![](/Images/After_market_wiring.png)
+
 Depending on the Game Boy model or flash cartridge you use, it is so possible tu run the device from the +5V (VCC) of the serial port only. For this, I recommend using the TinyGB Printer **without an SD flash cartridge** (so no EZ-FLASH Junior for example). It should put you in a situation where enough juice is available from that poor internal Game Boy power converter.
 
 I recommend using a low forward voltage Shottky diode like a BYV1040 (like here), a 1N5817 or a BAT41 to avoid any fatal connection if the USB is connected as well as the serial. **Cathode must be mounted facing the Pi Pico**. You also have to used a **third party serial cable with SD and VCC crossed** as genuine ones have VCC and SD not wired.
