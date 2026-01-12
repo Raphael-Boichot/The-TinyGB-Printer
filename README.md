@@ -270,13 +270,15 @@ If you find any homebrew **working for real on a genuine Game Boy Printer** (not
 - A noticeable amount of compatible games listed here are considered as the [shittiest GB/GBC games](https://w.atwiki.jp/gcmatome/pages/33.html). I must admit that "playing" some of them (in one case even making a mandatory 100% to just unlock the printer menu) was less enjoyable than a visit to the dentist. I mean some games gave me nausea *systematically* when playing (yes, I'm thinking of you, E.T. The Extra-Terrestrial: Digital Companion, you piece of shit), which is *not always* the case with dental care.
 
 ## Running batteryless (at your own risk)
-Depending on the Game Boy model or flash cartridge you use, it is possible tu run the device from the +5V of the serial port only. For this, I recommend using the TinyGB Printer **without an SD flash cartridge** (so no EZ-FLASH Junior for example). It should put you in a situation where enough juice is available from that poor internal Game Boy power converter.
+Foreword: SD and VCC are never connected in Game Boy genuine cables nor required by any known Nintendo product. There is no specifications for them contrary to SI and SO which are crossed. It appears that most after market cables (at least the three I own) have SD and VCC wired AND crossed. The device here necessitates after market cables so everything here is designed considering that SD and VCC are crossed within the cable.
 
-Run a wire from the +5V from the Pi pico to the +5V of the serial port (follow strictly the wiring shown in the next image). I recommend using a low forward voltage Shottky diode like a BYV1040 (like here), a 1N5817 or a BAT41 to avoid any fatal connection if the USB is connected as well as the serial. **Cathode must be mounted facing the Pi Pico**. You also have to used a **third party serial cable** as genuine ones have the +5V (VDD) not connected.
+Depending on the Game Boy model or flash cartridge you use, it is so possible tu run the device from the +5V (VCC) of the serial port only. For this, I recommend using the TinyGB Printer **without an SD flash cartridge** (so no EZ-FLASH Junior for example). It should put you in a situation where enough juice is available from that poor internal Game Boy power converter.
+
+I recommend using a low forward voltage Shottky diode like a BYV1040 (like here), a 1N5817 or a BAT41 to avoid any fatal connection if the USB is connected as well as the serial. **Cathode must be mounted facing the Pi Pico**. You also have to used a **third party serial cable with SD and VCC crossed** as genuine ones have VCC and SD not wired.
 
 Now you're ready to run without battery and **at your own risk**. On my side, it works at least on a GBA and a GBC modded with a TFT display, genuine power converter, with two different third party cables I own (the transparent green oddity sold on Amazon and the regular black crap from Aliexpress). These are the only tests I've made, you're on your own for your particular display / console combo if it does not work. If connecting the device just crashes your Game Boy, better use to the normal "with battery" setup. You can use this [PCB](/PCB_2.0_batteryless/) to play by yourself with this design.
 
-### Retrofit of PCB 2.0 to run batteryless (third party link cable required)
+### Retrofit of PCB 2.0 to run batteryless (third party link cable with SD and VCC crossed required)
 ![](/Images/Running_batteryless.png)
 ![](/Images/Running_batteryless_2.jpg)
 (Credit: Raphaël BOICHOT)
