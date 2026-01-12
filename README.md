@@ -276,7 +276,7 @@ Foreword: SD and VCC are never connected in Game Boy genuine cables nor required
 
 Depending on the Game Boy model or flash cartridge you use, it is so possible tu run the device from the +5V (VCC) of the serial port only. For this, I recommend using the TinyGB Printer **without an SD flash cartridge** (so no EZ-FLASH Junior for example). It should put you in a situation where enough juice is available from that poor internal Game Boy power converter.
 
-I recommend using a low forward voltage Shottky diode like a BYV1040 (like here), a 1N5817 or a BAT41 to avoid any fatal connection if the USB is connected as well as the serial. **Cathode must be mounted facing the Pi Pico**. You also have to used a **third party serial cable with SD and VCC crossed** as genuine ones have VCC and SD not wired.
+I recommend using a low forward voltage Shottky diode like a BYV1040 (like here), a 1N5817 or a BAT41 to avoid any fatal connection if the USB is connected as well as the serial. **Cathode must be mounted facing the Pi Pico**. In case of post-assembly, strictly follow the next pictures to see where to connect the +5V.
 
 Now you're ready to run without battery and **at your own risk**. On my side, it works at least on a GBA and a GBC modded with a TFT display, genuine power converter, with different third party cables I own (the transparent green oddity sold on Amazon and the regular black crap from Aliexpress). These are the only tests I've made, you're on your own for your particular display / console combo if it does not work. If connecting the device just crashes your Game Boy, better use to the normal "with battery" setup or try another cable. You can use this [PCB](/PCB_2.0_batteryless/) to play by yourself with this design.
 
