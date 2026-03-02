@@ -109,7 +109,7 @@ The device can record a little more than 1 standard Game Boy Camera image for ea
 
 ### Make color images using RGB filters and [script for stacking](/SD/Scripts_for_AEB_mode) (requires a PC)
 ![](/SD/Scripts_for_AEB_mode/Code_color_fusion/Color_fusion.png)
-![](/SD/Scripts_for_AEB_mode/Code_color_fusion/Examples/Color_fusion_08.png)
+![](/SD/Scripts_for_AEB_mode/Examples/Color_fusion_08.png)
 
 (Yes, this is done with a Game Boy Camera)
 
