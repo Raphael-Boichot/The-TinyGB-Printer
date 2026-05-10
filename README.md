@@ -287,10 +287,10 @@ Now you're ready to run without battery and **at your own risk**. On my side, it
 
 Running from the +5V of the Game Boy, without battery. Note the diode orientation. (Credit: Raphaël BOICHOT)
 
-### Experimental PCB, untested, just try it !
+### Experimental PCB for batteryless mod, just try it !
 ![](/PCB_2.0_batteryless/PCB.png)
 
-Untested, no reason that it would not work.
+Untested, no reason that it would not work. It fits the 3D shell of the PCB V2.0 perfectly as the footprint is exactly the same.
 
 ## Kind warning
 The code and current design come as is. If you're not happy with the current hardware, the PCB EasyEDA design or the Arduino IDE, create your own, the licence allows it ! Polite pull requests with bulletproof improvements are of course always welcomed. Remind that this project is the fruit of hard work made with dedication, offered for free.
