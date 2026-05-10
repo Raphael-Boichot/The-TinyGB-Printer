@@ -271,7 +271,7 @@ If you find any homebrew **working for real on a genuine Game Boy Printer** (not
 - A noticeable amount of compatible games listed here are considered as the [shittiest GB/GBC games](https://w.atwiki.jp/gcmatome/pages/33.html). I must admit that "playing" some of them (in one case even making a mandatory 100% to just unlock the printer menu) was less enjoyable than a visit to the dentist. I mean some games gave me nausea *systematically* when playing (yes, I'm thinking of you, E.T. The Extra-Terrestrial: Digital Companion, you piece of shit), which is *not always* the case with dental care.
 
 ## Running batteryless (at your own risk)
-Foreword: SD and VCC are never connected in Game Boy genuine cables nor required by any known Nintendo product. There is no specifications for them contrary to SI and SO which are crossed. It appears that **most after market cables (at least the three I own) have SD and VCC wired AND crossed**. The device here necessitates after market cables so everything is designed considering that SD and VCC are crossed within the cable.
+Foreword: SD and VCC are never connected in Game Boy genuine cables nor required by any known Nintendo product. There is no specifications for them contrary to SI and SO which are crossed. It appears that **most after market cables (at least the three I own) have SD and VCC wired AND crossed**. The mod proposed in this section (running batteryless) necessitates after market cables so everything is designed considering that SD and VCC are crossed within the cable.
 
 ![](/Images/After_market_wiring.png)
 
