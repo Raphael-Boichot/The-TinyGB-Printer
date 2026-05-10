@@ -284,10 +284,12 @@ Now you're ready to run without battery and **at your own risk**. On my side, it
 ### Retrofit of PCB 2.0 to run batteryless (third party link cable with SD and VCC crossed required)
 ![](/Images/Running_batteryless.png)
 ![](/Images/Running_batteryless_2.jpg)
-Running from the +5V of the Game Boy, without battery (Credit: Raphaël BOICHOT)
+
+Running from the +5V of the Game Boy, without battery. Note the diode orientation. (Credit: Raphaël BOICHOT)
 
 ### Experimental PCB, untested, just try it !
 ![](/PCB_2.0_batteryless/PCB.png)
+
 Untested, no reason that it would not work.
 
 ## Kind warning
