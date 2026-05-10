@@ -284,10 +284,11 @@ Now you're ready to run without battery and **at your own risk**. On my side, it
 ### Retrofit of PCB 2.0 to run batteryless (third party link cable with SD and VCC crossed required)
 ![](/Images/Running_batteryless.png)
 ![](/Images/Running_batteryless_2.jpg)
-(Credit: Raphaël BOICHOT)
+Running from the +5V of the Game Boy, without battery (Credit: Raphaël BOICHOT)
 
 ### Experimental PCB, untested, just try it !
 ![](/PCB_2.0_batteryless/PCB.png)
+Untested, no reason that it would not work.
 
 ## Kind warning
 The code and current design come as is. If you're not happy with the current hardware, the PCB EasyEDA design or the Arduino IDE, create your own, the licence allows it ! Polite pull requests with bulletproof improvements are of course always welcomed. Remind that this project is the fruit of hard work made with dedication, offered for free.
